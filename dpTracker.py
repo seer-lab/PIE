@@ -2,7 +2,13 @@ from pydriller import Repository, Git
 import os 
 from shutil import copyfile
 from pinot import scan_patterns
+from pymongo import MongoClient
+client = MongoClient('localhost', 27017)
 
+db = client.thesis_data
+collection = db.ignite
+
+processed_commits = set([str(id) for id in collection.find().distinct('_id')])
 
 base_path = '../ignite/modules/'
 flatten_path = '../flatten_ignite/'
@@ -27,27 +33,33 @@ def get_files(path):
   for x in files: 
       if os.path.isdir(path + x): 
           values += get_files(path + x + '/')
-      elif '.java' in x and not 'test' in x.lower() and not 'info' in x.lower(): 
+      elif '.java' in x and not 'test' in x.lower(): 
           values.append(path + x)
   return values
 
 def analyze_commit(commit): 
-  clear_directory();
+  if commit.hash in processed_commits: 
+    return 
+
   gr.get_commit(commit.hash)
   files = get_files(base_path)
 
   patterns, locations = scan_patterns(files, base_path)
-  print(locations)
+  json = {
+    '_id': commit.hash, 
+    'msg': commit.msg,
+    'author': commit.author.name,
+    'date': commit.committer_date.strftime("%Y-%m-%d"),
+    'lines': commit.lines,
+    'files': commit.files,
+    'modified_files': [x.new_path for x in commit.modified_files],
+    'summary': patterns, 
+    'pattern_locations': locations
+  }
+
   if patterns != None: 
-    found = False
-    for key, value in patterns.items(): 
-      if value > 0: 
-        print('Found', value, key, 'in commit ', commit.hash)
-        found = True
-    if found: 
-      print('Message:', commit.msg)
-    else: 
-      print('No patterns found for commit', commit.hash)
+    collection.insert_one(json)
+    print('Processed', commit.hash)
   else: 
     print('Failed to run Pinot on hash:', commit.hash)
 

@@ -20,17 +20,6 @@ available_patterns = [
   'Template Method', 
   'Visitor']
 
-problem_files = set()
-cleared_files = set()
-
-with open('problem_files.txt') as f: 
-  problem_files = set(f.readlines())
-
-with open('cleared_files.txt') as f: 
-  cleared_files = set(f.readlines())
-
-
-
 def scan_patterns(files, base_path):
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
