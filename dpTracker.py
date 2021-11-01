@@ -10,7 +10,7 @@ collection = db.ignite
 
 processed_commits = set([str(id) for id in collection.find().distinct('_id')])
 
-base_path = '../ignite/modules/'
+base_path = '../ignite/'
 flatten_path = '../flatten_ignite/'
 gr = Git('../ignite')
 
@@ -29,21 +29,19 @@ def flatten_project(path):
 
 def get_files(path): 
   values = []
-  files = os.listdir(path)
-  for x in files: 
-      if os.path.isdir(path + x): 
-          values += get_files(path + x + '/')
-      elif '.java' in x and not 'test' in x.lower(): 
-          values.append(path + x)
+  for p, d, f in os.walk(path):
+    for file in f:
+      if file.endswith('.java') and not 'test' in file.lower():
+          values.append(os.path.join(p, file))
   return values
 
 def analyze_commit(commit): 
   if commit.hash in processed_commits: 
     return 
 
-  gr.get_commit(commit.hash)
-  files = get_files(base_path)
+  gr.checkout(commit.hash)
 
+  files = get_files(base_path)
   patterns, locations = scan_patterns(files, base_path)
   json = {
     '_id': commit.hash, 
@@ -56,9 +54,10 @@ def analyze_commit(commit):
     'summary': patterns, 
     'pattern_locations': locations
   }
+  collection.insert_one(json)
 
   if patterns != None: 
-    collection.insert_one(json)
+    #print(json)
     print('Processed', commit.hash)
   else: 
     print('Failed to run Pinot on hash:', commit.hash)
