@@ -46,6 +46,7 @@ def analyze_commit(commit):
   json = {
     '_id': commit.hash, 
     'msg': commit.msg,
+    'merge': commit.merge,
     'author': commit.author.name,
     'date': commit.committer_date.strftime("%Y-%m-%d"),
     'lines': commit.lines,
@@ -64,8 +65,8 @@ def analyze_commit(commit):
 
 repo = Repository('../ignite')
 
-commits = []
-for commit in repo.traverse_commits(): 
-  analyze_commit(commit)
-
+# commits = []
+# for commit in repo.traverse_commits(): 
+#   analyze_commit(commit)
+flatten_project(base_path)
 
