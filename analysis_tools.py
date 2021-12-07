@@ -20,10 +20,11 @@ def get_sorted_documents(sort):
   for document in collection.find(): 
     files[document['_id']] = document 
 
-  repo = Repository('../ignite', order=sort)
+  repo = Repository('../ignite', order=sort, only_in_branch='master')
 
   documents = []
   for commit in repo.traverse_commits(): 
+    #files[commit.hash]['branches'] = commit.branches
     documents.append(files[commit.hash])
   return documents
 
