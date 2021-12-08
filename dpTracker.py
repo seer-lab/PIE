@@ -3,6 +3,7 @@ import os
 from shutil import copyfile
 from pinot import scan_patterns
 from pymongo import MongoClient
+import analysis_tools
 client = MongoClient('localhost', 27017)
 
 db = client.thesis_data
@@ -51,6 +52,7 @@ def analyze_commit(commit):
     'date': commit.committer_date.strftime("%Y-%m-%d"),
     'lines': commit.lines,
     'files': commit.files,
+    'file_list': analysis_tools.get_files_at_commit(commit.hash),
     'modified_files': [x.new_path for x in commit.modified_files],
     'summary': patterns, 
     'pattern_locations': locations
@@ -65,8 +67,7 @@ def analyze_commit(commit):
 
 repo = Repository('../ignite')
 
-# commits = []
-# for commit in repo.traverse_commits(): 
-#   analyze_commit(commit)
-flatten_project(base_path)
+commits = []
+for commit in repo.traverse_commits(): 
+  analyze_commit(commit)
 
