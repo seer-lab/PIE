@@ -14,4 +14,5 @@ collection = db.ignite
 repo = Repository('../ignite')
 
 for commit in repo.traverse_commits():
-  collection.update_one({'_id': commit.hash}, { "$set": { 'file_list': analysis_tools.get_files_at_commit(commit.hash) } })
+  if collection.find({'_id': commit.hash}).count() > 0:
+    collection.update_one({'_id': commit.hash}, { "$set": { 'file_list': analysis_tools.get_files_at_commit(commit.hash) } })
