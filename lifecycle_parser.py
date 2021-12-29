@@ -81,23 +81,21 @@ class LifecycleParser:
         self.chart_color[file] = document['_id']
       return False, {'instance': file + ' modified'} 
     return f
-
-  def git_pattern_instance_timeline(self, pattern_instance, pattern):
+  
+  def git_pattern_instance_data(self, pattern_instance, pattern):
     file_names = pattern_instance.split('-')
     
     file_intervals = self.get_intervals([
       self.document_contains_pattern(pattern_instance, pattern),
     ] + [self.file_exists(file) for file in file_names] 
     + [self.file_modified(file) for file in file_names])
-
-    # for file in file_names: 
-    #   file_exists = self.get_intervals(self.file_exists(file), file+ ' Exists')
-    #   file_modified = self.get_intervals(self.file_modified(file), file+ ' Modified')
-    #   file_intervals += file_exists
-    #   file_intervals += file_modified
     for x in file_intervals: 
       if 'modification' not in x: 
-        x['modification'] = 'a'
+        x['modification'] = 'Pattern'
+    return file_intervals
+
+  def git_pattern_instance_chart(self, pattern_instance, pattern):
+    file_intervals = self.git_pattern_instance_data(pattern_instance, pattern)
     source = pd.DataFrame(file_intervals)
     return alt.Chart(source).mark_bar().encode(
         x='start',
