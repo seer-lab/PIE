@@ -1,7 +1,9 @@
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
 
 class PatternInstance {
-  final String name, pattern;
+  final String name;
+  final DesignPattern pattern;
   final List<String> files;
   final List<Interval> intervals;
 
@@ -10,7 +12,7 @@ class PatternInstance {
 
   factory PatternInstance.fromMap(
       String name, String pattern, List<dynamic> json) {
-    return PatternInstance(name, pattern,
+    return PatternInstance(name, stringToDP(pattern),
         json.map((e) => Interval.fromMap(e as Map<String, dynamic>)).toList());
   }
 }

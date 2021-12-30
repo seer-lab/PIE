@@ -7,25 +7,35 @@ class PatternCard extends StatelessWidget {
   const PatternCard(this.pattern, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  pattern.name.length > 35
-                      ? pattern.name.substring(0, 33) + '..'
-                      : pattern.name,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                DPChip(pattern.pattern)
-              ],
-            ))
-      ],
-    ));
+    return SizedBox(
+        width: 550,
+        height: 100,
+        child: Card(
+            child: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      pattern.name.length > 35
+                          ? pattern.name.substring(0, 33) + '..'
+                          : pattern.name,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    DPChip(pattern.pattern)
+                  ],
+                )),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Row(children: [
+                const Icon(Icons.file_copy, color: Colors.grey),
+                Text(pattern.files.length.toString())
+              ]),
+            )
+          ],
+        )));
   }
 }

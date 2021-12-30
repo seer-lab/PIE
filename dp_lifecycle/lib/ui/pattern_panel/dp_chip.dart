@@ -1,11 +1,15 @@
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:flutter/material.dart';
 
 class DPChip extends StatelessWidget {
-  final String designPattern;
-  final Map<String, MaterialColor> colourMapping = {
-    "Flyweight": Colors.amber,
-    "Strategy": Colors.blue,
-    "Bridge": Colors.green
+  final DesignPattern designPattern;
+  final Map<DesignPattern, MaterialColor> colourMapping = {
+    DesignPattern.flyweight: Colors.amber,
+    DesignPattern.strategy: Colors.blue,
+    DesignPattern.bridge: Colors.green,
+    DesignPattern.composite: Colors.red,
+    DesignPattern.decorator: Colors.indigo,
+    DesignPattern.na: Colors.grey
   };
 
   DPChip(this.designPattern, {Key? key}) : super(key: key);
@@ -21,8 +25,8 @@ class DPChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
         label: Text(
-          designPattern,
-          style: TextStyle(
+          designPattern.parseString(),
+          style: const TextStyle(
               color: Colors.white,
               shadows: [Shadow(color: Colors.black, offset: Offset(0, -1.0))]),
         ),
