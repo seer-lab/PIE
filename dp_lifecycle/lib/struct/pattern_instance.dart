@@ -15,4 +15,10 @@ class PatternInstance {
     return PatternInstance(name, stringToDP(pattern),
         json.map((e) => Interval.fromMap(e as Map<String, dynamic>)).toList());
   }
+
+  List<Interval> getPatternInterval() {
+    return intervals
+        .where((element) => element.modificationCommit == 'Pattern')
+        .toList();
+  }
 }

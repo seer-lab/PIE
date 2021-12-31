@@ -5,7 +5,7 @@ import 'package:get/state_manager.dart';
 
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
-  int previewStart = 0, previewEnd = 0;
+  RxInt previewStart = 0.obs, previewEnd = 0.obs;
   int previewMarker = 0;
 
   final LifecycleProvider _provider = LifecycleProvider();
@@ -14,11 +14,30 @@ class TimelineController extends GetxController {
     super.onInit();
     _provider.getCommits().then((value) {
       commits = value;
-      previewStart = 0;
-      previewMarker = 0;
-      previewEnd = commits.length;
+      previewEnd = commits.length.obs;
     }, onError: (err) {
       print(err);
     });
+  }
+
+  double normalizedPosition(int commitNumber) {
+    if (commitNumber < previewStart.value) return 0;
+    if (commitNumber > previewEnd.value) return 1;
+    return (commitNumber - previewStart.value) /
+        (previewEnd.value - previewStart.value);
+  }
+
+  int positionToCommit(double value) {
+    return (value * commits.length).round();
+  }
+
+  void updatePreviewEnd(int value) {
+    previewEnd = value.obs;
+    update();
+  }
+
+  void updatePreviewStart(int value) {
+    previewStart = value.obs;
+    update();
   }
 }

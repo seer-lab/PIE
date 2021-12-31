@@ -32,10 +32,11 @@ def lifecycle():
     pattern = request.args.get('pattern')
     if pattern == None: 
       pattern = 'Flyweight'
-    for pattern in parser.get_detected_patterns(pattern): 
-      lifecycles[pattern] = parser.git_pattern_instance_data(pattern, 'Flyweight')
+    for pattern_instance in parser.get_detected_patterns(pattern): 
+      lifecycles[pattern_instance] = parser.git_pattern_instance_data(pattern_instance, pattern)
     return lifecycles
     
 
 if __name__ == '__main__':
     app.run(debug=True)
+    get_documents()
