@@ -23,8 +23,9 @@ available_patterns = [
 def scan_patterns(files, base_path):
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
+  #print(output)
   if proc.returncode not in [0, 1]: 
-      return {}, {}
+      return None, {}
   values = {}
   pattern_locations = {}
 
@@ -62,3 +63,4 @@ def scan_patterns(files, base_path):
       if pattern in line: 
         values[pattern] = int(line.replace(pattern, ''))
   return values, pattern_locations
+

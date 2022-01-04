@@ -29,7 +29,7 @@ def get_sorted_documents(sort):
   for document in collection.find(): 
     files[document['_id']] = document 
 
-  repo = Repository(TARGET_PROJECT, order=sort, only_in_branch='master')
+  repo = Repository(TARGET_PROJECT, order=sort)
 
   documents = []
   for commit in repo.traverse_commits():

@@ -38,5 +38,6 @@ def lifecycle():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    print('Loading Documents')
     get_documents()
+    app.run(debug=True)
