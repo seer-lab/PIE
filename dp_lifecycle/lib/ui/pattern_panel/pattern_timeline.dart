@@ -6,13 +6,28 @@ import 'package:flutter/material.dart';
 
 class PatternTimeline extends GetView<TimelineController> {
   final PatternInstance pattern;
-  const PatternTimeline(this.pattern, {Key? key}) : super(key: key);
+  final bool isOpen;
+  const PatternTimeline(this.pattern, this.isOpen, {Key? key})
+      : super(key: key);
+
+  List<Widget> getFileTimelines() {
+    List<Widget> timelines = [];
+    if (!isOpen) return timelines;
+    pattern.files.forEach((element) {
+      timelines.add(TimelineInterval(pattern.getFileInterval(element)));
+    });
+    return timelines;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 50 + 50.0 * (isOpen ? pattern.files.length : 0),
       width: MediaQuery.of(context).size.width - 600,
-      child: Center(child: TimelineInterval(pattern.getPatternInterval())),
+      child: Center(
+          child: Column(
+              children: [TimelineInterval(pattern.getPatternInterval())]
+                ..addAll(getFileTimelines()))),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: const Color.fromARGB(255, 216, 216, 216),

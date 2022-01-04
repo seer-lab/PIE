@@ -21,4 +21,10 @@ class PatternInstance {
         .where((element) => element.modificationCommit == 'Pattern')
         .toList();
   }
+
+  List<Interval> getFileInterval(String file) {
+    return intervals
+        .where((element) => element.instance.split(' ')[0] == file)
+        .toList();
+  }
 }

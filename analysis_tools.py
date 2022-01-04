@@ -3,7 +3,7 @@ import os
 from pymongo import MongoClient
 import subprocess
 
-TARGET_PROJECT = '../ignite'
+TARGET_PROJECT = '../jdk8u_jdk'
 
 def get_files(path): 
   values = []
@@ -23,7 +23,7 @@ def get_sorted_documents(sort):
   client = MongoClient('localhost', 27017)
 
   db = client.thesis_data
-  collection = db.ignite
+  collection = db.awt
 
   files ={}
   for document in collection.find(): 
