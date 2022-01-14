@@ -8,28 +8,25 @@ import 'package:flutter/material.dart';
 class PatternPanel extends GetView<LifecycleController> {
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-        (state) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(children: [
-                Container(
-                  height: 100,
-                  child: Row(children: [PanelHeader(), Timeline()]),
-                ),
-                Container(
-                    height: 600,
-                    child: ListView.builder(
-                        itemCount: state!.length,
-                        itemBuilder: (context, index) =>
-                            PatternRow(state[index])))
-              ]),
-              height: 700,
-            ),
-        onEmpty: Container(),
-        onLoading: Container(
-            height: 700,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            )));
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(children: [
+        Container(
+          height: 100,
+          child: Row(children: [PanelHeader(), Timeline()]),
+        ),
+        controller.obx(
+            (state) => Container(
+                height: 600,
+                child: ListView.builder(
+                    itemCount: state!.length,
+                    itemBuilder: (context, index) => PatternRow(state[index]))),
+            onLoading: Container(
+              height: 600,
+              child: const Center(child: CircularProgressIndicator()),
+            ))
+      ]),
+      height: 700,
+    );
   }
 }

@@ -19,6 +19,7 @@ class LifecycleController extends GetxController
   }
 
   void onUpdatePattern(String pattern) {
+    change([], status: RxStatus.loading());
     _provider.getIntervals(pattern).then((value) {
       change(value, status: RxStatus.success());
     }, onError: (err) {

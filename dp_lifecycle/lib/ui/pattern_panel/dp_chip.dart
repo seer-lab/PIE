@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class DPChip extends StatelessWidget {
   final DesignPattern designPattern;
+  final bool isSelected;
   final Map<DesignPattern, MaterialColor> colourMapping = {
     DesignPattern.flyweight: Colors.amber,
     DesignPattern.strategy: Colors.blue,
@@ -12,7 +13,8 @@ class DPChip extends StatelessWidget {
     DesignPattern.na: Colors.grey
   };
 
-  DPChip(this.designPattern, {Key? key}) : super(key: key);
+  DPChip(this.designPattern, {Key? key, this.isSelected = false})
+      : super(key: key);
 
   Color _getColour() {
     if (colourMapping.containsKey(designPattern)) {
@@ -24,6 +26,8 @@ class DPChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
+        avatar:
+            isSelected ? const CircleAvatar(child: Icon(Icons.check)) : null,
         label: Text(
           designPattern.parseString(),
           style: const TextStyle(

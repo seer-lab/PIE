@@ -29,11 +29,14 @@ def serve_documents():
 def lifecycle():
     get_documents()
     lifecycles = {}
-    pattern = request.args.get('pattern')
-    if pattern == None: 
-      pattern = 'Flyweight'
-    for pattern_instance in parser.get_detected_patterns(pattern): 
-      lifecycles[pattern_instance] = parser.git_pattern_instance_data(pattern_instance, pattern)
+    patterns = request.args.get('pattern')
+    if patterns == None: 
+      patterns = ['Flyweight']
+    else: 
+      patterns = patterns.split(',')
+    for pattern in patterns: 
+      for pattern_instance in parser.get_detected_patterns(pattern): 
+        lifecycles[pattern_instance] = parser.git_pattern_instance_data(pattern_instance, pattern)
     return lifecycles
     
 

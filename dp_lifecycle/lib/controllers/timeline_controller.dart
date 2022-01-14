@@ -5,7 +5,7 @@ import 'package:get/state_manager.dart';
 
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
-  RxInt previewStart = 0.obs, previewEnd = 0.obs;
+  RxInt previewStart = 0.obs, previewEnd = 1.obs;
   int previewMarker = 0;
 
   final LifecycleProvider _provider = LifecycleProvider();
