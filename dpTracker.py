@@ -7,26 +7,13 @@ import analysis_tools
 client = MongoClient('localhost', 27017)
 
 db = client.thesis_data
-collection = db.ignite
+collection = db.awt
 
 processed_commits = set([str(id) for id in collection.find().distinct('_id')])
 
-base_path = '../ignite/'
-flatten_path = '../flatten_ignite/'
-gr = Git('../ignite')
-
-def clear_directory(): 
-  for x in os.listdir(flatten_path): 
-    os.remove(flatten_path + x)
-
-
-def flatten_project(path): 
-    files = os.listdir(path)
-    for x in files: 
-        if os.path.isdir(path + x): 
-            flatten_project(path + x + '/')
-        elif '.java' in x and not 'test' in x.lower(): 
-            copyfile(path + x, flatten_path + x)
+base_path = '../jdk8u_jdk/src/share/classes/java/awt/'
+subdir= 'src/share/classes/java/awt/'
+gr = Git('../jdk8u_jdk/')
 
 def get_files(path): 
   values = []
@@ -36,10 +23,19 @@ def get_files(path):
           values.append(os.path.join(p, file))
   return values
 
+def is_subdirectory_modified(modified_files): 
+  for x in modified_files: 
+    if x.new_path != None and subdir in x.new_path: 
+      return True
+  return False
+
 def analyze_commit(commit): 
   if commit.hash in processed_commits: 
     return 
 
+  # if not is_subdirectory_modified(commit.modified_files):
+  #   print('Skipping', commit.hash)
+  #   return 
   gr.checkout(commit.hash)
 
   files = get_files(base_path)
@@ -52,22 +48,22 @@ def analyze_commit(commit):
     'date': commit.committer_date.strftime("%Y-%m-%d"),
     'lines': commit.lines,
     'files': commit.files,
-    'file_list': analysis_tools.get_files_at_commit(commit.hash),
+    'file_list': [str(x).split('/')[-1].replace('.java', '') for x in files],
     'modified_files': [x.new_path for x in commit.modified_files],
     'summary': patterns, 
     'pattern_locations': locations
   }
   collection.insert_one(json)
-
   if patterns != None: 
     #print(json)
     print('Processed', commit.hash)
   else: 
     print('Failed to run Pinot on hash:', commit.hash)
 
-repo = Repository('../ignite')
+repo = Repository('../jdk8u_jdk/', order='topo-order')
 
 commits = []
 for commit in repo.traverse_commits(): 
   analyze_commit(commit)
-
+# commit = gr.get_commit('6e45e10b03bafdc125c46a4864ba802c24d6bc78')
+# analyze_commit(commit)
