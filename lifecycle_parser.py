@@ -40,6 +40,10 @@ class LifecycleParser:
           output.update({'start': start[f], 'end': commit_number -1})
           intervals.append(output)
           start[f] = -1
+        if commit_number == len(self.documents) - 1: 
+          if start[f] != -1: 
+            output.update({'start': start[f], 'end': commit_number -1})
+            intervals.append(output)
     return intervals
 
   def document_contains_pattern(self, pattern_name, pattern):
@@ -84,7 +88,6 @@ class LifecycleParser:
   
   def git_pattern_instance_data(self, pattern_instance, pattern):
     file_names = pattern_instance.split('-')
-    
     file_intervals = self.get_intervals([
       self.document_contains_pattern(pattern_instance, pattern),
     ] + [self.file_exists(file) for file in file_names] 
