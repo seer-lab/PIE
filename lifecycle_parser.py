@@ -28,6 +28,7 @@ class LifecycleParser:
   def get_intervals(self, fs):
     intervals = []
     start = {}
+    modification= {}
     for x in fs: 
       start[x] = -1
     for document, commit_number in zip(self.documents, range(len(self.documents))): 
@@ -36,6 +37,12 @@ class LifecycleParser:
         if exists:
           if start[f] == -1: 
             start[f] = commit_number
+            modification[f] = output['modification']
+          if modification[f] != output['modification'] and start!= -1:
+            output.update({'start': start[f], 'end': commit_number -1})
+            start[f] = commit_number
+            intervals.append(output)
+            modification[f] = output['modification']
         elif start[f] != -1: 
           output.update({'start': start[f], 'end': commit_number -1})
           intervals.append(output)
@@ -51,8 +58,8 @@ class LifecycleParser:
       if pattern in document['pattern_locations']: 
         for instance in document['pattern_locations'][pattern]: 
           if pattern_name == analysis_tools.file_locations_to_name(instance):
-            return True, {'instance': pattern_name + ' Pattern'}
-      return False, {'instance': pattern_name + ' Pattern'}
+            return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern'}
+      return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern'}
     return f
 
   def pattern_timeline(self, pattern): 
@@ -90,8 +97,8 @@ class LifecycleParser:
     file_names = pattern_instance.split('-')
     file_intervals = self.get_intervals([
       self.document_contains_pattern(pattern_instance, pattern),
-    ] + [self.file_exists(file) for file in file_names] 
-    + [self.file_modified(file) for file in file_names])
+    ] + [self.file_modified(file) for file in file_names] 
+    + [self.file_exists(file) for file in file_names])
     for x in file_intervals: 
       if 'modification' not in x: 
         x['modification'] = 'Pattern'

@@ -13,6 +13,24 @@ class _TimelineMarker extends State<TimelineMarker> {
     return (MediaQuery.of(context).size.width - 650) * position - 25;
   }
 
+  Widget _previewMarker() {
+    return Container(
+      child: Column(children: [
+        Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+              color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
+        ),
+        Container(
+          height: 30,
+          width: 2,
+          color: Colors.red,
+        )
+      ]),
+    );
+  }
+
   Widget _marker(int commitNumber) {
     return Container(
         width: 50,
@@ -61,13 +79,33 @@ class _TimelineMarker extends State<TimelineMarker> {
               alignment: Alignment.topCenter,
               children: [
                 Positioned(
-                    child: Container(
-                      height: 30,
-                      width: MediaQuery.of(context).size.width - 650,
-                      color: const Color.fromARGB(255, 71, 71, 71),
+                    child: Listener(
+                      child: Container(
+                        height: 30,
+                        width: MediaQuery.of(context).size.width - 650,
+                        color: const Color.fromARGB(255, 71, 71, 71),
+                      ),
+                      onPointerUp: (e) {
+                        double percent = e.localPosition.dx /
+                            (MediaQuery.of(context).size.width - 650);
+                        int commit =
+                            ((c.previewEnd.value - c.previewStart.value) *
+                                        percent)
+                                    .round() +
+                                c.previewStart.value;
+                        print(commit);
+                        c.updatePreviewMarker(commit);
+                      },
                     ),
                     top: 0,
-                    left: 25)
+                    left: 25),
+                Positioned(
+                  child: _previewMarker(),
+                  left: interpolateScreenPos(
+                          c.normalizedPosition(c.previewMarker.value),
+                          context) +
+                      40,
+                )
               ]..addAll(_generateMarkers(context, c)))),
         ));
   }

@@ -12,12 +12,12 @@ class PatternPanel extends GetView<LifecycleController> {
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(children: [
         Container(
-          height: 100,
+          height: 60,
           child: Row(children: [PanelHeader(), Timeline()]),
         ),
         controller.obx(
             (state) => Container(
-                height: 600,
+                height: MediaQuery.of(context).size.height / 2 - 120,
                 child: ListView.builder(
                     itemCount: state!.length,
                     itemBuilder: (context, index) => PatternRow(state[index]))),
@@ -26,7 +26,7 @@ class PatternPanel extends GetView<LifecycleController> {
               child: const Center(child: CircularProgressIndicator()),
             ))
       ]),
-      height: 700,
+      height: MediaQuery.of(context).size.height / 2 - 60,
     );
   }
 }
