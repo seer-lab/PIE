@@ -6,7 +6,7 @@ import 'package:get/state_manager.dart';
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
   RxInt previewStart = 0.obs, previewEnd = 1.obs;
-  int previewMarker = 0;
+  RxInt previewMarker = 0.obs;
 
   final LifecycleProvider _provider = LifecycleProvider();
   @override
@@ -38,6 +38,11 @@ class TimelineController extends GetxController {
 
   void updatePreviewStart(int value) {
     previewStart = value.obs;
+    update();
+  }
+
+  void updatePreviewMarker(int value) {
+    previewMarker = value.obs;
     update();
   }
 }

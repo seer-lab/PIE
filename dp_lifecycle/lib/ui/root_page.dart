@@ -10,7 +10,7 @@ class RootPage extends StatelessWidget {
         children: [
           Container(
             child: const Center(child: Text('Text Editor')),
-            height: 300,
+            height: MediaQuery.of(context).size.height / 2,
           ),
           PatternPanel()
         ],
