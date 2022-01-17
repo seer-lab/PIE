@@ -1,18 +1,21 @@
+import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/struct/design_pattern.dart';
+import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
 
 class PatternInstance {
   final String name;
-  final DesignPattern pattern;
+  DesignPattern pattern = DesignPattern.na;
   final List<String> files;
   final List<Interval> intervals;
+  FileHistory? fileHistory;
 
-  PatternInstance(this.name, this.pattern, this.intervals)
-      : files = name.split('-');
+  PatternInstance(this.name, this.intervals) : files = name.split('-') {
+    pattern = getDesignPattern();
+  }
 
-  factory PatternInstance.fromMap(
-      String name, String pattern, List<dynamic> json) {
-    return PatternInstance(name, stringToDP(pattern),
+  factory PatternInstance.fromMap(String name, List<dynamic> json) {
+    return PatternInstance(name,
         json.map((e) => Interval.fromMap(e as Map<String, dynamic>)).toList());
   }
 
@@ -26,5 +29,42 @@ class PatternInstance {
     return intervals
         .where((element) => element.instance.split(' ')[0] == file)
         .toList();
+  }
+
+  DesignPattern getDesignPattern() {
+    DesignPattern ans = DesignPattern.na;
+    intervals.forEach((element) {
+      if (element.modificationCommit == 'Pattern') {
+        ans = stringToDP(element.data['pattern']);
+        return;
+      }
+    });
+    return ans;
+  }
+
+  Map<String, String> findCommitToFiles(int commit) {
+    Map<String, String> ans = {};
+    intervals.forEach((element) {
+      if (element.end > commit &&
+          element.start < commit &&
+          !element.isPattern) {
+        ans[element.fileName] = element.modificationCommit;
+      }
+    });
+    return ans;
+  }
+
+  List<FileEditor>? getFilesAtCommit(int commit) {
+    if (fileHistory == null) return null;
+    List<FileEditor> ans = [];
+
+    Map<String, String> targets = findCommitToFiles(commit);
+    targets.entries.forEach((element) {
+      String? content = fileHistory!.getFile(element.value, element.key);
+      if (content != null) {
+        ans.add(FileEditor(name: element.key, language: 'java', code: content));
+      }
+    });
+    return ans;
   }
 }

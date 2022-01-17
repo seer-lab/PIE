@@ -22,7 +22,7 @@ class PatternPanel extends GetView<LifecycleController> {
                     itemCount: state!.length,
                     itemBuilder: (context, index) => PatternRow(state[index]))),
             onLoading: Container(
-              height: 600,
+              height: MediaQuery.of(context).size.height / 2 - 120,
               child: const Center(child: CircularProgressIndicator()),
             ))
       ]),

@@ -58,8 +58,8 @@ class LifecycleParser:
       if pattern in document['pattern_locations']: 
         for instance in document['pattern_locations'][pattern]: 
           if pattern_name == analysis_tools.file_locations_to_name(instance):
-            return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern'}
-      return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern'}
+            return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
+      return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
     return f
 
   def pattern_timeline(self, pattern): 
@@ -99,9 +99,6 @@ class LifecycleParser:
       self.document_contains_pattern(pattern_instance, pattern),
     ] + [self.file_modified(file) for file in file_names] 
     + [self.file_exists(file) for file in file_names])
-    for x in file_intervals: 
-      if 'modification' not in x: 
-        x['modification'] = 'Pattern'
     return file_intervals
 
   def git_pattern_instance_chart(self, pattern_instance, pattern):
