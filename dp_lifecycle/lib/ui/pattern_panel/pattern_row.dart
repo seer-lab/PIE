@@ -21,6 +21,7 @@ class _PatternRow extends State<PatternRow> {
   }
 
   void _selectRow() async {
+    fileController.updateSelectedPattern(null);
     patternInstance.fileHistory ??=
         await fileController.getFileHistory(patternInstance);
     fileController.updateSelectedPattern(patternInstance);

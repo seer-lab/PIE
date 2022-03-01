@@ -10,6 +10,8 @@ class DPChip extends StatelessWidget {
     DesignPattern.bridge: Colors.green,
     DesignPattern.composite: Colors.red,
     DesignPattern.decorator: Colors.indigo,
+    DesignPattern.mediator: Colors.purple,
+    DesignPattern.proxy: Colors.orange,
     DesignPattern.na: Colors.grey
   };
 

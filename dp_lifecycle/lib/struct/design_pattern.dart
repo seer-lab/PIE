@@ -5,6 +5,8 @@ enum DesignPattern {
   decorator,
   composite,
   facade,
+  proxy,
+  mediator,
   na
 }
 
@@ -22,7 +24,9 @@ DesignPattern stringToDP(String value) {
     "Bridge": DesignPattern.bridge,
     "Decorator": DesignPattern.decorator,
     "Composite": DesignPattern.composite,
-    "Facade": DesignPattern.facade
+    "Facade": DesignPattern.facade,
+    "Proxy": DesignPattern.proxy,
+    "Mediator": DesignPattern.mediator
   };
   if (mapping.containsKey(value)) {
     return mapping[value]!;

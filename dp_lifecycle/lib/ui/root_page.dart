@@ -1,4 +1,5 @@
 import 'package:dp_lifecycle/ui/file_view/file_view.dart';
+import 'package:dp_lifecycle/ui/file_view/info_panel.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/pattern_panel.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +15,10 @@ class _RootPage extends State<RootPage> {
       body: Column(
         children: [
           Container(
-            child: FileView(),
+            child: Row(children: [FileView(), InfoPanel()]),
             height: MediaQuery.of(context).size.height / 2,
           ),
-          PatternPanel()
+          SingleChildScrollView(child: PatternPanel())
         ],
       ),
     );

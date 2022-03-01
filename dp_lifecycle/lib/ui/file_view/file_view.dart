@@ -15,14 +15,16 @@ class _FileView extends State<FileView> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : SingleChildScrollView(
-                child: CodeEditor(
-                edit: false,
-                model: EditorModel(
-                    files: c.getFiles(),
-                    styleOptions: EditorModelStyleOptions(
-                        heightOfContainer:
-                            MediaQuery.of(context).size.height / 2 - 100)),
-              )));
+            : SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: SingleChildScrollView(
+                    child: CodeEditor(
+                  edit: false,
+                  model: EditorModel(
+                      files: c.getFiles(),
+                      styleOptions: EditorModelStyleOptions(
+                          heightOfContainer:
+                              MediaQuery.of(context).size.height / 2 - 100)),
+                ))));
   }
 }

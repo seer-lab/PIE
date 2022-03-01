@@ -5,6 +5,7 @@ import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:dp_lifecycle/struct/interval.dart';
 
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
@@ -53,6 +54,21 @@ class TimelineController extends GetxController {
     return ans;
   }
 
+  String getCommitInfo() {
+    if (selectedPattern == null) {
+      return "No available information for this commit.";
+    }
+    if (commits[previewMarker.value]
+        .pinotData
+        .pinotData
+        .containsKey(selectedPattern!.value.name)) {
+      return commits[previewMarker.value]
+          .pinotData
+          .pinotData[selectedPattern!.value.name]!;
+    }
+    return "No Pinot data exists.";
+  }
+
   int positionToCommit(double value) {
     return (value * commits.length).round();
   }
@@ -72,8 +88,11 @@ class TimelineController extends GetxController {
     update();
   }
 
-  void updateSelectedPattern(PatternInstance instance) {
-    selectedPattern = Rx<PatternInstance>(instance);
+  void updateSelectedPattern(PatternInstance? instance) {
+    if (instance == null)
+      selectedPattern = null;
+    else
+      selectedPattern = Rx<PatternInstance>(instance);
     update();
   }
 }

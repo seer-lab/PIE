@@ -67,4 +67,16 @@ class PatternInstance {
     });
     return ans;
   }
+
+  Interval? getIntervalAtCommit(int commit) {
+    Interval? ans;
+    intervals.forEach((element) {
+      if (element.end > commit &&
+          element.start < commit &&
+          !element.isPattern) {
+        ans = element;
+      }
+    });
+    return ans;
+  }
 }

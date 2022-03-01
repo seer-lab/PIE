@@ -57,15 +57,35 @@ class _PanelHeader extends State<PanelHeader> {
             Row(
               children: [
                 chipWrapper(DesignPattern.bridge),
+                const SizedBox(
+                  width: 10,
+                ),
                 chipWrapper(DesignPattern.composite),
-                chipWrapper(DesignPattern.facade)
+                const SizedBox(
+                  width: 10,
+                ),
+                chipWrapper(DesignPattern.facade),
+                const SizedBox(
+                  width: 10,
+                ),
+                chipWrapper(DesignPattern.proxy)
               ],
             ),
             Row(
               children: [
                 chipWrapper(DesignPattern.flyweight),
+                const SizedBox(
+                  width: 10,
+                ),
                 chipWrapper(DesignPattern.strategy),
+                const SizedBox(
+                  width: 10,
+                ),
                 chipWrapper(DesignPattern.decorator),
+                const SizedBox(
+                  width: 10,
+                ),
+                chipWrapper(DesignPattern.mediator)
               ],
             )
           ],
