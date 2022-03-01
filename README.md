@@ -33,13 +33,13 @@ base_path = '../jdk8u_jdk/src/share/classes/java/awt/'
 subdir= 'src/share/classes/java/awt/'
 gr = Git('../jdk8u_jdk/')
 ```
-You will need to do the same at the begining of analysis_tools.py
+You will need to do the same at the begining of `analysis_tools.py`
 
 Run dpTracker: 
 ```
 python3 dpTracker.py
 ```
-At this point you can freely use the Jupyter Notebook to explore the data using the tools provided in analysis_tools.py to express the patterns into timelines. 
+At this point you can freely use the Jupyter Notebook to explore the data using the tools provided in `analysis_tools.py` to express the patterns into timelines. 
 
 After analysis run the flask server: 
 
@@ -54,7 +54,7 @@ Test the server by looking for instances of a particular design pattern:
 curl http://127.0.0.1:5000/lifecycle\?pattern\=Strategy | jq .
 ```
 
-In the dp_lifecycle install dependencies and run the program: 
+In the dp_lifecycle folder install dependencies and run the program: 
 ```
 flutter pub get 
 flutter run -d [device name]
@@ -65,7 +65,7 @@ flutter run -d [device name]
 Note: Pinot may not work correctly out of the box. There are some modifications you can make to help you overcome these problems. 
 
 Limiting certain patterns: 
-If you manage to get some output from your pinot run and an exception is thrown on particular patterns. You can disable the pattern by commenting them out in control.cpp past line `6435`: 
+If you manage to get some output from your pinot run and an exception is thrown on particular patterns. You can disable the pattern by commenting them out in `control.cpp` past line `6435`: 
 
 ```
   Coutput << "--------- Original GoF Patterns ----------" << endl << endl;
@@ -87,7 +87,7 @@ If you manage to get some output from your pinot run and an exception is thrown 
 
 Leniant output: 
 If you're having issues outputting anything from Pinot try the following: 
-In error.h: 
+In `error.h`: 
 ```
     ErrorString& operator<<(ostream&(*f)(ostream&))
     {

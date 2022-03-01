@@ -27,7 +27,9 @@ class PatternInstance {
 
   List<Interval> getFileInterval(String file) {
     return intervals
-        .where((element) => element.instance.split(' ')[0] == file)
+        .where((element) =>
+            element.instance.split(' ')[0] == file &&
+            element.modificationCommit != 'Pattern')
         .toList();
   }
 

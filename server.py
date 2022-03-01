@@ -51,6 +51,7 @@ def related_files():
   for instance in lifecycle: 
     if instance['modification'] != 'Pattern': 
       commit = instance['modification']
+      print(commit)
       if commit not in data: 
         data[commit] = {}
       filename = instance['instance'].split(' ')[0]

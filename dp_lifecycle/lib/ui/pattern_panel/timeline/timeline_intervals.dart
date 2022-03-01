@@ -1,4 +1,5 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:dp_lifecycle/struct/interval.dart' as g;
@@ -6,8 +7,21 @@ import 'dart:math' as math;
 
 class TimelineInterval extends GetView<TimelineController> {
   final List<g.Interval> intervals;
-  Map<String, Color> colourMap = {'Pattern': Colors.blue};
-  TimelineInterval(this.intervals, {Key? key}) : super(key: key);
+  final DesignPattern designPattern;
+  Map<String, Color> colourMap = {};
+  List<Color> availableColours = [];
+  int colourIndex = 0;
+  TimelineInterval(this.designPattern, this.intervals, {Key? key})
+      : super(key: key) {
+    colourMap['Pattern'] = designPattern.toColour();
+
+    for (int i = 0; i < 5; i++) {
+      availableColours.add(HSLColor.fromColor(designPattern.toColour())
+          .withLightness(0.3 + 0.1 * i)
+          .withSaturation(0.3 + 0.1 * i)
+          .toColor());
+    }
+  }
 
   double interpolateScreenPos(double position, BuildContext context) {
     if (position < 0) return 0;
@@ -19,8 +33,11 @@ class TimelineInterval extends GetView<TimelineController> {
     if (colourMap.containsKey(interval.modificationCommit)) {
       return colourMap[interval.modificationCommit]!;
     }
-    colourMap[interval.modificationCommit] =
-        Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    colourMap[interval.modificationCommit] = availableColours[colourIndex];
+    colourIndex++;
+    if (colourIndex >= availableColours.length) {
+      colourIndex = 0;
+    }
     return colourMap[interval.modificationCommit]!;
   }
 
@@ -32,7 +49,8 @@ class TimelineInterval extends GetView<TimelineController> {
                         c.normalizedPosition(e.start), context) +
                     25,
                 child: Container(
-                    height: 50,
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    height: 40,
                     color: _getColor(e),
                     width: (interpolateScreenPos(
                         controller.normalizedPosition(e.end) -

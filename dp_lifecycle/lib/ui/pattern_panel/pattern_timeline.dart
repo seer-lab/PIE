@@ -14,7 +14,8 @@ class PatternTimeline extends GetView<TimelineController> {
     List<Widget> timelines = [];
     if (!isOpen) return timelines;
     pattern.files.forEach((element) {
-      timelines.add(TimelineInterval(pattern.getFileInterval(element)));
+      timelines.add(
+          TimelineInterval(pattern.pattern, pattern.getFileInterval(element)));
     });
     return timelines;
   }
@@ -26,8 +27,9 @@ class PatternTimeline extends GetView<TimelineController> {
       width: MediaQuery.of(context).size.width - 600,
       child: Center(
           child: Column(
-              children: [TimelineInterval(pattern.getPatternInterval())]
-                ..addAll(getFileTimelines()))),
+              children: [
+        TimelineInterval(pattern.pattern, pattern.getPatternInterval())
+      ]..addAll(getFileTimelines()))),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: const Color.fromARGB(255, 216, 216, 216),
