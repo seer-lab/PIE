@@ -20,23 +20,27 @@ class _PatternRow extends State<PatternRow> {
     patternInstance = widget.pattern;
   }
 
-  void _selectRow() async {
+  void onSelectRow() async {
+    if (fileController.isPerformingGitOperation) {
+      return;
+    }
     fileController.updateSelectedPattern(null);
     patternInstance.fileHistory ??=
         await fileController.getFileHistory(patternInstance);
     fileController.updateSelectedPattern(patternInstance);
   }
 
+  void onToggleDropdown() {
+    setState(() {
+      isOpen = !isOpen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Listener(
-        onPointerUp: (e) => setState(() => isOpen = !isOpen),
-        child: PatternCard(patternInstance, isOpen),
-      ),
-      Listener(
-          onPointerUp: (e) => _selectRow(),
-          child: PatternTimeline(patternInstance, isOpen))
+      PatternCard(patternInstance, isOpen, onToggleDropdown, onSelectRow),
+      PatternTimeline(patternInstance, isOpen)
     ]);
   }
 }

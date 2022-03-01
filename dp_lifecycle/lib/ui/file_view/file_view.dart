@@ -12,9 +12,11 @@ class _FileView extends State<FileView> {
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
         builder: (c) => c.selectedPattern == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ))
             : SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: SingleChildScrollView(

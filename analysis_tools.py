@@ -54,11 +54,25 @@ def get_commit_data(commit):
   return gr.get_commit(commit)
 
 def get_file(commit, filename): 
-  gr = Git(TARGET_PROJECT)
-  gr.checkout(commit)
-  file_path = find_file(TARGET_PROJECT, filename)
-  content = ""
-  if file_path != None: 
-    with open(file_path, 'r') as f: 
-      content = f.read()
-  return content
+  data = get_commit_data(commit)
+  if data == None or filename == None: 
+    return 'Failed to fetch modification for commit ' + commit
+  for file in data.modified_files: 
+    if file.new_path == None:
+      continue
+    if filename + '.java' in file.new_path:
+      if file.diff == None or file.source_code == None: 
+        return ''
+      source = file.source_code.split('\n')
+      for key, value in file.diff_parsed['added']: 
+        source[key-1] = '+ ' + source[key-1]
+      for key, value in file.diff_parsed['deleted']: 
+        source.insert(key-1, '- ' + value)
+      return '\n'.join(source)
+  return ''
+  # file_path = find_file(TARGET_PROJECT, filename)
+  # content = ""
+  # if file_path != None: 
+  #   with open(file_path, 'r') as f: 
+  #     content = f.read()
+  # return content

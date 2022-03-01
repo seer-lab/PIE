@@ -33,9 +33,8 @@ def analyze_commit(commit):
   if commit.hash in processed_commits: 
     return 
 
-  # if not is_subdirectory_modified(commit.modified_files):
-  #   print('Skipping', commit.hash)
-  #   return 
+  if not is_subdirectory_modified(commit.modified_files):
+    return 
   gr.checkout(commit.hash)
 
   files = get_files(base_path)
@@ -55,7 +54,7 @@ def analyze_commit(commit):
   }
   collection.insert_one(json)
   if patterns != None: 
-    #print(json)
+    # print(json)
     print('Processed', commit.hash)
   else: 
     print('Failed to run Pinot on hash:', commit.hash)

@@ -40,6 +40,9 @@ pattern_headers={
   'Factory Method pattern.': 'Abstract Factory',
 }
 
+details = 'details'
+path = 'path'
+
 def scan_patterns(files, base_path):
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
@@ -56,6 +59,7 @@ def scan_patterns(files, base_path):
   summary = data[seperator:]
 
   current_pattern = ''
+  current_details = ''
   current_files = []
   for line in locations: 
     if line.strip() in pattern_headers:
@@ -63,19 +67,23 @@ def scan_patterns(files, base_path):
       if current_pattern in pattern_set: 
         if current_pattern not in pattern_locations: 
           pattern_locations[current_pattern] = []
-        pattern_locations[current_pattern].append(current_files)
+        pattern_locations[current_pattern].append({details: current_details, path: current_files})
         current_files = []
+        current_details = ''
 
       current_pattern = pattern_headers[line.strip()]
 
     elif base_path in line: 
       current_files.append(line.replace('File Location: ', '').replace('File location:', '').replace('FileLocation:', '').replace(',', '').strip())
+    elif len(line.strip()) > 0 and line[:3] != '---' and current_pattern != '': 
+      current_details+= line.strip() + '\n'
 
   if current_pattern in pattern_set: 
     if current_pattern not in pattern_locations: 
       pattern_locations[current_pattern] = []
-    pattern_locations[current_pattern].append(current_files)
+    pattern_locations[current_pattern].append({details: current_details, path: current_files})
     current_files = []
+    current_details = ''
 
   for line in summary[:-10]: 
     for pattern in available_patterns: 

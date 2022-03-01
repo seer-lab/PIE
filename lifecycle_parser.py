@@ -21,7 +21,7 @@ class LifecycleParser:
       for x in self.documents: 
           if title in x['pattern_locations']: 
               for instance in x['pattern_locations'][title]: 
-                  instance_name = analysis_tools.file_locations_to_name(instance)
+                  instance_name = analysis_tools.file_locations_to_name(instance['path'])
                   pattern_instances.add(instance_name)
     return pattern_instances
 
@@ -57,8 +57,8 @@ class LifecycleParser:
     def f(document):
       if pattern in document['pattern_locations']: 
         for instance in document['pattern_locations'][pattern]: 
-          if pattern_name == analysis_tools.file_locations_to_name(instance):
-            return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
+          if pattern_name == analysis_tools.file_locations_to_name(instance['path']):
+            return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern }
       return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
     return f
 
@@ -110,3 +110,12 @@ class LifecycleParser:
         y='instance',  
         color='modification'
     ).properties(title=pattern_instance)
+
+  def chart(self, intervals):
+    source = pd.DataFrame(intervals)
+    return alt.Chart(source).mark_bar().encode(
+        x='start',
+        x2='end',
+        y='instance',  
+        color='modification'
+    ).properties(title='Intervals')

@@ -41,6 +41,7 @@ def lifecycle():
 
 @app.route('/related_files')
 def related_files():
+  get_documents()
   pattern = request.args.get('pattern')
   pattern_instance = request.args.get('pattern_instance')
   if pattern_instance == None or pattern == None: 
@@ -53,7 +54,8 @@ def related_files():
       if commit not in data: 
         data[commit] = {}
       filename = instance['instance'].split(' ')[0]
-      data[commit][filename] = get_file(commit, filename)
+      if filename not in data[commit]: 
+        data[commit][filename] = get_file(commit, filename)
   return data 
   
 if __name__ == '__main__':
