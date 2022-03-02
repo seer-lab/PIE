@@ -60,29 +60,29 @@ def scan_patterns(files, base_path):
 
   current_pattern = ''
   current_details = ''
-  current_files = []
+  current_files = set()
   for line in locations: 
     if line.strip() in pattern_headers:
       
       if current_pattern in pattern_set: 
         if current_pattern not in pattern_locations: 
           pattern_locations[current_pattern] = []
-        pattern_locations[current_pattern].append({details: current_details, path: current_files})
-        current_files = []
+        pattern_locations[current_pattern].append({details: current_details, path: list(current_files)})
+        current_files = set()
         current_details = ''
 
       current_pattern = pattern_headers[line.strip()]
 
     elif base_path in line: 
-      current_files.append(line.replace('File Location: ', '').replace('File location:', '').replace('FileLocation:', '').replace(',', '').strip())
+      current_files.add(line.replace('File Location: ', '').replace('File location:', '').replace('FileLocation:', '').replace(',', '').strip())
     elif len(line.strip()) > 0 and line[:3] != '---' and current_pattern != '': 
       current_details+= line.strip() + '\n'
 
   if current_pattern in pattern_set: 
     if current_pattern not in pattern_locations: 
       pattern_locations[current_pattern] = []
-    pattern_locations[current_pattern].append({details: current_details, path: current_files})
-    current_files = []
+    pattern_locations[current_pattern].append({details: current_details, path: list(current_files)})
+    current_files = set()
     current_details = ''
 
   for line in summary[:-10]: 

@@ -9,13 +9,17 @@ class PinotData {
     json.forEach((key, value) {
       (value as List<dynamic>).forEach((e) {
         if (e.containsKey('details')) {
-          String name = (e['path'].cast<String>() as List<String>)
+          List<String> names = (e['path'].cast<String>() as List<String>);
+          names.sort();
+          String name = names
               .map(
                 (e) => e.split('/').last.replaceAll('.java', ''),
               )
               .toList()
               .join('-');
+
           data[name] = e['details'];
+          print(name);
         }
       });
     });

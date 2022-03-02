@@ -24,7 +24,7 @@ def get_file_names(file_list):
   return set(str(x).split('/')[-1].replace('.java', '') for x in file_list)
 
 def file_locations_to_name(file_locations): 
-  return '-'.join([path.split('/')[-1] for path in file_locations]).replace('.java','')
+  return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','')
 
 def get_sorted_documents(sort): 
   client = MongoClient('localhost', 27017)

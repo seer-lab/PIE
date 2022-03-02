@@ -8,7 +8,6 @@ class Interval {
       this.pinotData, this.data);
 
   factory Interval.fromMap(Map<String, dynamic> json) {
-    print(json);
     return Interval(json['start'], json['end'], json['instance'],
         json['modification'], json['pinot_data'], json);
   }

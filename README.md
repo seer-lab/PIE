@@ -103,5 +103,69 @@ remove the assertion so you're left with:
   }
 ```
 
+## Deeper Pinot Search
+
+There are some files which pinot leaves out of it's final "File Location" output which may prove to be useful for analysis. As such the following edits have been made to `control.cpp` to account for these files. 
+
+Around line `2104`
+```
+Coutput << endl;
+sym = hidden_types.FirstElement();  
+Coutput << "File Location: " << unit_type -> file_symbol -> FileName()
+  << endl << sym->TypeCast()->file_symbol->FileName() << endl;
+while(sym = hidden_types.NextElement()){
+  Coutput << sym->TypeCast()->file_symbol->FileName() << endl; 
+}
+sym = unit_type->call_dependents->FirstElement(); 
+do{
+  if (strcmp(sym -> TypeCast()-> Utf8Name(), unit_type -> Utf8Name()) != 0){
+    Coutput << sym->TypeCast()->file_symbol->FileName() << endl; 
+  }
+}while(sym = unit_type->call_dependents->NextElement());
+Coutput << endl; 
+```
+
+Around line `1967`
+```
+Coutput << "File Location: " << unit_type -> file_symbol -> FileName() << endl 
+<< type->file_symbol->FileName() << endl;	
+sym = real_set.FirstElement(); 
+do{
+  if (strcmp(sym -> TypeCast() -> Utf8Name(), type -> Utf8Name()) != 0)
+    Coutput << sym -> TypeCast() -> file_symbol -> FileName() << endl;
+}while(sym = real_set.NextElement());
+Coutput << endl; 
+```
+
+Around line `1319`
+```
+Coutput << endl;
+
+sym = colleagues.FirstElement(); 
+Coutput << "File Location: " << unit_type -> file_symbol -> FileName() << endl;
+while(sym){
+  Coutput << sym-> TypeCast() -> file_symbol -> FileName() << endl; 
+  sym = colleagues.NextElement(); 
+}
+Coutput << endl; 
+```
+
+Around line `1343`
+```
+Coutput << endl;
+
+sym = observers.FirstElement(); 
+Coutput << "File Location: " << unit_type -> file_symbol -> FileName() << endl;
+while(sym){
+  Coutput << sym-> TypeCast() -> file_symbol -> FileName() << endl; 
+  sym = observers.NextElement(); 
+}
+Coutput << endl; 
+observers.SetEmpty();
+```
+
+
+
+
 
 
