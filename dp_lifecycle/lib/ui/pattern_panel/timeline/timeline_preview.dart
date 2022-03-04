@@ -64,7 +64,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                       child: Container(
                         width: 25,
                         height: 20,
-                        color: Colors.blue,
+                        color: Colors.blue.shade600,
                       )),
                 )),
             Positioned(
@@ -107,7 +107,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                         child: Container(
                           height: 20,
                           width: range,
-                          color: Colors.yellow,
+                          color: Colors.amber,
                         )))),
             Positioned(
                 left: position + range,
@@ -143,7 +143,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                       child: Container(
                         width: 25,
                         height: 20,
-                        color: Colors.blue,
+                        color: Colors.blue.shade600,
                       )),
                 )),
           ],

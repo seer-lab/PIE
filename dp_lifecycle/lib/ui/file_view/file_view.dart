@@ -26,7 +26,7 @@ class _FileView extends State<FileView> {
                       files: c.getFiles(),
                       styleOptions: EditorModelStyleOptions(
                           heightOfContainer:
-                              MediaQuery.of(context).size.height / 2 - 100)),
+                              MediaQuery.of(context).size.height / 2)),
                 ))));
   }
 }

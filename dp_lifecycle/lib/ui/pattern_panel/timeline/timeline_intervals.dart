@@ -17,8 +17,8 @@ class TimelineInterval extends GetView<TimelineController> {
 
     for (int i = 0; i < 5; i++) {
       availableColours.add(HSLColor.fromColor(designPattern.toColour())
-          .withLightness(0.3 + 0.1 * i)
-          .withSaturation(0.3 + 0.1 * i)
+          .withLightness(0.4 + 0.1 * i)
+          .withSaturation(0.4 + 0.1 * i)
           .toColor());
     }
   }

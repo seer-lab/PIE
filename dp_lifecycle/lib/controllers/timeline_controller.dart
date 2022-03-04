@@ -54,7 +54,7 @@ class TimelineController extends GetxController {
     return ans;
   }
 
-  String getCommitInfo() {
+  String getPinotInfo() {
     if (selectedPattern == null) {
       return "No available information for this commit.";
     }
@@ -67,6 +67,10 @@ class TimelineController extends GetxController {
           .pinotData[selectedPattern!.value.name]!;
     }
     return "No Pinot data exists.";
+  }
+
+  Commit getCommit() {
+    return commits[previewMarker.value];
   }
 
   int positionToCommit(double value) {

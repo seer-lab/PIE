@@ -20,6 +20,16 @@ class PatternTimeline extends GetView<TimelineController> {
     return timelines;
   }
 
+  List<BoxShadow>? _shadow() {
+    if (controller.selectedPattern != null) {
+      if (controller.selectedPattern!.value == pattern) {
+        return [
+          BoxShadow(color: Colors.white, spreadRadius: 10, blurRadius: 20)
+        ];
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +42,8 @@ class PatternTimeline extends GetView<TimelineController> {
       ]..addAll(getFileTimelines()))),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: const Color.fromARGB(255, 216, 216, 216),
+        color: Color.fromARGB(255, 27, 27, 27),
+        // boxShadow: _shadow(),
       ),
     );
   }
