@@ -17,9 +17,9 @@ class PinotData {
               )
               .toList()
               .join('-');
+          name += "-" + key.substring(0, 2);
 
           data[name] = e['details'];
-          print(name);
         }
       });
     });

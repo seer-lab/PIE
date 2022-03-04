@@ -3,8 +3,8 @@ class FileHistory {
   FileHistory(this.data);
 
   String? getFile(String commit, String filename) {
-    if (data.containsKey(commit) && data[commit]!.containsKey(filename)) {
-      return data[commit]![filename];
+    if (data.containsKey(filename) && data[filename]!.containsKey(commit)) {
+      return data[filename]![commit];
     }
     return null;
   }

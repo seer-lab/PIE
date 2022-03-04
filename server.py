@@ -28,16 +28,12 @@ def serve_documents():
 @app.route("/lifecycle")
 def lifecycle():
     get_documents()
-    lifecycles = {}
     patterns = request.args.get('pattern')
     if patterns == None: 
       patterns = ['Flyweight']
     else: 
       patterns = patterns.split(',')
-    for pattern in patterns: 
-      for pattern_instance in parser.get_detected_patterns(pattern): 
-        lifecycles[pattern_instance] = parser.git_pattern_instance_data(pattern_instance, pattern)
-    return lifecycles
+    return get_lifecycles(patterns)
 
 @app.route('/related_files')
 def related_files():
@@ -46,18 +42,7 @@ def related_files():
   pattern_instance = request.args.get('pattern_instance')
   if pattern_instance == None or pattern == None: 
     return {'success': False}
-  lifecycle = parser.git_pattern_instance_data(pattern_instance, pattern)
-  data = {}
-  for instance in lifecycle: 
-    if instance['modification'] != 'Pattern': 
-      commit = instance['modification']
-      print(commit)
-      if commit not in data: 
-        data[commit] = {}
-      filename = instance['instance'].split(' ')[0]
-      if filename not in data[commit]: 
-        data[commit][filename] = get_file(commit, filename)
-  return data 
+  return get_related_files(pattern_instance)
   
 if __name__ == '__main__':
     print('Loading Documents')

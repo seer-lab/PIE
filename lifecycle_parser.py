@@ -1,5 +1,5 @@
 import pandas as pd
-import altair as alt
+#import altair as alt
 import analysis_tools
 
 class LifecycleParser: 
@@ -21,7 +21,7 @@ class LifecycleParser:
       for x in self.documents: 
           if title in x['pattern_locations']: 
               for instance in x['pattern_locations'][title]: 
-                  instance_name = analysis_tools.file_locations_to_name(instance['path'])
+                  instance_name = analysis_tools.file_locations_to_name(instance['path'], title)
                   pattern_instances.add(instance_name)
     return pattern_instances
 
@@ -57,7 +57,7 @@ class LifecycleParser:
     def f(document):
       if pattern in document['pattern_locations']: 
         for instance in document['pattern_locations'][pattern]: 
-          if pattern_name == analysis_tools.file_locations_to_name(instance['path']):
+          if pattern_name == analysis_tools.file_locations_to_name(instance['path'], pattern):
             return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern }
       return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
     return f

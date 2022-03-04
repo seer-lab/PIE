@@ -10,7 +10,8 @@ class PatternInstance {
   final List<Interval> intervals;
   FileHistory? fileHistory;
 
-  PatternInstance(this.name, this.intervals) : files = name.split('-') {
+  PatternInstance(this.name, this.intervals)
+      : files = name.split('-')..removeLast() {
     pattern = getDesignPattern();
   }
 

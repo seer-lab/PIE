@@ -1,3 +1,4 @@
+from fileinput import filename
 from pydriller import Repository, Git
 import os 
 from pymongo import MongoClient
@@ -23,8 +24,8 @@ def find_file(path, file_name):
 def get_file_names(file_list): 
   return set(str(x).split('/')[-1].replace('.java', '') for x in file_list)
 
-def file_locations_to_name(file_locations): 
-  return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','')
+def file_locations_to_name(file_locations, pattern): 
+  return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','') + '-' + pattern[:2]
 
 def get_sorted_documents(sort): 
   client = MongoClient('localhost', 27017)
@@ -43,6 +44,33 @@ def get_sorted_documents(sort):
     if commit.hash in files:  
       documents.append(files[commit.hash])
   return documents
+
+def get_lifecycles(patterns): 
+  client = MongoClient('localhost', 27017)
+
+  db = client.thesis_data
+  collection = db.awt_lifecycle
+  ans = {}
+  for pattern in patterns: 
+    data = collection.find({'pattern': pattern})
+    for item in data: 
+      ans[item['_id']] = item['items']
+  return ans 
+
+def get_related_files(pattern_instance): 
+  client = MongoClient('localhost', 27017)
+
+  db = client.thesis_data
+  collection = db.awt_modifications
+  
+  filenames = pattern_instance.split('-')[:-1]
+  ans = {}
+  for file in filenames: 
+    data = collection.find({'_id': file})
+    for item in data: 
+      ans[file] = item
+      ans[file].pop('_id')
+  return ans
 
 def get_files_at_commit(commit): 
   proc = subprocess.run(["git -C '{}' ls-tree --name-only -r {}".format(TARGET_PROJECT, commit)], shell=True, capture_output=True, text=True)
