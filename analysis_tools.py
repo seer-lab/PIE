@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import subprocess
 
 TARGET_PROJECT = '../jdk8u_jdk'
+# TARGET_PROJECT = '../ignite'
 
 def get_files(path): 
   values = []
@@ -32,6 +33,7 @@ def get_sorted_documents(sort):
 
   db = client.thesis_data
   collection = db.awt
+  #collection = db.ignite
 
   files ={}
   for document in collection.find(): 
@@ -80,6 +82,7 @@ def get_files_at_commit(commit):
 def get_commit_data(commit): 
   gr = Git(TARGET_PROJECT)
   return gr.get_commit(commit)
+
 
 def get_file(commit, filename): 
   data = get_commit_data(commit)

@@ -31,34 +31,41 @@ class _InfoPanel extends State<InfoPanel> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
-        builder: (c) => Container(
-            height: MediaQuery.of(context).size.height / 2,
-            width: MediaQuery.of(context).size.width * 0.2,
-            color: const Color.fromARGB(255, 46, 46, 46),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: ListView(
-              children: [
-                const Text(
-                  "Commit Data",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32,
-                  ),
-                ),
-                _heading('General'),
-                Text(c.getCommit().hash),
-                const SizedBox(height: 10),
-                Text(c.getCommit().message),
-                const SizedBox(height: 10),
-                Text("Author: " + c.getCommit().author),
-                _heading('Pinot Data'),
-                Text(
-                  c.getPinotInfo(),
-                  style: const TextStyle(fontSize: 18),
-                )
-              ],
-            )));
+        builder: (c) => c.commits.length == 0
+            ? Container(
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: const Center(child: CircularProgressIndicator()),
+                color: Theme.of(context).backgroundColor,
+              )
+            : Container(
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width * 0.2,
+                color: Theme.of(context).cardColor,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: ListView(
+                  children: [
+                    const Text(
+                      "Commit Information",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                      ),
+                    ),
+                    _heading('General'),
+                    Text(c.getCommit().hash),
+                    const SizedBox(height: 10),
+                    Text(c.getCommit().message),
+                    const SizedBox(height: 10),
+                    Text("Author: " + c.getCommit().author),
+                    _heading('Pinot Data'),
+                    Text(
+                      c.getPinotInfo(),
+                      style: const TextStyle(fontSize: 18),
+                    )
+                  ],
+                )));
   }
 }

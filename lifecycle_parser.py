@@ -1,5 +1,5 @@
 import pandas as pd
-#import altair as alt
+# import altair as alt
 import analysis_tools
 
 class LifecycleParser: 
@@ -38,18 +38,20 @@ class LifecycleParser:
           if start[f] == -1: 
             start[f] = commit_number
             modification[f] = output['modification']
-          if modification[f] != output['modification'] and start!= -1:
-            output.update({'start': start[f], 'end': commit_number -1})
+          elif modification[f] != output['modification'] and start[f] != -1:
+            tempModification = output['modification']
+            output.update({'start': start[f], 'end': commit_number})
+            output['modification'] = modification[f]
             start[f] = commit_number
             intervals.append(output)
-            modification[f] = output['modification']
+            modification[f] = tempModification
         elif start[f] != -1: 
-          output.update({'start': start[f], 'end': commit_number -1})
+          output.update({'start': start[f], 'end': commit_number})
           intervals.append(output)
           start[f] = -1
         if commit_number == len(self.documents) - 1: 
           if start[f] != -1: 
-            output.update({'start': start[f], 'end': commit_number -1})
+            output.update({'start': start[f], 'end': commit_number})
             intervals.append(output)
     return intervals
 
