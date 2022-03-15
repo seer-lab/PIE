@@ -14,8 +14,10 @@ class PatternTimeline extends GetView<TimelineController> {
     List<Widget> timelines = [];
     if (!isOpen) return timelines;
     pattern.files.forEach((element) {
-      timelines.add(
-          TimelineInterval(pattern.pattern, pattern.getFileInterval(element)));
+      timelines.add(TimelineInterval(
+          pattern.pattern,
+          pattern.getFileInterval(element),
+          pattern.getPatternBreaks(filename: element)));
     });
     return timelines;
   }
@@ -38,11 +40,12 @@ class PatternTimeline extends GetView<TimelineController> {
       child: Center(
           child: Column(
               children: [
-        TimelineInterval(pattern.pattern, pattern.getPatternInterval())
+        TimelineInterval(pattern.pattern, pattern.getPatternInterval(),
+            pattern.getPatternBreaks())
       ]..addAll(getFileTimelines()))),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: Color.fromARGB(255, 27, 27, 27),
+        color: const Color.fromARGB(255, 27, 27, 27),
         // boxShadow: _shadow(),
       ),
     );

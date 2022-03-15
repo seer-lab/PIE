@@ -7,11 +7,13 @@ import 'dart:math' as math;
 
 class TimelineInterval extends GetView<TimelineController> {
   final List<g.Interval> intervals;
+  final List<g.Interval> annotations;
   final DesignPattern designPattern;
   Map<String, Color> colourMap = {};
   List<Color> availableColours = [];
   int colourIndex = 0;
-  TimelineInterval(this.designPattern, this.intervals, {Key? key})
+  TimelineInterval(this.designPattern, this.intervals, this.annotations,
+      {Key? key})
       : super(key: key) {
     colourMap['Pattern'] = designPattern.toColour();
 
@@ -41,6 +43,32 @@ class TimelineInterval extends GetView<TimelineController> {
     return colourMap[interval.modificationCommit]!;
   }
 
+  List<Widget> _generateBreakIntervals(BuildContext context) {
+    return annotations
+        .map((e) => GetBuilder<TimelineController>(
+            builder: ((c) => Positioned(
+                left: interpolateScreenPos(
+                        c.normalizedPosition(e.start), context) +
+                    25,
+                bottom: -5,
+                child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    //height: 5,
+                    //color: Colors.red,
+                    child: Transform.rotate(
+                      angle: math.pi / 2,
+                      child: const Icon(
+                        Icons.chevron_left,
+                        color: Colors.red,
+                      ),
+                    ),
+                    width: (interpolateScreenPos(
+                        controller.normalizedPosition(e.end) -
+                            controller.normalizedPosition(e.start),
+                        context)))))))
+        .toList();
+  }
+
   List<Widget> _generateIntervals(BuildContext context) {
     return intervals
         .map((e) => GetBuilder<TimelineController>(
@@ -65,7 +93,9 @@ class TimelineInterval extends GetView<TimelineController> {
         height: 50,
         width: MediaQuery.of(context).size.width - 600,
         child: Stack(
-          children: []..addAll(_generateIntervals(context)),
+          children: []
+            ..addAll(_generateIntervals(context))
+            ..addAll(_generateBreakIntervals(context)),
         ));
   }
 }

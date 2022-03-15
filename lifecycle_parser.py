@@ -1,5 +1,5 @@
 import pandas as pd
-# import altair as alt
+import altair as alt
 import analysis_tools
 
 class LifecycleParser: 

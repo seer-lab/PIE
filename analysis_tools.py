@@ -2,6 +2,7 @@ from fileinput import filename
 from pydriller import Repository, Git
 import os 
 from pymongo import MongoClient
+from lifecycle_analyzer import LifecycleAnalyzer
 import subprocess
 
 TARGET_PROJECT = '../jdk8u_jdk'
@@ -49,14 +50,15 @@ def get_sorted_documents(sort):
 
 def get_lifecycles(patterns): 
   client = MongoClient('localhost', 27017)
-
+  
   db = client.thesis_data
   collection = db.awt_lifecycle
   ans = {}
   for pattern in patterns: 
     data = collection.find({'pattern': pattern})
-    for item in data: 
-      ans[item['_id']] = item['items']
+    for item in data:
+      analyzer = LifecycleAnalyzer(item)
+      ans[item['_id']] = item['items'] + analyzer.analyze()
   return ans 
 
 def get_related_files(pattern_instance): 

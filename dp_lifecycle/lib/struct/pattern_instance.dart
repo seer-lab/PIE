@@ -26,6 +26,14 @@ class PatternInstance {
         .toList();
   }
 
+  List<Interval> getPatternBreaks({String filename = ''}) {
+    return intervals
+        .where((element) =>
+            element.modificationCommit == 'break' &&
+            (filename == '' || element.instance.split('-').contains(filename)))
+        .toList();
+  }
+
   List<Interval> getFileInterval(String file) {
     return intervals
         .where((element) =>
