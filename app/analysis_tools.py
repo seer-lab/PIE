@@ -8,6 +8,11 @@ import subprocess
 TARGET_PROJECT = '../jdk8u_jdk'
 # TARGET_PROJECT = '../ignite'
 
+mongo_uri ='mongodb://localhost:27018'
+if 'IS_DOCKER' in os.environ: 
+  mongo_uri ='mongodb://dp_mongodb:27017'
+
+print(mongo_uri)
 def get_files(path): 
   values = []
   for p, d, f in os.walk(path):
@@ -30,7 +35,7 @@ def file_locations_to_name(file_locations, pattern):
   return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','') + '-' + pattern[:2]
 
 def get_sorted_documents(sort): 
-  client = MongoClient('localhost', 27017)
+  client = MongoClient(mongo_uri)
 
   db = client.thesis_data
   collection = db.awt
@@ -49,7 +54,7 @@ def get_sorted_documents(sort):
   return documents
 
 def get_lifecycles(patterns): 
-  client = MongoClient('localhost', 27017)
+  client = MongoClient(mongo_uri)
   
   db = client.thesis_data
   collection = db.awt_lifecycle
@@ -62,7 +67,7 @@ def get_lifecycles(patterns):
   return ans 
 
 def get_related_files(pattern_instance): 
-  client = MongoClient('localhost', 27017)
+  client = MongoClient(mongo_uri)
 
   db = client.thesis_data
   collection = db.awt_modifications

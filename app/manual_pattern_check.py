@@ -23,7 +23,7 @@ with open('./pattern_intervals.json', 'r') as f:
 with open('./pattern_validation.json', 'r') as f: 
   pattern_validation = json.load(f)
 
-gr = Git('../ignite')
+gr = Git('../../ignite')
 
 def pick_commit(instances): 
   instance = instances[randint(0, len(instances)-1)]

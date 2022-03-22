@@ -18,7 +18,11 @@ design_patterns = [
   'Mediator'
   ]
 
-client = MongoClient('localhost', 27017)
+mongo_uri ='mongodb://localhost:27018'
+if 'IS_DOCKER' in os.environ: 
+  mongo_uri ='mongodb://dp_mongodb:27017'
+
+client = MongoClient(mongo_uri)
 
 db = client.thesis_data
 commitCollection = db.awt_commits
@@ -35,7 +39,7 @@ if len(modificationCollection.find().distinct('_id')) > 0:
   modificationCollection.delete_many({})
 
 def hash_to_list(items, metadata = {}): 
-  return [{'_id': key, 'items': value} | metadata for key, value in items.items()]
+  return [{'_id': key, 'items': value, **metadata} for key, value in items.items()]
 
 documents = get_sorted_documents('topo-order')
 parser = LifecycleParser(documents)
@@ -47,7 +51,7 @@ for pattern in design_patterns:
   temp = {}
   for pattern_instance in parser.get_detected_patterns(pattern): 
     temp[pattern_instance] = parser.git_pattern_instance_data(pattern_instance, pattern)
-  pattern_lifecycles = pattern_lifecycles | temp
+  pattern_lifecycles.update(temp)
   print(str(pattern) + ' has ' + str(len(temp)) + ' instances.')
   if (len(temp) > 0):
     lifecycleCollection.insert_many(hash_to_list(temp, {'pattern': pattern}))

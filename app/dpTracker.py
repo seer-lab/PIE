@@ -4,7 +4,13 @@ from shutil import copyfile
 from pinot import scan_patterns
 from pymongo import MongoClient
 import analysis_tools
-client = MongoClient('localhost', 27017)
+
+
+mongo_uri ='mongodb://localhost:27018'
+if 'IS_DOCKER' in os.environ: 
+  mongo_uri ='mongodb://dp_mongodb:27017'
+
+client = MongoClient(mongo_uri)
 
 db = client.thesis_data
 collection = db.awt

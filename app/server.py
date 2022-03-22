@@ -1,9 +1,13 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 from lifecycle_parser import LifecycleParser
 from analysis_tools import * 
 import json
 
+
+
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 documents = []
 parser = None
 
@@ -16,6 +20,7 @@ def get_documents():
     parser = LifecycleParser(documents)
 
 @app.route('/documents')
+@cross_origin(supports_credentials=True)
 def serve_documents(): 
   global documents 
   get_documents()
@@ -26,6 +31,7 @@ def serve_documents():
   return json.dumps([remove_set(document) for document in documents])
 
 @app.route("/lifecycle")
+@cross_origin(supports_credentials=True)
 def lifecycle():
     get_documents()
     patterns = request.args.get('pattern')
@@ -36,6 +42,7 @@ def lifecycle():
     return get_lifecycles(patterns)
 
 @app.route('/related_files')
+@cross_origin(supports_credentials=True)
 def related_files():
   get_documents()
   pattern = request.args.get('pattern')
