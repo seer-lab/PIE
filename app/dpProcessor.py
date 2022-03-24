@@ -25,15 +25,11 @@ if 'IS_DOCKER' in os.environ:
 client = MongoClient(mongo_uri)
 
 db = client.thesis_data
-commitCollection = db.awt_commits
-lifecycleCollection = db.awt_lifecycle
-modificationCollection = db.awt_modifications
+lifecycleCollection = db.ignite_lifecycle
+modificationCollection = db.ignite_modifications
 
 if len(lifecycleCollection.find().distinct('_id')) > 0: 
   lifecycleCollection.delete_many({})
-
-if len(commitCollection.find().distinct('_id')) > 0: 
-  commitCollection.delete_many({})
 
 if len(modificationCollection.find().distinct('_id')) > 0: 
   modificationCollection.delete_many({})
@@ -41,7 +37,7 @@ if len(modificationCollection.find().distinct('_id')) > 0:
 def hash_to_list(items, metadata = {}): 
   return [{'_id': key, 'items': value, **metadata} for key, value in items.items()]
 
-documents = get_sorted_documents('topo-order')
+documents = get_sorted_documents({'name': 'ignite', 'location': '../ignite', 'status': 'processing'}, 'topo-order')
 parser = LifecycleParser(documents)
 
 #Get all lifecycles

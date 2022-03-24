@@ -5,20 +5,19 @@ from pymongo import MongoClient
 from lifecycle_analyzer import LifecycleAnalyzer
 import subprocess
 
-TARGET_PROJECT = '../jdk8u_jdk'
-# TARGET_PROJECT = '../ignite'
+#TARGET_PROJECT = '../jdk8u_jdk'
+TARGET_PROJECT = '../ignite'
 
 mongo_uri ='mongodb://localhost:27018'
 if 'IS_DOCKER' in os.environ: 
   mongo_uri ='mongodb://dp_mongodb:27017'
 
-print(mongo_uri)
 def get_files(path): 
   values = []
   for p, d, f in os.walk(path):
     for file in f:
       if file.endswith('.java') and not 'test' in file.lower():
-          values.append(os.path.join(p, file))
+          values.append(os.path.joizn(p, file))
   return values
 
 def find_file(path, file_name): 
@@ -34,18 +33,21 @@ def get_file_names(file_list):
 def file_locations_to_name(file_locations, pattern): 
   return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','') + '-' + pattern[:2]
 
-def get_sorted_documents(sort): 
+def get_sorted_documents(project, sort): 
+  print(project['name'])
   client = MongoClient(mongo_uri)
 
   db = client.thesis_data
-  collection = db.awt
-  #collection = db.ignite
+  #collection = db.awt
+  collection = db[project['name']]
+  if sort == 'topo-order': 
+    return [doc for doc in collection.find()]
 
   files ={}
   for document in collection.find(): 
     files[document['_id']] = document 
 
-  repo = Repository(TARGET_PROJECT, order=sort)
+  repo = Repository(project['location'], order=sort)
 
   documents = []
   for commit in repo.traverse_commits():
@@ -53,11 +55,11 @@ def get_sorted_documents(sort):
       documents.append(files[commit.hash])
   return documents
 
-def get_lifecycles(patterns): 
+def get_lifecycles(project, patterns): 
   client = MongoClient(mongo_uri)
   
   db = client.thesis_data
-  collection = db.awt_lifecycle
+  collection = db[project['name'] + '_lifecycle']
   ans = {}
   for pattern in patterns: 
     data = collection.find({'pattern': pattern})
@@ -66,11 +68,11 @@ def get_lifecycles(patterns):
       ans[item['_id']] = item['items'] + analyzer.analyze()
   return ans 
 
-def get_related_files(pattern_instance): 
+def get_related_files(project, pattern_instance): 
   client = MongoClient(mongo_uri)
 
   db = client.thesis_data
-  collection = db.awt_modifications
+  collection = db[project['name'] + '_modifications']
   
   filenames = pattern_instance.split('-')[:-1]
   ans = {}

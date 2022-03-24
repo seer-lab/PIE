@@ -11,7 +11,7 @@ class _FileView extends State<FileView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
-        builder: (c) => c.selectedPattern == null
+        builder: (c) => c.commits.isEmpty
             ? SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: const Center(
@@ -26,7 +26,8 @@ class _FileView extends State<FileView> {
                       files: c.getFiles(),
                       styleOptions: EditorModelStyleOptions(
                           heightOfContainer:
-                              MediaQuery.of(context).size.height / 2)),
+                              // Need to subtract 60 to account for padding + file bar
+                              MediaQuery.of(context).size.height / 2 - 60)),
                 ))));
   }
 }

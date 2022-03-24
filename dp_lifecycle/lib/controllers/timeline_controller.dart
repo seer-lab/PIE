@@ -3,6 +3,7 @@ import 'package:dp_lifecycle/providers/lifecycle_provider.dart';
 import 'package:dp_lifecycle/struct/commit.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
+import 'package:dp_lifecycle/struct/project.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
@@ -19,9 +20,13 @@ class TimelineController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print('init');
     _provider.getCommits().then((value) {
       commits = value;
       previewEnd = commits.length.obs;
+      previewStart = 0.obs;
+      previewMarker = 1.obs;
+      update();
     }, onError: (err) {
       print(err);
     });
@@ -44,9 +49,24 @@ class TimelineController extends GetxController {
     return history;
   }
 
+  Future<List<Project>> getProjects() async {
+    List<Project> projects = await _provider.getProjects();
+    return projects;
+  }
+
+  Future<bool> onSelectProject(Project project) async {
+    List<Commit> value = await _provider.getCommits(project: project);
+    commits = value;
+    previewEnd = commits.length.obs;
+    previewStart = 0.obs;
+    previewMarker = 1.obs;
+    update();
+    return true;
+  }
+
   List<FileEditor> getFiles() {
     if (selectedPattern == null) {
-      return [];
+      return [FileEditor(code: 'No Code Available')];
     }
     List<FileEditor>? ans =
         selectedPattern!.value.getFilesAtCommit(previewMarker.value);

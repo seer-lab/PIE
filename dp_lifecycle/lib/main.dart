@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       initialBinding: LifecycleBindings(),
       home: RootPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

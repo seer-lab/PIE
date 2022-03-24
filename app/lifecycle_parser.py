@@ -8,6 +8,9 @@ class LifecycleParser:
     self.chart_color = {}
     self.file_list_to_set()
   
+  def get_documents(self): 
+    return self.documents
+
   def file_list_to_set(self):
     for document in self.documents: 
       document['file_list'] = set(document['file_list'])
