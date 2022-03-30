@@ -7,11 +7,12 @@ import 'package:dp_lifecycle/struct/project.dart';
 import 'package:get/get_connect.dart';
 
 class LifecycleProvider extends GetConnect {
-  Future<List<PatternInstance>> getIntervals(String pattern) async {
+  Future<List<PatternInstance>> getIntervals(
+      Project project, String pattern) async {
     httpClient.timeout = const Duration(minutes: 10);
+    String projectName = project.name;
     final response = await get(
-      "http://127.0.0.1:5000/lifecycle?pattern=$pattern",
-    );
+        "http://127.0.0.1:5000/lifecycle?project=$projectName&pattern=$pattern");
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {
@@ -24,13 +25,9 @@ class LifecycleProvider extends GetConnect {
     }
   }
 
-  Future<List<Commit>> getCommits({Project? project}) async {
+  Future<List<Commit>> getCommits(Project project) async {
     httpClient.timeout = const Duration(minutes: 10);
-    String query = "";
-    if (project != null) {
-      query = "?project=" + project.name;
-    }
-    print(query);
+    String query = "?project=" + project.name;
     final response = await get('http://127.0.0.1:5000/documents' + query);
     if (response.status.hasError) {
       return Future.error(response.statusText!);
@@ -55,10 +52,11 @@ class LifecycleProvider extends GetConnect {
   }
 
   Future<FileHistory> getFileHistory(
-      DesignPattern pattern, String patternInstance) async {
+      Project project, DesignPattern pattern, String patternInstance) async {
     httpClient.timeout = const Duration(minutes: 10);
+    String projectName = project.name;
     final response = await get(
-        'http://127.0.0.1:5000/related_files?pattern=$pattern&pattern_instance=$patternInstance');
+        'http://127.0.0.1:5000/related_files?project=$projectName&pattern=$pattern&pattern_instance=$patternInstance');
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {

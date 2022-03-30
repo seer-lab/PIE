@@ -46,7 +46,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                       onPointerMove: (event) {
                         if (isDown) {
                           setState(() {
-                            if (!event.delta.dx.isNegative && range < 5) {
+                            if (event.delta.dx > 0 && range < 30) {
                               return;
                             }
                             position += event.delta.dx;
@@ -127,7 +127,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                       onPointerMove: (event) {
                         if (isDown) {
                           setState(() {
-                            if (event.delta.dx.isNegative && range < 5) {
+                            if (event.delta.dx < 0 && range < 30) {
                               return;
                             }
                             range += event.delta.dx;

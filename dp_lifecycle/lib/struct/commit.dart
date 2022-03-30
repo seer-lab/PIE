@@ -33,10 +33,12 @@ class Commit {
         numLines: json['lines'],
         numFiles: json['files'],
         modifiedFiles: json['modified_files'].cast<String>(),
-        dpSummary: json['summary'].cast<String, int>(),
+        dpSummary: json['summary'] == null
+            ? <String, int>{}
+            : json['summary'].cast<String, int>(),
         patternLocations: PatternLocations.fromMap(
-            json['pattern_locations'] as Map<String, dynamic>),
+            json['pattern_locations'] as Map<String, dynamic>?),
         pinotData: PinotData.fromMap(
-            json['pattern_locations'] as Map<String, dynamic>));
+            json['pattern_locations'] as Map<String, dynamic>?));
   }
 }

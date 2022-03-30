@@ -5,8 +5,6 @@ from pymongo import MongoClient
 from lifecycle_analyzer import LifecycleAnalyzer
 import subprocess
 
-#TARGET_PROJECT = '../jdk8u_jdk'
-TARGET_PROJECT = '../ignite'
 
 mongo_uri ='mongodb://localhost:27018'
 if 'IS_DOCKER' in os.environ: 
@@ -36,7 +34,6 @@ def file_locations_to_name(file_locations, pattern):
 def get_sorted_documents(project, sort): 
   print(project['name'])
   client = MongoClient(mongo_uri)
-
   db = client.thesis_data
   #collection = db.awt
   collection = db[project['name']]
@@ -83,18 +80,18 @@ def get_related_files(project, pattern_instance):
       ans[file].pop('_id')
   return ans
 
-def get_files_at_commit(commit): 
-  proc = subprocess.run(["git -C '{}' ls-tree --name-only -r {}".format(TARGET_PROJECT, commit)], shell=True, capture_output=True, text=True)
+def get_files_at_commit(project, commit): 
+  proc = subprocess.run(["git -C '{}' ls-tree --name-only -r {}".format(projectp['location'], commit)], shell=True, capture_output=True, text=True)
   output = proc.stdout.split('\n')
   return [str(x).split('/')[-1].replace('.java', '') for x in filter(lambda x: '.java' in x, output)]
 
-def get_commit_data(commit): 
-  gr = Git(TARGET_PROJECT)
+def get_commit_data(project, commit): 
+  gr = Git(project['location'])
   return gr.get_commit(commit)
 
 
-def get_file(commit, filename): 
-  data = get_commit_data(commit)
+def get_file(project, commit, filename): 
+  data = get_commit_data(project, commit)
   if data == None or filename == None: 
     return 'Failed to fetch modification for commit ' + commit
   for file in data.modified_files: 

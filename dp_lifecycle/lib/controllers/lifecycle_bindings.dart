@@ -7,7 +7,7 @@ class LifecycleBindings extends Bindings {
   @override
   void dependencies() {
     Get.put<LifecycleProvider>(LifecycleProvider());
-    Get.put<LifecycleController>(LifecycleController());
     Get.put<TimelineController>(TimelineController());
+    Get.put<LifecycleController>(LifecycleController());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dp_lifecycle/controllers/lifecycle_controller.dart';
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/struct/project.dart';
 import 'package:dp_lifecycle/ui/project_select/project_card.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
 class ProjectSelection extends StatefulWidget {
+  const ProjectSelection({Key? key}) : super(key: key);
   _ProjectSelection createState() => _ProjectSelection();
 }
 
@@ -20,12 +22,14 @@ class _ProjectSelection extends State<ProjectSelection> {
 
   void onSelectProject(Project project) {
     controller.onSelectProject(project).then((value) {
+      Get.find<LifecycleController>().onRefresh();
       if (value && !popped) {
         setState(() {
           selectedProjectName = project.name;
         });
       }
     });
+    Get.find<LifecycleController>().onUnload();
   }
 
   @override
@@ -57,8 +61,8 @@ class _ProjectSelection extends State<ProjectSelection> {
         const SizedBox(
           height: 30,
         )
-      ]..addAll(projects!.map((e) =>
-              ProjectCard(e, onSelectProject, e.name == selectedProjectName))));
+      ]..addAll(projects!.map((e) => ProjectCard(e, onSelectProject,
+              e.name == controller.selectedProject.value.name))));
     }
   }
 }

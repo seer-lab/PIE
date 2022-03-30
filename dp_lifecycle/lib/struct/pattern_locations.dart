@@ -4,8 +4,11 @@ class PatternLocations {
   final Map<DesignPattern, List<List<String>>> patternLocations;
 
   const PatternLocations(this.patternLocations);
-  factory PatternLocations.fromMap(Map<String, dynamic> json) {
+  factory PatternLocations.fromMap(Map<String, dynamic>? json) {
     Map<DesignPattern, List<List<String>>> patternLocations = {};
+    if (json == null) {
+      return PatternLocations(patternLocations);
+    }
     json.forEach((key, value) {
       DesignPattern pattern = stringToDP(key);
       List<List<String>> instances = (value as List<dynamic>)

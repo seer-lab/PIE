@@ -1,7 +1,10 @@
 #Stage 1 - Install dependencies and build the app
-FROM python:3.7
+FROM python:3.8
 
 RUN git clone https://github.com/JetBrains/jdk8u_jdk.git
+RUN git clone https://github.com/wrandelshofer/jhotdraw.git
+RUN git clone https://github.com/apache/ignite.git
+
 WORKDIR /app
 
 COPY . .

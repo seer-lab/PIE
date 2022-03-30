@@ -28,7 +28,9 @@ class ProjectCard extends StatelessWidget {
               ? const Color.fromARGB(255, 20, 53, 70)
               : Theme.of(context).dialogBackgroundColor,
           child: InkWell(
-              onTap: () => callback(project),
+              onTap: project.projectStatus == ProjectStatus.ready
+                  ? () => callback(project)
+                  : null,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 10),

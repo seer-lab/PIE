@@ -23,21 +23,21 @@ if 'IS_DOCKER' in os.environ:
   mongo_uri ='mongodb://dp_mongodb:27017'
 
 client = MongoClient(mongo_uri)
-
+project = {'name': 'ignite', 'location': '../ignite', 'status': 'processing'}
 db = client.thesis_data
-lifecycleCollection = db.ignite_lifecycle
-modificationCollection = db.ignite_modifications
+lifecycleCollection = db[project['name'] + '_lifecycle']
+modificationCollection = db[project['name'] + '_modifications']
 
 if len(lifecycleCollection.find().distinct('_id')) > 0: 
   lifecycleCollection.delete_many({})
 
-if len(modificationCollection.find().distinct('_id')) > 0: 
+if len(modificationCollection.find().disdocktinct('_id')) > 0: 
   modificationCollection.delete_many({})
 
 def hash_to_list(items, metadata = {}): 
   return [{'_id': key, 'items': value, **metadata} for key, value in items.items()]
 
-documents = get_sorted_documents({'name': 'ignite', 'location': '../ignite', 'status': 'processing'}, 'topo-order')
+documents = get_sorted_documents(project, 'topo-order')
 parser = LifecycleParser(documents)
 
 #Get all lifecycles
@@ -67,7 +67,7 @@ for lifecycle, instances in pattern_lifecycles.items():
       if not commit in temp: 
         temp[commit] = {}
       if not filename in temp[commit]: 
-        temp[commit][filename] = get_file(commit, filename)
+        temp[commit][filename] = get_file(project, commit, filename)
   
   for filename in filenames: 
     ans = {'_id': filename}

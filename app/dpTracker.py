@@ -13,16 +13,16 @@ if 'IS_DOCKER' in os.environ:
 client = MongoClient(mongo_uri)
 
 db = client.thesis_data
-collection = db.ignite
+collection = db.jhotdraw
 
 processed_commits = set([str(id) for id in collection.find().distinct('_id')])
 
-# base_path = '../jdk8u_jdk/src/share/classes/java/awt/'
-# subdir= 'src/share/classes/java/awt/'
-# gr = Git('../jdk8u_jdk/')
+base_path = '../jhotdraw/JHotDraw'
+subdir= 'JHotDraw'
+gr = Git('../jhotdraw/')
 
-base_path = '../ignite'
-gr = Git('../ignite/')
+# base_path = '../jhotdraw'
+# gr = Git('../jhotdraw/')
 
 def get_files(path): 
   values = []
@@ -42,8 +42,8 @@ def analyze_commit(commit):
   if commit.hash in processed_commits: 
     return 
 
-  # if not is_subdirectory_modified(commit.modified_files):
-  #   return 
+  if not is_subdirectory_modified(commit.modified_files):
+    return 
   gr.checkout(commit.hash)
 
   files = get_files(base_path)
@@ -69,7 +69,7 @@ def analyze_commit(commit):
     print('Failed to run Pinot on hash:', commit.hash)
 
 # repo = Repository('../jdk8u_jdk/', order='topo-order')
-repo = Repository('../ignite/', order='topo-order')
+repo = Repository('../jhotdraw/', order='topo-order')
 commits = []
 for commit in repo.traverse_commits(): 
   analyze_commit(commit)

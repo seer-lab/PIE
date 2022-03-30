@@ -4,8 +4,11 @@ class PinotData {
   final Map<String, String> pinotData;
   const PinotData(this.pinotData);
 
-  factory PinotData.fromMap(Map<String, dynamic> json) {
+  factory PinotData.fromMap(Map<String, dynamic>? json) {
     Map<String, String> data = {};
+    if (json == null) {
+      return PinotData(data);
+    }
     json.forEach((key, value) {
       (value as List<dynamic>).forEach((e) {
         if (e.containsKey('details')) {

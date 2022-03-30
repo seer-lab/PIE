@@ -31,7 +31,7 @@ class _InfoPanel extends State<InfoPanel> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
-        builder: (c) => c.commits.length == 0
+        builder: (c) => c.commits.isEmpty
             ? Container(
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width * 0.2,

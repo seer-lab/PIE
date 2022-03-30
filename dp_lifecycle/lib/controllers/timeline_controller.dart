@@ -15,13 +15,14 @@ class TimelineController extends GetxController {
 
   Rx<PatternInstance>? selectedPattern;
   bool isPerformingGitOperation = false;
+  Rx<Project> selectedProject =
+      Rx<Project>(Project(projectStatus: ProjectStatus.ready, name: 'awt'));
 
   final LifecycleProvider _provider = LifecycleProvider();
   @override
   void onInit() {
     super.onInit();
-    print('init');
-    _provider.getCommits().then((value) {
+    _provider.getCommits(selectedProject.value).then((value) {
       commits = value;
       previewEnd = commits.length.obs;
       previewStart = 0.obs;
@@ -43,8 +44,8 @@ class TimelineController extends GetxController {
     while (isPerformingGitOperation)
       Future.delayed(const Duration(seconds: 10));
     isPerformingGitOperation = true;
-    FileHistory history =
-        await _provider.getFileHistory(instance.pattern, instance.name);
+    FileHistory history = await _provider.getFileHistory(
+        selectedProject.value, instance.pattern, instance.name);
     isPerformingGitOperation = false;
     return history;
   }
@@ -55,11 +56,15 @@ class TimelineController extends GetxController {
   }
 
   Future<bool> onSelectProject(Project project) async {
-    List<Commit> value = await _provider.getCommits(project: project);
-    commits = value;
-    previewEnd = commits.length.obs;
+    selectedProject = Rx<Project>(project);
     previewStart = 0.obs;
     previewMarker = 1.obs;
+    selectedPattern = null;
+    commits = [];
+    update();
+    List<Commit> value = await _provider.getCommits(project);
+    commits = value;
+    previewEnd = commits.length.obs;
     update();
     return true;
   }
