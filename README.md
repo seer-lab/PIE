@@ -1,4 +1,4 @@
-# Design Pattern Lifecycles 
+# PIE - Pattern Instance Explorer
 
 ## Pre-requisites 
 
