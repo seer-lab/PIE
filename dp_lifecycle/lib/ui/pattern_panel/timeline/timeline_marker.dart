@@ -9,26 +9,61 @@ class TimelineMarker extends StatefulWidget {
 
 class _TimelineMarker extends State<TimelineMarker> {
   int maxMarkers = 20;
+  bool previewMarkerDown = false;
+  double previewPosition = 0;
+
   double interpolateScreenPos(double position, BuildContext context) {
     return (MediaQuery.of(context).size.width - 650) * position - 25;
   }
 
-  Widget _previewMarker() {
-    return Container(
-      child: Column(children: [
-        Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-              color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
-        ),
-        Container(
-          height: 30,
-          width: 2,
-          color: Colors.red,
-        )
-      ]),
-    );
+  Widget _previewMarker(
+      double height, BuildContext context, TimelineController c) {
+    if (c.previewMarker.value > c.previewEnd.value ||
+        c.previewMarker.value < c.previewStart.value) {
+      return const SizedBox();
+    }
+    return MouseRegion(
+        cursor: previewMarkerDown
+            ? SystemMouseCursors.grabbing
+            : SystemMouseCursors.grab,
+        child: Listener(
+          onPointerDown: (event) {
+            setState(() {
+              previewMarkerDown = true;
+            });
+          },
+          onPointerUp: (event) {
+            setState(() {
+              previewMarkerDown = false;
+            });
+          },
+          onPointerMove: (e) {
+            double percent =
+                e.delta.dx / (MediaQuery.of(context).size.width - 650);
+            int commit = ((c.previewEnd.value - c.previewStart.value) * percent)
+                    .round() +
+                c.previewMarker.value;
+            if (commit < c.previewStart.value) {
+              commit = c.previewStart.value;
+            } else if (commit > c.previewEnd.value) {
+              commit = c.previewEnd.value;
+            }
+            c.updatePreviewMarker(commit);
+          },
+          child: Column(children: [
+            Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                  color: Colors.red, borderRadius: BorderRadius.circular(8.0)),
+            ),
+            Container(
+              height: height - 20,
+              width: 2,
+              color: Colors.red,
+            )
+          ]),
+        ));
   }
 
   Widget _marker(int commitNumber) {
@@ -59,6 +94,12 @@ class _TimelineMarker extends State<TimelineMarker> {
     if (maxMarkers <= 0) maxMarkers = 20;
     List<int> markerPositions = List<int>.generate(maxMarkers + 1,
         (index) => index * (c.commits.length / maxMarkers).round());
+    markerPositions.add(c.previewStart.value);
+    markerPositions.add(c.previewEnd.value);
+    markerPositions = markerPositions
+        .where((element) =>
+            element <= c.previewEnd.value && element >= c.previewStart.value)
+        .toList();
     return markerPositions
         .map((e) => Positioned(
               child: _marker(e),
@@ -77,6 +118,7 @@ class _TimelineMarker extends State<TimelineMarker> {
         child: GetBuilder<TimelineController>(
           builder: ((c) => Stack(
               alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
               children: [
                 Positioned(
                     child: Listener(
@@ -93,18 +135,19 @@ class _TimelineMarker extends State<TimelineMarker> {
                                         percent)
                                     .round() +
                                 c.previewStart.value;
-                        print(commit);
                         c.updatePreviewMarker(commit);
                       },
                     ),
                     top: 0,
                     left: 25),
                 Positioned(
-                  child: _previewMarker(),
+                  child: _previewMarker(
+                      MediaQuery.of(context).size.height / 2 - 50, context, c),
                   left: interpolateScreenPos(
                           c.normalizedPosition(c.previewMarker.value),
                           context) +
                       40,
+                  height: MediaQuery.of(context).size.height / 2 - 50,
                 )
               ]..addAll(_generateMarkers(context, c)))),
         ));

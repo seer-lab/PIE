@@ -57,7 +57,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                             }
                             controller.updatePreviewStart(
                                 controller.positionToCommit(
-                                    (position + 25) / (maxWidth - 50)));
+                                    (position) / (maxWidth - 50)));
                           });
                         }
                       },
@@ -136,7 +136,7 @@ class _TimelinePreview extends State<TimelinePreview> {
                             }
                             controller.updatePreviewEnd(
                                 controller.positionToCommit(
-                                    (position + range + 25) / (maxWidth)));
+                                    (position + range) / (maxWidth - 25)));
                           });
                         }
                       },
