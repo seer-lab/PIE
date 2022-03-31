@@ -71,7 +71,7 @@ class TimelineController extends GetxController {
 
   List<FileEditor> getFiles() {
     if (selectedPattern == null) {
-      return [FileEditor(code: 'No Code Available')];
+      return [FileEditor(code: 'No Selected Pattern Instance')];
     }
     List<FileEditor>? ans =
         selectedPattern!.value.getFilesAtCommit(previewMarker.value);
