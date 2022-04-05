@@ -3,8 +3,6 @@ version: '2.2'
 services:
   dp_mongodb:
     image: mongo:latest
-    ports:
-      - 27018:27017
     volumes:
       - ~/apps/mongo:/data/db
     command: --bind_ip 0.0.0.0

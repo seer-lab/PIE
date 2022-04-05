@@ -29634,7 +29634,7 @@ IS(a,b){var s=0,r=A.a3(t.S1),q,p=this,o,n
 var $async$kk=A.a4(function(c,d){if(c===1)return A.a0(d,r)
 while(true)switch(s){case 0:p.gnX().y=B.dj
 s=3
-return A.a6(p.oE(0,"http://127.0.0.1:5000/lifecycle?project="+a.b+"&pattern="+b,t.z),$async$kk)
+return A.a6(p.oE(0,"http://seerlab.ca:5000/lifecycle?project="+a.b+"&pattern="+b,t.z),$async$kk)
 case 3:o=d
 if(!new A.op(o.c).q2(200,299)){n=o.d
 n.toString
@@ -29650,7 +29650,7 @@ IA(a){var s=0,r=A.a3(t.E6),q,p=this,o,n
 var $async$m7=A.a4(function(b,c){if(b===1)return A.a0(c,r)
 while(true)switch(s){case 0:p.gnX().y=B.dj
 s=3
-return A.a6(p.oE(0,"http://127.0.0.1:5000/documents"+("?project="+a.b),t.z),$async$m7)
+return A.a6(p.oE(0,"http://seerlab.ca:5000/documents"+("?project="+a.b),t.z),$async$m7)
 case 3:o=c
 if(!new A.op(o.c).q2(200,299)){n=o.d
 n.toString
@@ -29664,7 +29664,7 @@ hG(){var s=0,r=A.a3(t.aS),q,p=this,o,n
 var $async$hG=A.a4(function(a,b){if(a===1)return A.a0(b,r)
 while(true)switch(s){case 0:p.gnX().y=B.dj
 s=3
-return A.a6(p.oE(0,"http://127.0.0.1:5000/projects",t.z),$async$hG)
+return A.a6(p.oE(0,"http://seerlab.ca:5000/projects",t.z),$async$hG)
 case 3:o=b
 if(!new A.op(o.c).q2(200,299)){n=o.d
 n.toString
@@ -29680,7 +29680,7 @@ IH(a,b,c){var s=0,r=A.a3(t.Vo),q,p=this,o,n
 var $async$oK=A.a4(function(d,e){if(d===1)return A.a0(e,r)
 while(true)switch(s){case 0:p.gnX().y=B.dj
 s=3
-return A.a6(p.oE(0,"http://127.0.0.1:5000/related_files?project="+a.b+"&pattern="+b.j(0)+"&pattern_instance="+c,t.z),$async$oK)
+return A.a6(p.oE(0,"http://seerlab.ca:5000/related_files?project="+a.b+"&pattern="+b.j(0)+"&pattern_instance="+c,t.z),$async$oK)
 case 3:o=e
 if(!new A.op(o.c).q2(200,299)){n=o.d
 n.toString

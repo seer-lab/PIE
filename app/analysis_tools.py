@@ -7,7 +7,7 @@ import subprocess
 
 
 mongo_uri ='mongodb://localhost:27018'
-if 'IS_DOCKER' in os.environ: 
+if 'IS_DOCKER' in os.environ:
   mongo_uri ='mongodb://dp_mongodb:27017'
 
 def get_files(path): 
