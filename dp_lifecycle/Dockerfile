@@ -1,5 +1,5 @@
 #Stage 1 - Install dependencies and build the app
-FROM debian:latest AS build-env
+FROM ubuntu:18.04 AS build-env
 
 # Install flutter dependencies
 RUN apt-get update 
@@ -16,7 +16,7 @@ ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PAT
 # Run flutter doctor
 RUN flutter doctor -v
 # Enable flutter web
-RUN flutter channel master
+RUN flutter channel stable
 RUN flutter upgrade
 RUN flutter config --enable-web
 

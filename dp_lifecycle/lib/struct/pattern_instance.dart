@@ -38,7 +38,8 @@ class PatternInstance {
     return intervals
         .where((element) =>
             element.instance.split(' ')[0] == file &&
-            element.modificationCommit != 'Pattern')
+            element.modificationCommit != 'Pattern' &&
+            element.modificationCommit != 'break')
         .toList();
   }
 
