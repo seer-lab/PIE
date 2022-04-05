@@ -13,7 +13,7 @@ PROJECT = 'project'
 
 projects = {
   'awt': {'name': 'awt', 'location': '../jdk8u_jdk', 'status': 'ready'},
-  'ignite': {'name': 'ignite', 'location': '../ignite', 'status': 'ready'},
+  #'ignite': {'name': 'ignite', 'location': '../ignite', 'status': 'ready'},
   'jhotdraw': {'name': 'jhotdraw', 'location': '../jhotdraw', 'status': 'ready'}
 }
 parsers = {}
