@@ -20,36 +20,29 @@ class _PanelHeader extends State<PanelHeader> {
   }
 
   Widget chipWrapper(DesignPattern pattern) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (designPatterns.contains(pattern)) {
-            designPatterns.remove(pattern);
-          } else {
-            designPatterns.add(pattern);
-          }
-          controller.onUpdatePattern(
-              designPatterns.map((e) => e.parseString()).join(','));
-        });
-      },
-      child: DPChip(
-        pattern,
-        isSelected: designPatterns.contains(pattern),
-      ),
-    );
+    return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              if (designPatterns.contains(pattern)) {
+                designPatterns.remove(pattern);
+              } else {
+                designPatterns.add(pattern);
+              }
+              controller.onUpdatePattern(
+                  designPatterns.map((e) => e.parseString()).join(','));
+            });
+          },
+          child: DPChip(
+            pattern,
+            isSelected: designPatterns.contains(pattern),
+          ),
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
-    List<DesignPattern> patterns = [
-      DesignPattern.bridge,
-      DesignPattern.composite,
-      DesignPattern.facade,
-      DesignPattern.flyweight,
-      DesignPattern.strategy,
-      DesignPattern.decorator
-    ];
-
     return Container(
         width: 550,
         child: Column(
@@ -70,6 +63,9 @@ class _PanelHeader extends State<PanelHeader> {
                 ),
                 chipWrapper(DesignPattern.proxy)
               ],
+            ),
+            const SizedBox(
+              height: 3,
             ),
             Row(
               children: [

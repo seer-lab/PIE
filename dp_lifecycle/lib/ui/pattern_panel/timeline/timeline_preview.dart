@@ -31,6 +31,9 @@ class _TimelinePreview extends State<TimelinePreview> {
             Positioned(
                 left: position,
                 child: MouseRegion(
+                  cursor: isDown
+                      ? SystemMouseCursors.grabbing
+                      : SystemMouseCursors.grab,
                   child: Listener(
                       onPointerDown: (event) {
                         setState(() {
@@ -112,6 +115,9 @@ class _TimelinePreview extends State<TimelinePreview> {
             Positioned(
                 left: position + range,
                 child: MouseRegion(
+                  cursor: isDown
+                      ? SystemMouseCursors.grabbing
+                      : SystemMouseCursors.grab,
                   child: Listener(
                       onPointerDown: (event) {
                         setState(() {

@@ -28,6 +28,18 @@ class _InfoPanel extends State<InfoPanel> {
     );
   }
 
+  Widget _dataEntry(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon),
+        const SizedBox(
+          width: 10,
+        ),
+        Expanded(child: SelectableText(text))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
@@ -47,23 +59,25 @@ class _InfoPanel extends State<InfoPanel> {
                 child: ListView(
                   children: [
                     const Text(
-                      "Commit Information",
+                      "Information",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 32,
                       ),
                     ),
-                    _heading('General'),
-                    Text(c.getCommit().hash),
+                    _heading('Commit Data'),
+                    _dataEntry(Icons.location_pin, c.getCommit().hash),
                     const SizedBox(height: 10),
-                    Text(c.getCommit().message),
+                    _dataEntry(Icons.message, c.getCommit().message),
                     const SizedBox(height: 10),
-                    Text("Author: " + c.getCommit().author),
+                    _dataEntry(Icons.person, c.getCommit().author),
+                    const SizedBox(height: 10),
+                    _dataEntry(Icons.calendar_today, c.getCommit().date),
                     _heading('Pinot Data'),
-                    Text(
+                    SelectableText(
                       c.getPinotInfo(),
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 14),
                     )
                   ],
                 )));

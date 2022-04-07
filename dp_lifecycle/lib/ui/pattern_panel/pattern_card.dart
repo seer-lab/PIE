@@ -1,14 +1,15 @@
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/dp_chip.dart';
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class PatternCard extends StatelessWidget {
   final PatternInstance pattern;
-  final bool isOpen;
+  final bool isOpen, isSelected;
   final VoidCallback onToggleDropdown, onSelectRow;
-  const PatternCard(
-      this.pattern, this.isOpen, this.onToggleDropdown, this.onSelectRow,
+  const PatternCard(this.pattern, this.isOpen, this.isSelected,
+      this.onToggleDropdown, this.onSelectRow,
       {Key? key})
       : super(key: key);
 
@@ -36,6 +37,8 @@ class PatternCard extends StatelessWidget {
         width: 550,
         height: 60 + 50.0 * (isOpen ? pattern.files.length : 0),
         child: Card(
+            color:
+                isSelected ? pattern.pattern.toColour().withOpacity(0.3) : null,
             child: InkWell(
                 onTap: onSelectRow,
                 child: Column(

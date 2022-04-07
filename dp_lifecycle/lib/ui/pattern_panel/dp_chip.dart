@@ -5,7 +5,7 @@ class DPChip extends StatelessWidget {
   final DesignPattern designPattern;
   final bool isSelected;
 
-  DPChip(this.designPattern, {Key? key, this.isSelected = false})
+  const DPChip(this.designPattern, {Key? key, this.isSelected = false})
       : super(key: key);
 
   @override

@@ -36,10 +36,18 @@ class _PatternRow extends State<PatternRow> {
     });
   }
 
+  bool _isSelected() {
+    if (fileController.selectedPattern == null) {
+      return false;
+    }
+    return fileController.selectedPattern!.value == patternInstance;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      PatternCard(patternInstance, isOpen, onToggleDropdown, onSelectRow),
+      PatternCard(patternInstance, isOpen, _isSelected(), onToggleDropdown,
+          onSelectRow),
       PatternTimeline(patternInstance, isOpen)
     ]);
   }

@@ -71,7 +71,11 @@ class TimelineController extends GetxController {
 
   List<FileEditor> getFiles() {
     if (selectedPattern == null) {
-      return [FileEditor(code: 'No Selected Pattern Instance')];
+      return [
+        FileEditor(
+            code:
+                'Please Select a Pattern Instance Card to view it\'s code contents.')
+      ];
     }
     List<FileEditor>? ans =
         selectedPattern!.value.getFilesAtCommit(previewMarker.value);
@@ -81,7 +85,7 @@ class TimelineController extends GetxController {
 
   String getPinotInfo() {
     if (selectedPattern == null) {
-      return "No available information for this commit.";
+      return "Please Select a Pattern Instance Card to view it's Pinot Information";
     }
     if (commits[previewMarker.value]
         .pinotData
@@ -91,7 +95,7 @@ class TimelineController extends GetxController {
           .pinotData
           .pinotData[selectedPattern!.value.name]!;
     }
-    return "No Pinot data exists.";
+    return "No Pinot data exists at this commit.";
   }
 
   Commit getCommit() {

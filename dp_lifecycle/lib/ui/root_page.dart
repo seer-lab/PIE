@@ -54,7 +54,24 @@ class RootPage extends StatelessWidget {
                         height: 20,
                       ),
                       const Text(
-                        "The Timeline",
+                        "What is this?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                      ),
+                      Text(
+                          '''PIE (Pattern Instance Explorer)! a tool for exploring & visualizing the 
+life cycle of design patterns in open source Java projects. Using this tool we hope to 
+learn why a pattern may have broke, morphed or changed all together. Below we will explain
+parts of the tool to get you started'''
+                              .replaceAll('\n', '')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "A Pattern Instance",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -65,14 +82,50 @@ class RootPage extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                          '''The timeline is located at the bottom, with the pattern instance
-to its left. A pattern instance is single pattern distinguished by its
-design pattern and the files associated with it. Clicking the drop down
-arrow will reveal those files. The related timeline is adjacently placed on
-the right. The first timeline indicates the commits where the pattern was 
-detected. The others are related to the files associated with the pattern. A change in 
-colour denotes a modification and no colour indicates the file does not exist. '''
+                          '''We describe a pattern instance as a set of files that 
+meet the criteria of a particular design pattern. Pattern instances have cards on the 
+bottom left. You select the pattern chips to filter between different design patterns.
+Additionally, click the drop down arrow will reveal it's files!'''
                               .replaceAll('\n', '')),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Image.asset('assets/images/exp1.png'),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "The Timeline",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text('''The timeline is adjacently placed on
+the right of the pattern instance cards. The first timeline indicates the commits where the pattern was 
+detected. The others are related to the files associated with the pattern. A change in 
+colour denotes a modification and no colour indicates the file does not exist.'''
+                          .replaceAll('\n', '')),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Image.asset('assets/images/exp2.png'),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text('''If you need
+to zoom in, don't be afraid to adjust the blue handles at the ends of the top yellow bar.
+Moving them closer together will zoom into the timeline, and you can navigate across by 
+dragging the center yellow bar. '''
+                          .replaceAll('\n', '')),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Image.asset('assets/images/timeline_zooming.gif'),
                       const SizedBox(
                         height: 20,
                       ),
@@ -90,7 +143,7 @@ colour denotes a modification and no colour indicates the file does not exist. '
                       Text(
                           '''The Info Panel is the panel to the right side of the code viewer.
 The panel indicates key information like commit data and relevant pinot information. When a 
-pattern is selected (by clicking on it on the bottom left panel), the pinot information will
+pattern instance is selected, the pinot information will
 be updated. By clicking on the dark grey area with the timeline markers you can move the red
 marker. Moving the red marker will also update this information.'''
                               .replaceAll('\n', '')),
