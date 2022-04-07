@@ -106,7 +106,8 @@ Additionally, click the drop down arrow will reveal it's files!'''
                         height: 10,
                       ),
                       Text('''The timeline is adjacently placed on
-the right of the pattern instance cards. The first timeline indicates the commits where the pattern was 
+the right of the pattern instance cards. The timeline is read from left to right, from the 
+project's inception to its latest commit. The first timeline indicates the commits where the pattern was 
 detected. The others are related to the files associated with the pattern. A change in 
 colour denotes a modification and no colour indicates the file does not exist.'''
                           .replaceAll('\n', '')),
