@@ -1,4 +1,5 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -20,7 +21,7 @@ class _TimelinePreview extends State<TimelinePreview> {
   @override
   Widget build(BuildContext context) {
     TimelineController controller = Get.find<TimelineController>();
-    double maxWidth = MediaQuery.of(context).size.width - 600;
+    double maxWidth = Get.find<UIController>().getTimelineWidth(context);
     if (range == -1) {
       range = maxWidth - 25;
     }

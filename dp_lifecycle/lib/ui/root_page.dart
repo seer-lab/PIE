@@ -1,16 +1,19 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/ui/file_view/file_view.dart';
 import 'package:dp_lifecycle/ui/file_view/info_panel.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/pattern_panel.dart';
 import 'package:dp_lifecycle/ui/project_select/project_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
 class RootPage extends StatelessWidget {
   const RootPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final UIController uiController = Get.find<UIController>();
     return GetBuilder<TimelineController>(
         builder: (c) => Scaffold(
               appBar: AppBar(
@@ -28,7 +31,7 @@ class RootPage extends StatelessWidget {
                 children: [
                   SizedBox(
                     child: Row(children: const [FileView(), InfoPanel()]),
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: uiController.getCentre(context),
                   ),
                   const PatternPanel()
                 ],

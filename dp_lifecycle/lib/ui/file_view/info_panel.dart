@@ -1,6 +1,8 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
 class InfoPanel extends StatefulWidget {
   const InfoPanel({Key? key}) : super(key: key);
@@ -44,17 +46,18 @@ class _InfoPanel extends State<InfoPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final UIController uiController = Get.find<UIController>();
     return GetBuilder<TimelineController>(
         builder: (c) => c.commits.isEmpty
             ? Container(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.width * 0.2,
+                height: uiController.getCentre(context),
+                width: uiController.getInfoPanelWidth(context),
                 child: const Center(child: CircularProgressIndicator()),
                 color: Theme.of(context).backgroundColor,
               )
             : Container(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.width * 0.2,
+                height: uiController.getCentre(context),
+                width: uiController.getInfoPanelWidth(context),
                 color: Theme.of(context).cardColor,
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 10.0),

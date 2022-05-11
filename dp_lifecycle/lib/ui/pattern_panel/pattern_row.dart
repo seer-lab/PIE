@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/pattern_card.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/pattern_timeline.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class PatternRow extends StatefulWidget {
   final PatternInstance pattern;
@@ -16,7 +16,6 @@ class PatternRow extends StatefulWidget {
 class _PatternRow extends State<PatternRow> {
   bool isOpen = false;
   late PatternInstance patternInstance;
-  TimelineController fileController = Get.find<TimelineController>();
 
   @override
   void initState() {
@@ -24,14 +23,16 @@ class _PatternRow extends State<PatternRow> {
     patternInstance = widget.pattern;
   }
 
-  void onSelectRow() async {
+  void onSelectRow(TimelineController fileController) async {
     if (fileController.isPerformingGitOperation) {
       return;
     }
     fileController.updateSelectedPattern(null);
     patternInstance.fileHistory ??=
         await fileController.getFileHistory(patternInstance);
-    fileController.updateSelectedPattern(patternInstance);
+    setState(() {
+      fileController.updateSelectedPattern(patternInstance);
+    });
   }
 
   void onToggleDropdown() {
@@ -40,7 +41,7 @@ class _PatternRow extends State<PatternRow> {
     });
   }
 
-  bool _isSelected() {
+  bool _isSelected(TimelineController fileController) {
     if (fileController.selectedPattern == null) {
       return false;
     }
@@ -49,10 +50,11 @@ class _PatternRow extends State<PatternRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      PatternCard(patternInstance, isOpen, _isSelected(), onToggleDropdown,
-          onSelectRow),
-      PatternTimeline(patternInstance, isOpen)
-    ]);
+    return GetBuilder<TimelineController>(
+        builder: (c) => Row(children: [
+              PatternCard(patternInstance, isOpen, _isSelected(c),
+                  onToggleDropdown, () => onSelectRow(c)),
+              PatternTimeline(patternInstance, isOpen)
+            ]));
   }
 }

@@ -1,6 +1,8 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
 class TimelineMarker extends StatefulWidget {
   const TimelineMarker({Key? key}) : super(key: key);
@@ -10,13 +12,10 @@ class TimelineMarker extends StatefulWidget {
 }
 
 class _TimelineMarker extends State<TimelineMarker> {
+  final UIController uiController = Get.find<UIController>();
   int maxMarkers = 20;
   bool previewMarkerDown = false;
   double previewPosition = 0;
-
-  double interpolateScreenPos(double position, BuildContext context) {
-    return (MediaQuery.of(context).size.width - 650) * position - 25;
-  }
 
   Widget _previewMarker(
       double height, BuildContext context, TimelineController c) {
@@ -41,7 +40,7 @@ class _TimelineMarker extends State<TimelineMarker> {
           },
           onPointerMove: (e) {
             double percent =
-                e.delta.dx / (MediaQuery.of(context).size.width - 650);
+                e.delta.dx / uiController.getActiveTimelineWidth(context);
             int commit = ((c.previewEnd.value - c.previewStart.value) * percent)
                     .round() +
                 c.previewMarker.value;
@@ -105,7 +104,9 @@ class _TimelineMarker extends State<TimelineMarker> {
     return markerPositions
         .map((e) => Positioned(
               child: _marker(e),
-              left: interpolateScreenPos(c.normalizedPosition(e), context) + 25,
+              left: uiController.interpolateScreenPos(
+                      c.normalizedPosition(e), context) +
+                  25,
               top: 0,
             ))
         .toList();
@@ -115,7 +116,7 @@ class _TimelineMarker extends State<TimelineMarker> {
   Widget build(BuildContext context) {
     return Container(
         height: 40,
-        width: MediaQuery.of(context).size.width - 600,
+        width: uiController.getTimelineWidth(context),
         color: const Color.fromARGB(255, 133, 133, 133),
         child: GetBuilder<TimelineController>(
           builder: ((c) => Stack(
@@ -126,12 +127,12 @@ class _TimelineMarker extends State<TimelineMarker> {
                         child: Listener(
                           child: Container(
                             height: 30,
-                            width: MediaQuery.of(context).size.width - 650,
+                            width: uiController.getActiveTimelineWidth(context),
                             color: const Color.fromARGB(255, 71, 71, 71),
                           ),
                           onPointerUp: (e) {
                             double percent = e.localPosition.dx /
-                                (MediaQuery.of(context).size.width - 650);
+                                uiController.getActiveTimelineWidth(context);
                             int commit =
                                 ((c.previewEnd.value - c.previewStart.value) *
                                             percent)
@@ -144,14 +145,16 @@ class _TimelineMarker extends State<TimelineMarker> {
                         left: 25),
                     Positioned(
                       child: _previewMarker(
-                          MediaQuery.of(context).size.height / 2 - 50,
+                          uiController.getCentre(context) -
+                              uiController.timelineControllerHeight,
                           context,
                           c),
-                      left: interpolateScreenPos(
+                      left: uiController.interpolateScreenPos(
                               c.normalizedPosition(c.previewMarker.value),
                               context) +
                           40,
-                      height: MediaQuery.of(context).size.height / 2 - 50,
+                      height: uiController.getCentre(context) -
+                          uiController.timelineControllerHeight,
                     ),
                     ..._generateMarkers(context, c)
                   ])),

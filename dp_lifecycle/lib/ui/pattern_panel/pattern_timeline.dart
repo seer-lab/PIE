@@ -1,8 +1,10 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/timeline/timeline_intervals.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
 class PatternTimeline extends GetView<TimelineController> {
   final PatternInstance pattern;
@@ -24,9 +26,10 @@ class PatternTimeline extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    final UIController uiController = Get.find<UIController>();
     return Container(
       height: 50 + 50.0 * (isOpen ? pattern.files.length : 0),
-      width: MediaQuery.of(context).size.width - 600,
+      width: uiController.getTimelineWidth(context),
       child: Center(
           child: Column(children: [
         TimelineInterval(pattern.pattern, pattern.getPatternInterval(),

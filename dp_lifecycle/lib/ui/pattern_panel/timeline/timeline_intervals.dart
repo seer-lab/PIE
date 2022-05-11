@@ -1,9 +1,12 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:dp_lifecycle/struct/interval.dart' as g;
 import 'dart:math' as math;
+
+import 'package:get/instance_manager.dart';
 
 class TimelineInterval extends GetView<TimelineController> {
   final List<g.Interval> intervals;
@@ -88,9 +91,10 @@ class TimelineInterval extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
+    final UIController uiController = Get.find<UIController>();
     return SizedBox(
         height: 50,
-        width: MediaQuery.of(context).size.width - 600,
+        width: uiController.getTimelineWidth(context),
         child: Stack(children: [
           ..._generateIntervals(context),
           ..._generateBreakIntervals(context)
