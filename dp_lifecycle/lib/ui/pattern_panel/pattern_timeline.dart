@@ -13,23 +13,13 @@ class PatternTimeline extends GetView<TimelineController> {
   List<Widget> getFileTimelines() {
     List<Widget> timelines = [];
     if (!isOpen) return timelines;
-    pattern.files.forEach((element) {
+    for (String element in pattern.files) {
       timelines.add(TimelineInterval(
           pattern.pattern,
           pattern.getFileInterval(element),
           pattern.getPatternBreaks(filename: element)));
-    });
-    return timelines;
-  }
-
-  List<BoxShadow>? _shadow() {
-    if (controller.selectedPattern != null) {
-      if (controller.selectedPattern!.value == pattern) {
-        return [
-          BoxShadow(color: Colors.white, spreadRadius: 10, blurRadius: 20)
-        ];
-      }
     }
+    return timelines;
   }
 
   @override
@@ -38,11 +28,11 @@ class PatternTimeline extends GetView<TimelineController> {
       height: 50 + 50.0 * (isOpen ? pattern.files.length : 0),
       width: MediaQuery.of(context).size.width - 600,
       child: Center(
-          child: Column(
-              children: [
+          child: Column(children: [
         TimelineInterval(pattern.pattern, pattern.getPatternInterval(),
-            pattern.getPatternBreaks())
-      ]..addAll(getFileTimelines()))),
+            pattern.getPatternBreaks()),
+        ...getFileTimelines()
+      ])),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: const Color.fromARGB(255, 27, 27, 27),

@@ -18,7 +18,7 @@ class PatternCard extends StatelessWidget {
     if (!isOpen) {
       return fileTitles;
     }
-    pattern.files.forEach((element) {
+    for (String element in pattern.files) {
       fileTitles.add(Container(
         height: 50,
         padding: const EdgeInsets.all(10.0),
@@ -27,7 +27,7 @@ class PatternCard extends StatelessWidget {
           style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
         ),
       ));
-    });
+    }
     return fileTitles;
   }
 
@@ -75,7 +75,8 @@ class PatternCard extends StatelessWidget {
                             ),
                           ],
                         )),
-                  ]..addAll(getRelatedFiles()),
+                    ...getRelatedFiles()
+                  ],
                 ))));
   }
 }

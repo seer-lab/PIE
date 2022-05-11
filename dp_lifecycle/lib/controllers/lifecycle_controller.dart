@@ -1,9 +1,7 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/providers/lifecycle_provider.dart';
-import 'package:dp_lifecycle/struct/interval.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get.dart';
 
 class LifecycleController extends GetxController

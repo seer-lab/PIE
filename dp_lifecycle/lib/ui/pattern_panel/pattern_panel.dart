@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter/material.dart';
 
 class PatternPanel extends GetView<LifecycleController> {
+  const PatternPanel({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,14 +16,14 @@ class PatternPanel extends GetView<LifecycleController> {
           Positioned(
               bottom: 0,
               child: controller.obx(
-                  (state) => Container(
+                  (state) => SizedBox(
                       height: MediaQuery.of(context).size.height / 2 - 120,
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                           itemCount: state!.length,
                           itemBuilder: (context, index) =>
                               PatternRow(state[index]))),
-                  onLoading: Container(
+                  onLoading: SizedBox(
                     height: MediaQuery.of(context).size.height / 2 - 120,
                     child: const Center(child: CircularProgressIndicator()),
                   ))),
@@ -30,7 +31,7 @@ class PatternPanel extends GetView<LifecycleController> {
             top: 0,
             child: SizedBox(
               height: 60,
-              child: Row(children: [PanelHeader(), Timeline()]),
+              child: Row(children: const [PanelHeader(), Timeline()]),
             ),
           ),
         ],

@@ -45,24 +45,24 @@ class PatternInstance {
 
   DesignPattern getDesignPattern() {
     DesignPattern ans = DesignPattern.na;
-    intervals.forEach((element) {
+    for (Interval element in intervals) {
       if (element.modificationCommit == 'Pattern') {
         ans = stringToDP(element.data['pattern']);
-        return;
+        break;
       }
-    });
+    }
     return ans;
   }
 
   Map<String, String> findCommitToFiles(int commit) {
     Map<String, String> ans = {};
-    intervals.forEach((element) {
+    for (Interval element in intervals) {
       if (element.end > commit &&
           element.start < commit &&
           !element.isPattern) {
         ans[element.fileName] = element.modificationCommit;
       }
-    });
+    }
     return ans;
   }
 
@@ -71,24 +71,24 @@ class PatternInstance {
     List<FileEditor> ans = [];
 
     Map<String, String> targets = findCommitToFiles(commit);
-    targets.entries.forEach((element) {
+    for (MapEntry<String, String> element in targets.entries) {
       String? content = fileHistory!.getFile(element.value, element.key);
       if (content != null) {
         ans.add(FileEditor(name: element.key, language: 'java', code: content));
       }
-    });
+    }
     return ans;
   }
 
   Interval? getIntervalAtCommit(int commit) {
     Interval? ans;
-    intervals.forEach((element) {
+    for (Interval element in intervals) {
       if (element.end > commit &&
           element.start < commit &&
           !element.isPattern) {
         ans = element;
       }
-    });
+    }
     return ans;
   }
 }

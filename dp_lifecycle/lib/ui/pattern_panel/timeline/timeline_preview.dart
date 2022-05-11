@@ -1,9 +1,11 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
 class TimelinePreview extends StatefulWidget {
+  const TimelinePreview({Key? key}) : super(key: key);
+
+  @override
   _TimelinePreview createState() => _TimelinePreview();
 }
 

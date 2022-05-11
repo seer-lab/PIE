@@ -7,6 +7,8 @@ import 'package:get/instance_manager.dart';
 
 class ProjectSelection extends StatefulWidget {
   const ProjectSelection({Key? key}) : super(key: key);
+
+  @override
   _ProjectSelection createState() => _ProjectSelection();
 }
 
@@ -15,8 +17,10 @@ class _ProjectSelection extends State<ProjectSelection> {
   TimelineController controller = Get.find<TimelineController>();
   String selectedProjectName = 'awt';
   bool popped = false;
+
   @override
   void initState() {
+    super.initState();
     controller.getProjects().then((value) => setState(() => projects = value));
   }
 
@@ -45,8 +49,7 @@ class _ProjectSelection extends State<ProjectSelection> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return ListView(
-          children: [
+      return ListView(children: [
         const SizedBox(
           height: 20,
         ),
@@ -60,9 +63,10 @@ class _ProjectSelection extends State<ProjectSelection> {
         ),
         const SizedBox(
           height: 30,
-        )
-      ]..addAll(projects!.map((e) => ProjectCard(e, onSelectProject,
-              e.name == controller.selectedProject.value.name))));
+        ),
+        ...projects!.map((e) => ProjectCard(e, onSelectProject,
+            e.name == controller.selectedProject.value.name))
+      ]);
     }
   }
 }

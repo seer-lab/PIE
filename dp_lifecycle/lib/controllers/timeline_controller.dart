@@ -4,9 +4,8 @@ import 'package:dp_lifecycle/struct/commit.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/state_manager.dart';
-import 'package:dp_lifecycle/struct/interval.dart';
 
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
@@ -29,7 +28,9 @@ class TimelineController extends GetxController {
       previewMarker = 1.obs;
       update();
     }, onError: (err) {
-      print(err);
+      if (kDebugMode) {
+        print(err);
+      }
     });
   }
 
@@ -41,8 +42,9 @@ class TimelineController extends GetxController {
   }
 
   Future<FileHistory> getFileHistory(PatternInstance instance) async {
-    while (isPerformingGitOperation)
+    while (isPerformingGitOperation) {
       Future.delayed(const Duration(seconds: 10));
+    }
     isPerformingGitOperation = true;
     FileHistory history = await _provider.getFileHistory(
         selectedProject.value, instance.pattern, instance.name);
@@ -122,10 +124,11 @@ class TimelineController extends GetxController {
   }
 
   void updateSelectedPattern(PatternInstance? instance) {
-    if (instance == null)
+    if (instance == null) {
       selectedPattern = null;
-    else
+    } else {
       selectedPattern = Rx<PatternInstance>(instance);
+    }
     update();
   }
 }

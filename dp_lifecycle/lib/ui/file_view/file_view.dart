@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class FileView extends StatefulWidget {
+  const FileView({Key? key}) : super(key: key);
+
+  @override
   _FileView createState() => _FileView();
 }
 

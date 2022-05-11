@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Design Pattern Lifecycle',
       theme: ThemeData.dark(),
       initialBinding: LifecycleBindings(),
-      home: RootPage(),
+      home: const RootPage(),
       debugShowCheckedModeBanner: false,
     );
   }

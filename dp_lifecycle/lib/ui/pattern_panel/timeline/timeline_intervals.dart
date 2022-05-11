@@ -9,9 +9,9 @@ class TimelineInterval extends GetView<TimelineController> {
   final List<g.Interval> intervals;
   final List<g.Interval> annotations;
   final DesignPattern designPattern;
-  Map<String, Color> colourMap = {};
-  List<Color> availableColours = [];
-  int colourIndex = 0;
+  final Map<String, Color> colourMap = {};
+  final List<Color> availableColours = [];
+
   TimelineInterval(this.designPattern, this.intervals, this.annotations,
       {Key? key})
       : super(key: key) {
@@ -24,6 +24,7 @@ class TimelineInterval extends GetView<TimelineController> {
           .toColor());
     }
   }
+  int colourIndex = 0;
 
   double interpolateScreenPos(double position, BuildContext context) {
     if (position < 0) return 0;
@@ -89,13 +90,12 @@ class TimelineInterval extends GetView<TimelineController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         height: 50,
         width: MediaQuery.of(context).size.width - 600,
-        child: Stack(
-          children: []
-            ..addAll(_generateIntervals(context))
-            ..addAll(_generateBreakIntervals(context)),
-        ));
+        child: Stack(children: [
+          ..._generateIntervals(context),
+          ..._generateBreakIntervals(context)
+        ]));
   }
 }

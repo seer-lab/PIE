@@ -8,6 +8,8 @@ import 'package:get/instance_manager.dart';
 class PatternRow extends StatefulWidget {
   final PatternInstance pattern;
   const PatternRow(this.pattern, {Key? key}) : super(key: key);
+
+  @override
   _PatternRow createState() => _PatternRow();
 }
 
@@ -15,8 +17,10 @@ class _PatternRow extends State<PatternRow> {
   bool isOpen = false;
   late PatternInstance patternInstance;
   TimelineController fileController = Get.find<TimelineController>();
+
   @override
   void initState() {
+    super.initState();
     patternInstance = widget.pattern;
   }
 

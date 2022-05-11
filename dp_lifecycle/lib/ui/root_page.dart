@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class RootPage extends StatelessWidget {
+  const RootPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
@@ -24,11 +26,11 @@ class RootPage extends StatelessWidget {
               ),
               body: Column(
                 children: [
-                  Container(
-                    child: Row(children: [FileView(), InfoPanel()]),
+                  SizedBox(
+                    child: Row(children: const [FileView(), InfoPanel()]),
                     height: MediaQuery.of(context).size.height / 2,
                   ),
-                  PatternPanel()
+                  const PatternPanel()
                 ],
               ),
               drawer: const Drawer(
