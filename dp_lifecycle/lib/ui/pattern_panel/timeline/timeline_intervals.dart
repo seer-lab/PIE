@@ -24,7 +24,6 @@ class TimelineInterval extends GetView<TimelineController> {
           .toColor());
     }
   }
-  int colourIndex = 0;
 
   double interpolateScreenPos(double position, BuildContext context) {
     if (position < 0) return 0;
@@ -32,15 +31,12 @@ class TimelineInterval extends GetView<TimelineController> {
     return (MediaQuery.of(context).size.width - 650) * position;
   }
 
-  Color _getColor(g.Interval interval) {
+  Color _getColor(g.Interval interval, int index) {
     if (colourMap.containsKey(interval.modificationCommit)) {
       return colourMap[interval.modificationCommit]!;
     }
-    colourMap[interval.modificationCommit] = availableColours[colourIndex];
-    colourIndex++;
-    if (colourIndex >= availableColours.length) {
-      colourIndex = 0;
-    }
+    colourMap[interval.modificationCommit] = availableColours[
+        index - (index ~/ availableColours.length) * availableColours.length];
     return colourMap[interval.modificationCommit]!;
   }
 
@@ -72,18 +68,20 @@ class TimelineInterval extends GetView<TimelineController> {
 
   List<Widget> _generateIntervals(BuildContext context) {
     return intervals
+        .asMap()
+        .entries
         .map((e) => GetBuilder<TimelineController>(
             builder: ((c) => Positioned(
                 left: interpolateScreenPos(
-                        c.normalizedPosition(e.start), context) +
+                        c.normalizedPosition(e.value.start), context) +
                     25,
                 child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     height: 40,
-                    color: _getColor(e),
+                    color: _getColor(e.value, e.key),
                     width: (interpolateScreenPos(
-                        controller.normalizedPosition(e.end) -
-                            controller.normalizedPosition(e.start),
+                        controller.normalizedPosition(e.value.end) -
+                            controller.normalizedPosition(e.value.start),
                         context)))))))
         .toList();
   }

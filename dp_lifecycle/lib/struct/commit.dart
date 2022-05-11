@@ -1,4 +1,4 @@
-import 'package:dp_lifecycle/struct/PinotData.dart';
+import 'package:dp_lifecycle/struct/pinot_data.dart';
 import 'package:dp_lifecycle/struct/pattern_locations.dart';
 
 class Commit {
