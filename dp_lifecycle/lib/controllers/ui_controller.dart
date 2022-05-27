@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 
 class UIController extends GetxController {
-  RxDouble _centre = 2.0.obs,
+  final RxDouble _centre = 2.0.obs,
       _dpiSize = 600.0.obs,
       _codeSize = 0.8.obs,
       _infoPanelSize = 0.2.obs,

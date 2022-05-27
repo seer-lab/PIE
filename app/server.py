@@ -47,7 +47,7 @@ def lifecycle():
   project_name = request.args.get('project')
   patterns = request.args.get('pattern')
   if patterns == None: 
-    patterns = ['Flyweight']
+    patterns = ['Strategy']
   else: 
     patterns = patterns.split(',')
   return get_lifecycles(projects[project_name], patterns)

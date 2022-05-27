@@ -6,7 +6,7 @@ from lifecycle_analyzer import LifecycleAnalyzer
 import subprocess
 
 
-mongo_uri ='mongodb://localhost:27018'
+mongo_uri ='mongodb://localhost:27017'
 if 'IS_DOCKER' in os.environ:
   mongo_uri ='mongodb://dp_mongodb:27017'
 
@@ -81,7 +81,7 @@ def get_related_files(project, pattern_instance):
   return ans
 
 def get_files_at_commit(project, commit): 
-  proc = subprocess.run(["git -C '{}' ls-tree --name-only -r {}".format(projectp['location'], commit)], shell=True, capture_output=True, text=True)
+  proc = subprocess.run(["git -C '{}' ls-tree --name-only -r {}".format(project['location'], commit)], shell=True, capture_output=True, text=True)
   output = proc.stdout.split('\n')
   return [str(x).split('/')[-1].replace('.java', '') for x in filter(lambda x: '.java' in x, output)]
 

@@ -24,9 +24,6 @@ class _PatternRow extends State<PatternRow> {
   }
 
   void onSelectRow(TimelineController fileController) async {
-    if (fileController.isPerformingGitOperation) {
-      return;
-    }
     fileController.updateSelectedPattern(null);
     patternInstance.fileHistory ??=
         await fileController.getFileHistory(patternInstance);

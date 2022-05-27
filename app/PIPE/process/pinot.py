@@ -43,16 +43,17 @@ details = 'details'
 path = 'path'
 
 def scan_patterns(files, base_path):
+  for f in files: 
+    print(f)
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
-  #print(output)
+  print(output)
   if proc.returncode not in [0, 1]: 
       return None, {}
   values = {}
   pattern_locations = {}
 
   data = output.split('\n')
-  print(data)
   seperator = data.index('Pattern Instance Statistics:')
 
   locations = data[:seperator]

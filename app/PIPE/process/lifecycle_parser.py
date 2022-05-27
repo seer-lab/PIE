@@ -1,13 +1,18 @@
 import pandas as pd
 import altair as alt
-import analysis_tools
 
 class LifecycleParser: 
   def __init__(self, documents):
     self.documents = documents
     self.chart_color = {}
     self.file_list_to_set()
-  
+
+  def get_file_names(self, file_list): 
+    return set(str(x).split('/')[-1].replace('.java', '') for x in file_list)
+
+  def file_locations_to_name(self, file_locations, pattern): 
+    return '-'.join([path.split('/')[-1] for path in sorted(file_locations)]).replace('.java','') + '-' + pattern[:2]
+    
   def get_documents(self): 
     return self.documents
 
@@ -24,39 +29,9 @@ class LifecycleParser:
       for x in self.documents: 
           if title in x['pattern_locations']: 
               for instance in x['pattern_locations'][title]: 
-                  instance_name = analysis_tools.file_locations_to_name(instance['path'], title)
+                  instance_name = self.file_locations_to_name(instance['path'], title)
                   pattern_instances.add(instance_name)
     return pattern_instances
-
-  # def get_intervals(self, fs):
-  #   intervals = []
-  #   start = {}
-  #   modification= {}
-  #   for x in fs: 
-  #     start[x] = -1
-  #   for document, commit_number in zip(self.documents, range(len(self.documents))): 
-  #     for f in fs:
-  #       exists, output = f(document)
-  #       if exists:
-  #         if start[f] == -1: 
-  #           start[f] = commit_number
-  #           modification[f] = output['modification']
-  #         elif modification[f] != output['modification'] and start[f] != -1:
-  #           tempModification = output['modification']
-  #           output.update({'start': start[f], 'end': commit_number})
-  #           output['modification'] = modification[f]
-  #           start[f] = commit_number
-  #           intervals.append(output)
-  #           modification[f] = tempModification
-  #       elif start[f] != -1: 
-  #         output.update({'start': start[f], 'end': commit_number})
-  #         intervals.append(output)
-  #         start[f] = -1
-  #       if commit_number == len(self.documents) - 1: 
-  #         if start[f] != -1: 
-  #           output.update({'start': start[f], 'end': commit_number})
-  #           intervals.append(output)
-  #   return intervals
 
   def is_shared_keys_equal(a, b): 
     shared_keys = set(a).intersection(b); 
@@ -101,7 +76,7 @@ class LifecycleParser:
     def f(document):
       if pattern in document['pattern_locations']: 
         for instance in document['pattern_locations'][pattern]: 
-          if pattern_name == analysis_tools.file_locations_to_name(instance['path'], pattern):
+          if pattern_name == self.file_locations_to_name(instance['path'], pattern):
             return True, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern }
       return False, {'instance': pattern_name + ' Pattern', 'modification': 'Pattern', 'pattern': pattern}
     return f
@@ -132,7 +107,7 @@ class LifecycleParser:
       self.chart_color[file] = 'a'
 
     def f(document):
-      if file in analysis_tools.get_file_names(document['modified_files']):
+      if file in self.get_file_names(document['modified_files']):
         self.chart_color[file] = document['_id']
       return False, {'instance': file + ' modified'} 
     return f

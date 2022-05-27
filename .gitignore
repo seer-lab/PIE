@@ -1,5 +1,6 @@
 __pycache__
 .ipynb_checkpoints
-*.json
+# *.json
 test_bench/
 pipeline.sh
+temp_project

@@ -13,7 +13,6 @@ class TimelineController extends GetxController {
   RxInt previewMarker = 0.obs;
 
   Rx<PatternInstance>? selectedPattern;
-  bool isPerformingGitOperation = false;
   Rx<Project> selectedProject =
       Rx<Project>(Project(projectStatus: ProjectStatus.ready, name: 'awt'));
 
@@ -42,13 +41,8 @@ class TimelineController extends GetxController {
   }
 
   Future<FileHistory> getFileHistory(PatternInstance instance) async {
-    while (isPerformingGitOperation) {
-      Future.delayed(const Duration(seconds: 10));
-    }
-    isPerformingGitOperation = true;
     FileHistory history = await _provider.getFileHistory(
         selectedProject.value, instance.pattern, instance.name);
-    isPerformingGitOperation = false;
     return history;
   }
 
