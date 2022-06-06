@@ -43,6 +43,8 @@ details = 'details'
 path = 'path'
 
 def scan_patterns(files, base_path):
+  proc = subprocess.run(['ls'], capture_output=True, text=True)
+  print(proc.stdout)
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
   #print(output)

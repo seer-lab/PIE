@@ -1,4 +1,7 @@
+import imp
 import subprocess
+import os
+import PIPE.CONFIG as CONFIG
 
 available_patterns = [
   'Abstract Factory', 
@@ -43,11 +46,9 @@ details = 'details'
 path = 'path'
 
 def scan_patterns(files, base_path):
-  for f in files: 
-    print(f)
+  os.environ['CLASSPATH'] = CONFIG.PINOT_RT
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
-  print(output)
   if proc.returncode not in [0, 1]: 
       return None, {}
   values = {}

@@ -1,6 +1,6 @@
 from PIPE.project import Project
 from PIPE import CONFIG, database as db
-from lifecycle_parser import LifecycleParser
+from .lifecycle_parser import LifecycleParser
 
 
 def hash_to_list(items, metadata = {}): 

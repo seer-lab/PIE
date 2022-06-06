@@ -9,7 +9,7 @@ from .project_intervaler import interval_project
 from .project_diffs import store_modifications
 from PIPE import database as db 
 
-def process_project(url):
+def process_project(url, force_mining=False, force_intervaling=False, force_diffing=False):
   
   path = CONFIG.PROJECT_PATH
 
@@ -36,9 +36,12 @@ def process_project(url):
     print('Creating Project:', project_name)
     project = Project.new_project(project_name)
     db.add_entry('project_status', project.to_json())
+  
+
 
   while not project.is_complete() and project.status != CONFIG.PROJECT_STATUS_ERROR: 
     project = delegate_process(project, gr)
+    db.update_entry('project_status', project.to_json())
   
   project.status = CONFIG.PROJECT_STATUS_READY
   db.update_entry('project_status', project.to_json())
@@ -56,7 +59,7 @@ def delegate_process(project: Project, git: Git):
     success = interval_project(project)
   elif process == CONFIG.FILE_DIFFS:
     print('Finding Differences in Files')
-    success = store_modifications(project)
+    success = store_modifications(project, git)
 
 
   if success: 

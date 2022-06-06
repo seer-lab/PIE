@@ -1,9 +1,9 @@
 from PIPE.project import Project
 from PIPE import CONFIG, database as db
-from pydriller import Repository
+from pydriller import Git
 
-def get_file(repo: Repository, commit, filename): 
-  data = repo.git.get_commit(commit)
+def get_file(git: Git, commit, filename): 
+  data = git.get_commit(commit)
   if data == None or filename == None: 
     return 'Failed to fetch modification for commit ' + commit
   for file in data.modified_files: 
@@ -20,7 +20,7 @@ def get_file(repo: Repository, commit, filename):
       return '\n'.join(source)
   return ''
 
-def store_modifications(project: Project, repo: Repository): 
+def store_modifications(project: Project, git: Git):
   files_processed = set()
   pattern_lifecycles = db.get_lifecycles(project, CONFIG.DESIGN_PATTERNS)
   collection_name = project._name + CONFIG.FILE_CHANGES_SUFFIX
@@ -37,7 +37,7 @@ def store_modifications(project: Project, repo: Repository):
         if not commit in temp: 
           temp[commit] = {}
         if not filename in temp[commit]: 
-          temp[commit][filename] = get_file(project, commit, filename)
+          temp[commit][filename] = get_file(git, commit, filename)
     
   for filename in filenames: 
     ans = {'_id': filename}

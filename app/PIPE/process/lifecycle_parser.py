@@ -33,8 +33,8 @@ class LifecycleParser:
                   pattern_instances.add(instance_name)
     return pattern_instances
 
-  def is_shared_keys_equal(a, b): 
-    shared_keys = set(a).intersection(b); 
+  def is_shared_keys_equal(self, a, b):
+    shared_keys = set(a).intersection(b)
     for key in shared_keys: 
       if a[key] != b[key]: 
         return False
@@ -54,13 +54,13 @@ class LifecycleParser:
             #start interval
             start[f] = output 
             start[f].update({'start': commit_number})
-          elif not self.is_shared_keys_equal(start[f], output[f]): 
+          elif not self.is_shared_keys_equal(start[f], output): 
             # save interval
             start[f].update({'end': commit_number-1})
             intervals.append(start[f])
 
             #start new interval
-            start[f] = output[f]
+            start[f] = output
             start[f].update({'start': commit_number})
         elif start[f] != None: 
           # save interval
@@ -70,6 +70,7 @@ class LifecycleParser:
           # save interval
           start[f].update({'end': commit_number})
           intervals.append(start[f])
+    return intervals
 
 
   def document_contains_pattern(self, pattern_name, pattern):

@@ -9,6 +9,7 @@ PROJECT_STATUS_QUEUED = 'queued'
 PROJECT_STATUS_ERROR = 'error'
 PROJECT_STATUS_READY = 'ready'
 PROJECT_PATH = '../temp_project/'
+PINOT_RT = "../../pinot/lib/rt.jar"
 DESIGN_PATTERNS = [
   'Flyweight', 
   'Strategy', 
