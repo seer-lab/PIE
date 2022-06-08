@@ -49,6 +49,7 @@ def scan_patterns(files, base_path):
   os.environ['CLASSPATH'] = CONFIG.PINOT_RT
   proc = subprocess.run(["pinot"] + files, capture_output=True, text=True)
   output = proc.stderr 
+  
   if proc.returncode not in [0, 1]: 
       return None, {}
   values = {}

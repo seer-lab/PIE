@@ -56,7 +56,7 @@ class LifecycleParser:
             start[f].update({'start': commit_number})
           elif not self.is_shared_keys_equal(start[f], output): 
             # save interval
-            start[f].update({'end': commit_number-1})
+            start[f].update({'end': commit_number})
             intervals.append(start[f])
 
             #start new interval
@@ -64,8 +64,9 @@ class LifecycleParser:
             start[f].update({'start': commit_number})
         elif start[f] != None: 
           # save interval
-          start[f].update({'end': commit_number-1})
+          start[f].update({'end': commit_number})
           intervals.append(start[f])
+          start[f] = None
         if commit_number == len(self.documents) -1 and start[f] != None:
           # save interval
           start[f].update({'end': commit_number})

@@ -32,12 +32,29 @@ def process_project(url, force_mining=False, force_intervaling=False, force_diff
   if project_name in projects:
     print('Getting Project:', project_name)
     project = Project(project_name, projects[project_name])
+    project.status = CONFIG.PROJECT_STATUS_QUEUED
+    db.update_entry('project_status', project.to_json())
   else:
     print('Creating Project:', project_name)
     project = Project.new_project(project_name)
     db.add_entry('project_status', project.to_json())
-  
 
+
+
+  if force_mining: 
+    project.force_phase(CONFIG.MINING)
+    db.drop_collection(project._name)
+    print('Forcing Mining')
+  
+  if force_intervaling: 
+    project.force_phase(CONFIG.INTERVALING)
+    db.drop_collection(project._name + CONFIG.PATTERN_INTERVAL_SUFFIX)
+    print('Forcing Intervaling')
+
+  if force_diffing: 
+    project.force_phase(CONFIG.FILE_DIFFS)
+    db.drop_collection(project._name + CONFIG.FILE_CHANGES_SUFFIX)
+    print('Forcing File Diffing')
 
   while not project.is_complete() and project.status != CONFIG.PROJECT_STATUS_ERROR: 
     project = delegate_process(project, gr)
@@ -45,6 +62,7 @@ def process_project(url, force_mining=False, force_intervaling=False, force_diff
   
   project.status = CONFIG.PROJECT_STATUS_READY
   db.update_entry('project_status', project.to_json())
+  return project
     
 
 def delegate_process(project: Project, git: Git): 

@@ -13,8 +13,8 @@ class TimelineController extends GetxController {
   RxInt previewMarker = 0.obs;
 
   Rx<PatternInstance>? selectedPattern;
-  Rx<Project> selectedProject =
-      Rx<Project>(Project(projectStatus: ProjectStatus.ready, name: 'awt'));
+  Rx<Project> selectedProject = Rx<Project>(
+      Project(projectStatus: ProjectStatus.ready, name: 'jhotdraw'));
 
   final LifecycleProvider _provider = LifecycleProvider();
   @override

@@ -8,6 +8,7 @@ class PatternCard extends StatelessWidget {
   final PatternInstance pattern;
   final bool isOpen, isSelected;
   final VoidCallback onToggleDropdown, onSelectRow;
+  final double fileHeight = 30.0;
   const PatternCard(this.pattern, this.isOpen, this.isSelected,
       this.onToggleDropdown, this.onSelectRow,
       {Key? key})
@@ -20,8 +21,8 @@ class PatternCard extends StatelessWidget {
     }
     for (String element in pattern.files) {
       fileTitles.add(Container(
-        height: 50,
-        padding: const EdgeInsets.all(10.0),
+        height: fileHeight,
+        padding: const EdgeInsets.all(5.0),
         child: Text(
           element,
           style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
@@ -35,7 +36,7 @@ class PatternCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         width: 550,
-        height: 60 + 50.0 * (isOpen ? pattern.files.length : 0),
+        height: 60 + fileHeight * (isOpen ? pattern.files.length : 0),
         child: Card(
             color:
                 isSelected ? pattern.pattern.toColour().withOpacity(0.3) : null,

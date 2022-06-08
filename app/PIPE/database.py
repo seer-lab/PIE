@@ -1,6 +1,6 @@
 import os
 from pymongo import MongoClient
-
+import PIPE.CONFIG as CONFIG
 from PIPE.project import Project
 
 mongo_uri ='mongodb://localhost:27017'
@@ -12,17 +12,17 @@ def get_documents(project: Project):
   return [doc for doc in collection.find()]
 
 def get_lifecycles(project: Project, patterns): 
-  collection = db[project._name + '_lifecycle']
+  collection = db[project._name + CONFIG.PATTERN_INTERVAL_SUFFIX]
 
   ans = {}
-  for pattern in patterns: 
+  for pattern in patterns:
     data = collection.find({'pattern': pattern})
     for item in data: 
       ans[item['_id']] = item['items']
   return ans 
 
 def get_file_modifications(project: Project, pattern_instance): 
-  collection = db[project._name + '_modifications']
+  collection = db[project._name + CONFIG.FILE_CHANGES_SUFFIX]
   
   filenames = pattern_instance.split('-')[:-1]
   ans = {}
@@ -53,6 +53,13 @@ def update_entry(collection_name, data):
 
 def get_collection_names(): 
   return db.collection_names()
+
+def drop_collection(collection_name): 
+  db[collection_name].drop()
+
+def get_ids_in_collection(collection_name):
+  collection = db[collection_name] 
+  return set([str(id) for id in collection.find().distinct('_id')])
 
 def get_projects(): 
   collection = db.project_status

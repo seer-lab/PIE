@@ -21,12 +21,13 @@ def get_file(git: Git, commit, filename):
   return ''
 
 def store_modifications(project: Project, git: Git):
+  #files_processed = set(db.get_ids_in_collection(project._name + CONFIG.FILE_CHANGES_SUFFIX))
   files_processed = set()
   pattern_lifecycles = db.get_lifecycles(project, CONFIG.DESIGN_PATTERNS)
   collection_name = project._name + CONFIG.FILE_CHANGES_SUFFIX
 
   for lifecycle, instances in pattern_lifecycles.items():
-    print('Working on ' + lifecycle) 
+    print('Working on ' + lifecycle)
     temp = {}
     filenames = set()
     for instance in instances: 
@@ -46,3 +47,4 @@ def store_modifications(project: Project, git: Git):
         ans[key] = value[filename]
     files_processed.add(filename)
     db.add_entry(collection_name, ans)
+  return True 

@@ -20,7 +20,8 @@ class PatternPanel extends GetView<LifecycleController> {
                 top: uiController.timelineControllerHeight,
                 child: controller.obx(
                     (state) => SizedBox(
-                        height: uiController.getCentre(context),
+                        height: uiController.getCentre(context) -
+                            uiController.timelineControllerHeight * 2,
                         width: MediaQuery.of(context).size.width,
                         child: ListView.builder(
                             itemCount: state!.length,

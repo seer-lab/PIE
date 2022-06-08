@@ -9,6 +9,7 @@ import 'package:get/instance_manager.dart';
 class PatternTimeline extends GetView<TimelineController> {
   final PatternInstance pattern;
   final bool isOpen;
+  final fileHeight = 30.0;
   const PatternTimeline(this.pattern, this.isOpen, {Key? key})
       : super(key: key);
 
@@ -17,9 +18,11 @@ class PatternTimeline extends GetView<TimelineController> {
     if (!isOpen) return timelines;
     for (String element in pattern.files) {
       timelines.add(TimelineInterval(
-          pattern.pattern,
-          pattern.getFileInterval(element),
-          pattern.getPatternBreaks(filename: element)));
+        pattern.pattern,
+        pattern.getFileInterval(element),
+        pattern.getPatternBreaks(filename: element),
+        height: 25,
+      ));
     }
     return timelines;
   }
@@ -28,7 +31,7 @@ class PatternTimeline extends GetView<TimelineController> {
   Widget build(BuildContext context) {
     final UIController uiController = Get.find<UIController>();
     return Container(
-      height: 50 + 50.0 * (isOpen ? pattern.files.length : 0),
+      height: 50 + fileHeight * (isOpen ? pattern.files.length : 0),
       width: uiController.getTimelineWidth(context),
       child: Center(
           child: Column(children: [

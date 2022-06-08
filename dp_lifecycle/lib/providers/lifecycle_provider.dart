@@ -4,6 +4,7 @@ import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 
 class LifecycleProvider extends GetConnect {
@@ -11,8 +12,9 @@ class LifecycleProvider extends GetConnect {
       Project project, String pattern) async {
     httpClient.timeout = const Duration(minutes: 10);
     String projectName = project.name;
+    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await get(
-        "http://seerlab.ca:5000/lifecycle?project=$projectName&pattern=$pattern");
+        "http://$uri:5000/lifecycle?project=$projectName&pattern=$pattern");
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {
@@ -28,7 +30,8 @@ class LifecycleProvider extends GetConnect {
   Future<List<Commit>> getCommits(Project project) async {
     httpClient.timeout = const Duration(minutes: 10);
     String query = "?project=" + project.name;
-    final response = await get('http://seerlab.ca:5000/documents' + query);
+    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
+    final response = await get("http://$uri:5000/documents" + query);
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {
@@ -40,7 +43,8 @@ class LifecycleProvider extends GetConnect {
 
   Future<List<Project>> getProjects() async {
     httpClient.timeout = const Duration(minutes: 10);
-    final response = await get('http://seerlab.ca:5000/projects');
+    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
+    final response = await get("http://$uri:5000/projects");
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {
@@ -55,8 +59,9 @@ class LifecycleProvider extends GetConnect {
       Project project, DesignPattern pattern, String patternInstance) async {
     httpClient.timeout = const Duration(minutes: 10);
     String projectName = project.name;
+    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await get(
-        'http://seerlab.ca:5000/related_files?project=$projectName&pattern=$pattern&pattern_instance=$patternInstance');
+        'http://$uri:5000/related_files?project=$projectName&pattern=$pattern&pattern_instance=$patternInstance');
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {

@@ -14,9 +14,10 @@ class TimelineInterval extends GetView<TimelineController> {
   final DesignPattern designPattern;
   final Map<String, Color> colourMap = {};
   final List<Color> availableColours = [];
+  final double height;
 
   TimelineInterval(this.designPattern, this.intervals, this.annotations,
-      {Key? key})
+      {Key? key, this.height = 50})
       : super(key: key) {
     colourMap['Pattern'] = designPattern.toColour();
 
@@ -80,7 +81,7 @@ class TimelineInterval extends GetView<TimelineController> {
                     25,
                 child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
-                    height: 40,
+                    height: height * 4 / 5,
                     color: _getColor(e.value, e.key),
                     width: (interpolateScreenPos(
                         controller.normalizedPosition(e.value.end) -
@@ -93,7 +94,7 @@ class TimelineInterval extends GetView<TimelineController> {
   Widget build(BuildContext context) {
     final UIController uiController = Get.find<UIController>();
     return SizedBox(
-        height: 50,
+        height: height,
         width: uiController.getTimelineWidth(context),
         child: Stack(children: [
           ..._generateIntervals(context),

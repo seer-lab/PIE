@@ -25,11 +25,13 @@ class Project(object):
       'status': self.status
     }
   
+  def force_phase(self, phase): 
+    self._checklist[phase] = False
 
   def get_current_phase(self): 
     for key, value in self._checklist.items(): 
       if not value: 
-        return key 
+        return key
   
   def completed_phase(self, phase):
     self._checklist[phase] = True
