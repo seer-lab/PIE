@@ -21,10 +21,10 @@ class TimelineInterval extends GetView<TimelineController> {
       : super(key: key) {
     colourMap['Pattern'] = designPattern.toColour();
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 2; i++) {
       availableColours.add(HSLColor.fromColor(designPattern.toColour())
-          .withLightness(0.4 + 0.18 * i)
-          .withSaturation(0.4 + 0.18 * i)
+          .withLightness(0.3 + 0.55 * i)
+          .withSaturation(0.2 + 0.55 * i)
           .toColor());
     }
   }

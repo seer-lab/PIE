@@ -39,12 +39,12 @@ def store_modifications(project: Project, git: Git):
           temp[commit] = {}
         if not filename in temp[commit]: 
           temp[commit][filename] = get_file(git, commit, filename)
-    
-  for filename in filenames: 
-    ans = {'_id': filename}
-    for key, value in temp.items(): 
-      if filename in value: 
-        ans[key] = value[filename]
-    files_processed.add(filename)
-    db.add_entry(collection_name, ans)
+      
+    for filename in filenames: 
+      ans = {'_id': filename}
+      for key, value in temp.items(): 
+        if filename in value: 
+          ans[key] = value[filename]
+      files_processed.add(filename)
+      db.add_entry(collection_name, ans)
   return True 

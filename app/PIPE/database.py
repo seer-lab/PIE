@@ -28,7 +28,7 @@ def get_file_modifications(project: Project, pattern_instance):
   ans = {}
   for file in filenames: 
     data = collection.find({'_id': file})
-    for item in data: 
+    for item in data:
       ans[file] = item
       ans[file].pop('_id')
   return ans
