@@ -60,8 +60,6 @@ class LifecycleProvider extends GetConnect {
     httpClient.timeout = const Duration(minutes: 10);
     String projectName = project.name;
     String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
-    print(
-        'http://$uri:5000/related_files?project=$projectName&pattern=$pattern&pattern_instance=$patternInstance');
     final response = await get(
         'http://$uri:5000/related_files?project=$projectName&pattern=$pattern&pattern_instance=$patternInstance');
     if (response.status.hasError) {

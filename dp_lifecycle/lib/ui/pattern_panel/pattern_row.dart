@@ -51,7 +51,7 @@ class _PatternRow extends State<PatternRow> {
         builder: (c) => Row(children: [
               PatternCard(patternInstance, isOpen, _isSelected(c),
                   onToggleDropdown, () => onSelectRow(c)),
-              PatternTimeline(patternInstance, isOpen)
+              PatternTimeline(patternInstance, isOpen, () => onSelectRow(c))
             ]));
   }
 }

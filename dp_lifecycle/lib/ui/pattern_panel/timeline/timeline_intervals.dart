@@ -15,10 +15,12 @@ class TimelineInterval extends GetView<TimelineController> {
   final Map<String, Color> colourMap = {};
   final List<Color> availableColours = [];
   final double height;
+  final VoidCallback onSelect;
 
   TimelineInterval(this.designPattern, this.intervals, this.annotations,
-      {Key? key, this.height = 50})
-      : super(key: key) {
+      {Key? key, this.height = 50, VoidCallback? onSelect})
+      : onSelect = onSelect ?? (() {}),
+        super(key: key) {
     colourMap['Pattern'] = designPattern.toColour();
 
     for (int i = 0; i < 2; i++) {
@@ -79,14 +81,16 @@ class TimelineInterval extends GetView<TimelineController> {
                 left: interpolateScreenPos(
                         c.normalizedPosition(e.value.start), context) +
                     25,
-                child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    height: height * 4 / 5,
-                    color: _getColor(e.value, e.key),
-                    width: (interpolateScreenPos(
-                        controller.normalizedPosition(e.value.end) -
-                            controller.normalizedPosition(e.value.start),
-                        context)))))))
+                child: InkWell(
+                    onTap: () => onSelect(),
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        height: height * 4 / 5,
+                        color: _getColor(e.value, e.key),
+                        width: (interpolateScreenPos(
+                            controller.normalizedPosition(e.value.end) -
+                                controller.normalizedPosition(e.value.start),
+                            context))))))))
         .toList();
   }
 
