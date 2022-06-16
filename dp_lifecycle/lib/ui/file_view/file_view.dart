@@ -1,6 +1,7 @@
 import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
+import 'package:dp_lifecycle/ui/file_view/code_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -25,14 +26,6 @@ class _FileView extends State<FileView> {
                 ))
             : SizedBox(
                 width: uiController.getCodeEditorWidth(context),
-                child: SingleChildScrollView(
-                    child: CodeEditor(
-                  edit: false,
-                  model: EditorModel(
-                      files: c.getFiles(),
-                      styleOptions: EditorModelStyleOptions(
-                          heightOfContainer:
-                              uiController.getCodeEditorHeight(context))),
-                ))));
+                child: CodeViewer(c.getFiles())));
   }
 }
