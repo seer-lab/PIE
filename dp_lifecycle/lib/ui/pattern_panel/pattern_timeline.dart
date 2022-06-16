@@ -8,10 +8,12 @@ import 'package:get/instance_manager.dart';
 
 class PatternTimeline extends GetView<TimelineController> {
   final PatternInstance pattern;
-  final bool isOpen;
+  final bool isOpen, isSelected;
   final VoidCallback onSelect;
   final fileHeight = 30.0;
-  const PatternTimeline(this.pattern, this.isOpen, this.onSelect, {Key? key})
+  const PatternTimeline(
+      this.pattern, this.isOpen, this.onSelect, this.isSelected,
+      {Key? key})
       : super(key: key);
 
   List<Widget> getFileTimelines() {
@@ -46,10 +48,16 @@ class PatternTimeline extends GetView<TimelineController> {
         ...getFileTimelines()
       ])),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: const Color.fromARGB(255, 27, 27, 27),
-        // boxShadow: _shadow(),
-      ),
+          borderRadius: BorderRadius.circular(5),
+          color: const Color.fromARGB(255, 27, 27, 27),
+          boxShadow: (isSelected)
+              ? ([
+                  const BoxShadow(
+                      blurRadius: 8, spreadRadius: 2, color: Colors.white)
+                ])
+              : null
+          // boxShadow: _shadow(),
+          ),
     );
   }
 }

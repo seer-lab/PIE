@@ -48,10 +48,13 @@ class _PatternRow extends State<PatternRow> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineController>(
-        builder: (c) => Row(children: [
+        builder: (c) => Padding(
+            padding: EdgeInsets.symmetric(vertical: _isSelected(c) ? 15 : 0),
+            child: Row(children: [
               PatternCard(patternInstance, isOpen, _isSelected(c),
                   onToggleDropdown, () => onSelectRow(c)),
-              PatternTimeline(patternInstance, isOpen, () => onSelectRow(c))
-            ]));
+              PatternTimeline(
+                  patternInstance, isOpen, () => onSelectRow(c), _isSelected(c))
+            ])));
   }
 }
