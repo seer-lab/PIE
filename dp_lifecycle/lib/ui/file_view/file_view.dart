@@ -1,4 +1,3 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/ui/file_view/code_viewer.dart';
@@ -26,6 +25,6 @@ class _FileView extends State<FileView> {
                 ))
             : SizedBox(
                 width: uiController.getCodeEditorWidth(context),
-                child: CodeViewer(c.getFiles())));
+                child: CodeViewer(c.getFiles(), c.fileViewStyle.value)));
   }
 }

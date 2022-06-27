@@ -2,6 +2,8 @@ import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/providers/lifecycle_provider.dart';
 import 'package:dp_lifecycle/struct/commit.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
+import 'package:dp_lifecycle/struct/file_view_style.dart';
+import 'package:dp_lifecycle/struct/modified_file.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
 import 'package:flutter/foundation.dart';
@@ -9,8 +11,10 @@ import 'package:get/state_manager.dart';
 
 class TimelineController extends GetxController {
   List<Commit> commits = <Commit>[].obs;
+  Map<String, int> commitHashIndex = {};
   RxInt previewStart = 0.obs, previewEnd = 1.obs;
   RxInt previewMarker = 0.obs;
+  Rx<FileViewStyle> fileViewStyle = Rx<FileViewStyle>(FileViewStyle.combined);
 
   Rx<PatternInstance>? selectedPattern;
   Rx<Project> selectedProject = Rx<Project>(
@@ -25,6 +29,10 @@ class TimelineController extends GetxController {
       previewEnd = commits.length.obs;
       previewStart = 0.obs;
       previewMarker = 1.obs;
+
+      for (int i = 0; i < commits.length; i++) {
+        commitHashIndex[commits[i].hash] = i;
+      }
       update();
     }, onError: (err) {
       if (kDebugMode) {
@@ -65,18 +73,30 @@ class TimelineController extends GetxController {
     return true;
   }
 
-  List<FileEditor> getFiles() {
+  List<ModifiedFile> getFiles() {
     if (selectedPattern == null) {
-      return [
-        FileEditor(
-            code:
-                'Please Select a Pattern Instance Card to view it\'s code contents.')
-      ];
+      return [];
     }
-    List<FileEditor>? ans =
+    List<ModifiedFile>? ans =
         selectedPattern!.value.getFilesAtCommit(previewMarker.value);
     if (ans == null) return [];
     return ans;
+  }
+
+  ModifiedFile getFileAtCommit(String name, String commit) {
+    if (selectedPattern == null || !commitHashIndex.containsKey(commit)) {
+      return ModifiedFile('file', 'Something went wrong.', [], []);
+    }
+    List<ModifiedFile> files =
+        selectedPattern!.value.getFilesAtCommit(commitHashIndex[commit]! + 1) ??
+            [];
+    for (int i = 0; i < files.length; i++) {
+      print(files[i].name + ' - ' + name);
+      if (files[i].name == name) {
+        return files[i];
+      }
+    }
+    return ModifiedFile('file', 'Could not find previous version', [], []);
   }
 
   String getPinotInfo() {
@@ -123,6 +143,12 @@ class TimelineController extends GetxController {
     } else {
       selectedPattern = Rx<PatternInstance>(instance);
     }
+    update();
+  }
+
+  void updateFileViewStyle(FileViewStyle? style) {
+    if (style == null) return;
+    fileViewStyle = Rx<FileViewStyle>(style);
     update();
   }
 }

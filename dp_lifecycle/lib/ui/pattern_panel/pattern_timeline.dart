@@ -16,6 +16,10 @@ class PatternTimeline extends GetView<TimelineController> {
       {Key? key})
       : super(key: key);
 
+  void moveCursorTo(int commitNumber) {
+    controller.updatePreviewMarker(commitNumber);
+  }
+
   List<Widget> getFileTimelines() {
     List<Widget> timelines = [];
     if (!isOpen) return timelines;

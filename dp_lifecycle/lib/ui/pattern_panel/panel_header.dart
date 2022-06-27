@@ -46,48 +46,59 @@ class _PanelHeader extends State<PanelHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 550,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                chipWrapper(DesignPattern.bridge),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.composite),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.facade),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.proxy)
-              ],
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            Row(
-              children: [
-                chipWrapper(DesignPattern.flyweight),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.strategy),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.decorator),
-                const SizedBox(
-                  width: 10,
-                ),
-                chipWrapper(DesignPattern.mediator)
-              ],
-            )
-          ],
-        ));
+    return const SizedBox(
+      width: 550,
+      child: Text(
+        'Design Pattern Instances',
+        style: TextStyle(fontSize: 23),
+      ),
+    );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SizedBox(
+  //       width: 550,
+  //       child: Column(
+  //         children: [
+  //           Row(
+  //             children: [
+  //               chipWrapper(DesignPattern.bridge),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.composite),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.facade),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.proxy)
+  //             ],
+  //           ),
+  //           const SizedBox(
+  //             height: 3,
+  //           ),
+  //           Row(
+  //             children: [
+  //               chipWrapper(DesignPattern.flyweight),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.strategy),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.decorator),
+  //               const SizedBox(
+  //                 width: 10,
+  //               ),
+  //               chipWrapper(DesignPattern.mediator)
+  //             ],
+  //           )
+  //         ],
+  //       ));
+  // }
 }

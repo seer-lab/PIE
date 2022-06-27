@@ -1,28 +1,59 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
+import 'package:dp_lifecycle/struct/modified_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/atom-one-dark.dart';
+import 'package:flutter_highlight/themes/night-owl.dart';
 import 'package:get/instance_manager.dart';
 
 class Code extends StatelessWidget {
-  final FileEditor file;
-  Code(this.file, {Key? key}) : super(key: key);
+  final ModifiedFile file;
+  final bool showAdditions, showDeletions;
+  Code(
+    this.file, {
+    Key? key,
+    this.showAdditions = false,
+    this.showDeletions = false,
+  }) : super(key: key);
   final UIController uiController = Get.find<UIController>();
-  final double fontSize = 14.0;
-  Map<String, TextStyle> theme = Map<String, TextStyle>.from(atomOneDarkTheme);
-
+  final double fontSize = 18.0;
+  Map<String, TextStyle> theme = Map<String, TextStyle>.from(nightOwlTheme);
+  double ratio = 1.17;
   Widget _createHighlight(
       int startIndex, int difference, bool isAddition, BuildContext context) {
     return Positioned(
-        top: startIndex.toDouble() * (fontSize + 2),
+        top: startIndex.toDouble() * (fontSize * ratio),
         child: Container(
-          color: (isAddition!)
-              ? Colors.green.withOpacity(0.3)
-              : Colors.red.withOpacity(0.3),
-          height: (difference).toDouble() * (2 + fontSize),
-          width: uiController.getCodeEditorWidth(context),
+          color: (isAddition)
+              ? Colors.green.withOpacity(0.7)
+              : Colors.red.withOpacity(0.7),
+          //height: (difference).toDouble() * (ratio * fontSize),
+          child: Text(
+            ((isAddition) ? '+ \n' : '- \n') * difference,
+            style: TextStyle(fontSize: fontSize),
+          ),
+          width: 10,
         ));
+  }
+
+  List<Widget> _getAddedHighlight(List<Diff> additions, BuildContext context) {
+    if (!showAdditions) return [];
+    List<Widget> highlights = [];
+    for (int i = 0; i < additions.length; i++) {
+      highlights.add(_createHighlight(additions[i].index - 1,
+          additions[i].content.split('\n').length, true, context));
+    }
+    return highlights;
+  }
+
+  List<Widget> _getDeletedHighlight(
+      List<Diff> deletions, BuildContext context) {
+    if (!showDeletions) return [];
+    List<Widget> highlights = [];
+    for (int i = 0; i < deletions.length; i++) {
+      highlights.add(_createHighlight(deletions[i].index - 1,
+          deletions[i].content.split('\n').length, false, context));
+    }
+    return highlights;
   }
 
   List<Widget> _getModificationHighlight(String code, BuildContext context) {
@@ -64,22 +95,22 @@ class Code extends StatelessWidget {
   Widget build(BuildContext context) {
     theme['root'] = const TextStyle(
         color: Color(0xffabb2bf), backgroundColor: Colors.transparent);
-    return SingleChildScrollView(
-        child: SizedBox(
+    return Stack(
+      children: [
+        // ..._getModificationHighlight(file.content, context),
+        ..._getAddedHighlight(file.added, context),
+        ..._getDeletedHighlight(file.deleted, context),
+        SizedBox(
             width: uiController.getCodeEditorWidth(context),
-            child: Stack(
-              children: [
-                ..._getModificationHighlight(
-                    file.code ?? "No Code Available.", context),
-                SizedBox(
-                    width: uiController.getCodeEditorWidth(context),
-                    child: HighlightView(
-                      file.code ?? "No Code Available.",
-                      language: file.language,
-                      textStyle: TextStyle(fontSize: fontSize),
-                      theme: theme,
-                    )),
-              ],
-            )));
+            child: HighlightView(
+              file.content,
+              padding: const EdgeInsets.only(left: 13),
+              language: file.language,
+              textStyle:
+                  TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600),
+              theme: theme,
+            )),
+      ],
+    );
   }
 }

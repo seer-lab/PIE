@@ -2,6 +2,7 @@ import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
+import 'package:dp_lifecycle/struct/modified_file.dart';
 
 class PatternInstance {
   final String name;
@@ -66,15 +67,15 @@ class PatternInstance {
     return ans;
   }
 
-  List<FileEditor>? getFilesAtCommit(int commit) {
+  List<ModifiedFile>? getFilesAtCommit(int commit) {
     if (fileHistory == null) return null;
-    List<FileEditor> ans = [];
+    List<ModifiedFile> ans = [];
 
     Map<String, String> targets = findCommitToFiles(commit);
     for (MapEntry<String, String> element in targets.entries) {
-      String? content = fileHistory!.getFile(element.value, element.key);
+      ModifiedFile? content = fileHistory!.getFile(element.value, element.key);
       if (content != null) {
-        ans.add(FileEditor(name: element.key, language: 'java', code: content));
+        ans.add(content);
       }
     }
     return ans;

@@ -1,5 +1,6 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/providers/lifecycle_provider.dart';
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ class LifecycleController extends GetxController
     with StateMixin<List<PatternInstance>> {
   final LifecycleProvider _provider = LifecycleProvider();
   String lastPattern = "Strategy";
+  Set<DesignPattern> designPatterns = <DesignPattern>{DesignPattern.strategy};
   @override
   void onInit() {
     super.onInit();
