@@ -59,7 +59,7 @@ class PatternInstance {
     Map<String, String> ans = {};
     for (Interval element in intervals) {
       if (element.end > commit &&
-          element.start < commit &&
+          element.start <= commit &&
           !element.isPattern) {
         ans[element.fileName] = element.modificationCommit;
       }

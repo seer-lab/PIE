@@ -28,6 +28,7 @@ class SeperatedCode extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
             width: uiController.getCodeEditorWidth(context) / 2,
