@@ -1,3 +1,4 @@
+import PIPE.process.injestion
 __all__ = [
   'injestion', 
   'lifecycele_parser', 

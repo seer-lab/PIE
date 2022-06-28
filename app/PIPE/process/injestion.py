@@ -7,12 +7,9 @@ from PIPE.project import Project
 from .project_miner import mine_project
 from .project_intervaler import interval_project
 from .project_diffs import store_modifications
-from PIPE import database as db 
+from PIPE import database as db
 
-def process_project(url, force_mining=False, force_intervaling=False, force_diffing=False):
-  
-  path = CONFIG.PROJECT_PATH
-
+def get_project(url, path): 
   try: 
     gr = Git(path)
     if not gr.repo.remotes.origin.url == url: 
@@ -38,8 +35,14 @@ def process_project(url, force_mining=False, force_intervaling=False, force_diff
     print('Creating Project:', project_name)
     project = Project.new_project(project_name)
     db.add_entry('project_status', project.to_json())
+  
+  return project, gr
 
+def process_project(url, force_mining=False, force_intervaling=False, force_diffing=False):
+  
+  path = CONFIG.PROJECT_PATH
 
+  project, gr = get_project(url, path)
 
   if force_mining: 
     project.force_phase(CONFIG.MINING)
