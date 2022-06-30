@@ -1,4 +1,3 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/struct/modified_file.dart';
@@ -35,12 +34,14 @@ class SeperatedCode extends StatelessWidget {
             child: Code(
               _getPreviousFile(),
               showDeletions: true,
+              width: uiController.getCodeEditorWidth(context) / 2,
             )),
         SizedBox(
             width: uiController.getCodeEditorWidth(context) / 2,
             child: Code(
               file,
               showAdditions: true,
+              width: uiController.getCodeEditorWidth(context) / 2,
             )),
       ],
     ));

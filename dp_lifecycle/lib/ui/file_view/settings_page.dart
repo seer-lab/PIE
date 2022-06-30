@@ -12,7 +12,7 @@ class _SettingsPage extends State<SettingsPage> {
   final UIController uiController = Get.find<UIController>();
 
   final Map<String, Widget> layout = {
-    'Design Patterns': const DesignPatternSelector(),
+    //'Design Patterns': const DesignPatternSelector(),
     'File Viewer Style': const FileViewStyleSelector(),
   };
 

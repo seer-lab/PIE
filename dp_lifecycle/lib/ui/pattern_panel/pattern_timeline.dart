@@ -28,7 +28,7 @@ class PatternTimeline extends GetView<TimelineController> {
         pattern.pattern,
         pattern.getFileInterval(element),
         pattern.getPatternBreaks(filename: element),
-        height: 25,
+        IntervalType.file,
         onSelect: onSelect,
       ));
     }
@@ -47,6 +47,7 @@ class PatternTimeline extends GetView<TimelineController> {
           pattern.pattern,
           pattern.getPatternInterval(),
           pattern.getPatternBreaks(),
+          IntervalType.pattern,
           onSelect: onSelect,
         ),
         ...getFileTimelines()

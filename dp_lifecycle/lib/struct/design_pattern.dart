@@ -25,7 +25,7 @@ extension ToColour on DesignPattern {
       DesignPattern.flyweight: Colors.amber.shade400,
       DesignPattern.strategy: Colors.blue.shade400,
       DesignPattern.bridge: Colors.green.shade400,
-      DesignPattern.composite: Colors.red.shade400,
+      DesignPattern.composite: Colors.pink.shade300,
       DesignPattern.decorator: Colors.indigo.shade400,
       DesignPattern.mediator: Colors.purple.shade400,
       DesignPattern.facade: Colors.teal.shade400,
