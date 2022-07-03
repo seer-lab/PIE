@@ -5,6 +5,11 @@ import json
 class PIPEProvider: 
   def __init__(self) -> None:
     self.project_status = db.get_projects()
+
+  def remove_set(self, document, field):
+    if field in document: 
+      document.pop(field)
+    return document
   
   def get_project(self, project_name): 
     if not project_name in self.project_status: 
@@ -18,13 +23,8 @@ class PIPEProvider:
     if project == None: 
       return {}
 
-    def remove_set(document):
-      if 'file_list' in document: 
-        document.pop('file_list')
-      return document
-
     documents = db.get_documents(project)
-    return json.dumps([remove_set(document) for document in documents])
+    return json.dumps([self.remove_set(document, 'file_list') for document in documents])
 
   def get_projects(self): 
     projects = self.project_status
@@ -46,5 +46,12 @@ class PIPEProvider:
       return {}
     
     return db.get_file_modifications(project, pattern_instance)
+
+  def get_annotations(self, project_name, pattern_instance): 
+    project = self.get_project(project_name)
+    if project == None: 
+      return {}
+    
+    return json.dumps([self.remove_set(doc, '_id') for doc in db.get_analysis(project, pattern_instance)])
 
     

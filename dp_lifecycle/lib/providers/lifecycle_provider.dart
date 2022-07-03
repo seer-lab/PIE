@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dp_lifecycle/struct/annotation.dart';
 import 'package:dp_lifecycle/struct/commit.dart';
 import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
@@ -8,7 +9,6 @@ import 'package:dp_lifecycle/struct/project.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class LifecycleProvider extends GetConnect {
   Future<List<PatternInstance>> getIntervals(
@@ -21,13 +21,28 @@ class LifecycleProvider extends GetConnect {
     if (response.status.hasError) {
       return Future.error(response.statusText!);
     } else {
-      List<PatternInstance> result = [];
       Map<String, dynamic> decode = response.body;
-      result = decode.entries
-          .map((e) => PatternInstance.fromMap(e.key, e.value as List<dynamic>))
+      Iterable<Future<PatternInstance>> result = decode.entries
+          .map((e) async => PatternInstance.fromMap(e.key,
+              e.value as List<dynamic>, await getAnnotations(project, e.key)))
           .toList();
-      return result;
+      return await Future.wait(result);
     }
+  }
+
+  Future<List<Annotation>> getAnnotations(
+      Project project, String patternInstance) async {
+    String projectName = project.name;
+    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
+
+    final response = await get(
+        "http://$uri:5000/annotations?project=$projectName&pattern_instance=$patternInstance");
+    if (response.status.hasError) {
+      return [];
+    }
+    return (json.decode(response.body) as List<dynamic>)
+        .map((e) => Annotation.fromMap(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Commit>> getCommits(Project project) async {

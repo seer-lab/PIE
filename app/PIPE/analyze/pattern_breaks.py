@@ -16,7 +16,7 @@ def is_modified(file, commit):
         return False
   return False
 
-def find_pattern_breaks(pattern, files):
+def find_pattern_breaks(pattern, files, instance_name):
   break_intervals = []
   for pattern_interval in pattern: 
     break_commit = pattern_interval['end']
@@ -26,10 +26,10 @@ def find_pattern_breaks(pattern, files):
         modified_files.append(name)
     if len(modified_files) > 0:
       break_intervals.append({
-        'instance': '-'.join(modified_files),
+        'instance': instance_name,
+        'files': ','.join(modified_files),
         'modification': 'break',
-        'start': break_commit - 1,
-        'end': break_commit + 1,
+        'commit': break_commit
       })
   print(break_intervals)
   return break_intervals
@@ -41,7 +41,7 @@ def get_pattern_breaks(instance_name, intervals):
   file_names = instance_name.split('-')[:-1]
   for file in file_names: 
     file_intervals[file] = list(filter(lambda x: file == x['instance'].split(' ')[0], intervals))
-  return find_pattern_breaks(pattern_intervals, file_intervals)
+  return find_pattern_breaks(pattern_intervals, file_intervals, instance_name)
 
 
 def get_project_breaks(project: Project, patterns = CONFIG.DESIGN_PATTERNS):

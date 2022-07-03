@@ -1,4 +1,5 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
+import 'package:dp_lifecycle/struct/broken_annotation.dart';
 import 'package:dp_lifecycle/struct/interval.dart' as g;
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -6,7 +7,7 @@ import 'dart:math' as math;
 
 class TimelinePatternInterval extends StatelessWidget {
   final List<g.Interval> intervals;
-  final List<g.Interval> breaks;
+  final List<BrokenAnnotation> breaks;
   final Color colour;
   final VoidCallback onSelect;
   final double height;
@@ -32,7 +33,7 @@ class TimelinePatternInterval extends StatelessWidget {
         .map((e) => GetBuilder<TimelineController>(
             builder: ((c) => Positioned(
                 left: interpolateScreenPos(
-                        c.normalizedPosition(e.start), context) +
+                        c.normalizedPosition(e.commit), context) +
                     25,
                 bottom: -5,
                 child: Container(
@@ -46,10 +47,7 @@ class TimelinePatternInterval extends StatelessWidget {
                         color: Colors.red,
                       ),
                     ),
-                    width: (interpolateScreenPos(
-                        c.normalizedPosition(e.end) -
-                            c.normalizedPosition(e.start),
-                        context)))))))
+                    width: 3)))))
         .toList();
   }
 
@@ -80,6 +78,7 @@ class TimelinePatternInterval extends StatelessWidget {
     return Stack(
       children: [
         ..._generateIntervals(context),
+        ..._generateBreakIntervals(context)
       ],
     );
   }

@@ -21,6 +21,13 @@ def get_lifecycles(project: Project, patterns):
       ans[item['_id']] = item['items']
   return ans 
 
+def get_analysis(project: Project, pattern_instance = None):
+  collection = db[project._name + CONFIG.ANALYSIS_SUFFIX]
+  if pattern_instance == None:
+    return [doc for doc in collection.find()]
+
+  return [doc for doc in collection.find({'instance': pattern_instance})]
+
 def get_file_modifications(project: Project, pattern_instance): 
   collection = db[project._name + CONFIG.FILE_CHANGES_SUFFIX]
   

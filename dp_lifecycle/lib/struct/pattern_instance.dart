@@ -1,4 +1,5 @@
-import 'package:code_editor/code_editor.dart';
+import 'package:dp_lifecycle/struct/annotation.dart';
+import 'package:dp_lifecycle/struct/broken_annotation.dart';
 import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
@@ -9,16 +10,20 @@ class PatternInstance {
   DesignPattern pattern = DesignPattern.na;
   final List<String> files;
   final List<Interval> intervals;
+  final List<Annotation> annotations;
   FileHistory? fileHistory;
 
-  PatternInstance(this.name, this.intervals)
+  PatternInstance(this.name, this.intervals, this.annotations)
       : files = name.split('-')..removeLast() {
     pattern = getDesignPattern();
   }
 
-  factory PatternInstance.fromMap(String name, List<dynamic> json) {
-    return PatternInstance(name,
-        json.map((e) => Interval.fromMap(e as Map<String, dynamic>)).toList());
+  factory PatternInstance.fromMap(
+      String name, List<dynamic> json, List<Annotation> annotations) {
+    return PatternInstance(
+        name,
+        json.map((e) => Interval.fromMap(e as Map<String, dynamic>)).toList(),
+        annotations);
   }
 
   List<Interval> getPatternInterval() {
@@ -27,11 +32,15 @@ class PatternInstance {
         .toList();
   }
 
-  List<Interval> getPatternBreaks({String filename = ''}) {
-    return intervals
-        .where((element) =>
-            element.modificationCommit == 'break' &&
-            (filename == '' || element.instance.split('-').contains(filename)))
+  List<BrokenAnnotation> getPatternBreaks({String filename = ''}) {
+    List<BrokenAnnotation> brokenAnnotations =
+        annotations.whereType<BrokenAnnotation>().toList();
+
+    if (filename == '') {
+      return brokenAnnotations;
+    }
+    return brokenAnnotations
+        .where((element) => element.files.contains(filename))
         .toList();
   }
 

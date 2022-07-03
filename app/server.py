@@ -12,37 +12,18 @@ app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 CORS(app, support_credentials=True)
 PROJECT = 'project'
 
-projects = {
-  'awt': {'name': 'awt', 'location': '../jdk8u_jdk', 'status': 'ready'},
-  #'ignite': {'name': 'ignite', 'location': '../ignite', 'status': 'ready'},
-  'jhotdraw': {'name': 'jhotdraw', 'location': '../jhotdraw', 'status': 'ready'}
-}
 parsers = {}
 provider = PIPEProvider()
-
-def get_parser(project): 
-  if not project['name'] in parsers: 
-    documents = get_sorted_documents(project, 'topo-order')
-    parsers[project['name']] = LifecycleParser(documents)
-  
-  return parsers[project['name']]
 
 @app.route('/documents')
 @cross_origin(supports_credentials=True)
 def serve_documents(): 
   project_name = request.args.get('project')
-  
-  # def remove_set(document):
-  #   if 'file_list' in document: 
-  #     document.pop('file_list')
-  #   return document
-  # return json.dumps([remove_set(document) for document in get_parser(projects[project_name]).get_documents()])
   return provider.get_commit_documents(project_name)
 
 @app.route('/projects')
 @cross_origin(supports_credentials=True)
 def serve_projects():
-  # return projects
   return provider.get_projects()
 
 @app.route("/lifecycle")
@@ -54,8 +35,14 @@ def lifecycle():
     patterns = ['Strategy']
   else: 
     patterns = patterns.split(',')
-  # return get_lifecycles(projects[project_name], patterns)
   return provider.get_lifecycles(project_name, patterns)
+
+@app.route('/annotations')
+@cross_origin(supports_credentials=True)
+def annotations():
+  project_name = request.args.get('project')
+  pattern_instance = request.args.get('pattern_instance')
+  return provider.get_annotations(project_name, pattern_instance)
 
 @app.route('/related_files')
 @cross_origin(supports_credentials=True)
@@ -65,7 +52,6 @@ def related_files():
   pattern_instance = request.args.get('pattern_instance')
   if pattern_instance == None or pattern == None: 
     return {'success': False}
-  # return get_related_files(projects[project_name], pattern_instance)
   return provider.get_related_files(project_name, pattern_instance)
   
 if __name__ == '__main__':

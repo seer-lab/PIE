@@ -25,11 +25,10 @@ class PatternTimeline extends GetView<TimelineController> {
     if (!isOpen) return timelines;
     for (String element in pattern.files) {
       timelines.add(TimelineInterval(
-        pattern.pattern,
-        pattern.getFileInterval(element),
-        pattern.getPatternBreaks(filename: element),
+        pattern,
         IntervalType.file,
         onSelect: onSelect,
+        filename: element,
       ));
     }
     return timelines;
@@ -44,9 +43,7 @@ class PatternTimeline extends GetView<TimelineController> {
       child: Center(
           child: Column(children: [
         TimelineInterval(
-          pattern.pattern,
-          pattern.getPatternInterval(),
-          pattern.getPatternBreaks(),
+          pattern,
           IntervalType.pattern,
           onSelect: onSelect,
         ),
