@@ -16,6 +16,37 @@ def is_modified(file, commit):
         return False
   return False
 
+def find_stale_intervals(pattern_intervals, file_intervals, break_intervals): 
+  stale_intervals = []
+  for break_data in break_intervals: 
+    found = False
+    for interval in pattern_intervals:
+      if break_data['commit'] < interval['start']:
+        stale_intervals.append({
+            'instance': break_data['instance'],
+            'files': break_data['files'],
+            'modification': 'stale',
+            'start': break_data['commit'],
+            'end': interval['start']
+          })
+        found = True
+    if not found:
+      file_names = break_data['files'].split(',')
+      earliest_break = 0x3f3f3f3f
+      for file_name in file_names: 
+        end = file_intervals[file_name][-1]['end']
+        if end < earliest_break: 
+          earliest_break = end 
+      stale_intervals.append({
+            'instance': break_data['instance'],
+            'files': break_data['files'],
+            'modification': 'stale',
+            'start': break_data['commit'],
+            'end': earliest_break
+          })
+  return stale_intervals
+
+
 def find_pattern_breaks(pattern, files, instance_name):
   break_intervals = []
   for pattern_interval in pattern: 
@@ -31,7 +62,7 @@ def find_pattern_breaks(pattern, files, instance_name):
         'modification': 'break',
         'commit': break_commit
       })
-  print(break_intervals)
+      
   return break_intervals
 
 def get_pattern_breaks(instance_name, intervals):
@@ -41,7 +72,9 @@ def get_pattern_breaks(instance_name, intervals):
   file_names = instance_name.split('-')[:-1]
   for file in file_names: 
     file_intervals[file] = list(filter(lambda x: file == x['instance'].split(' ')[0], intervals))
-  return find_pattern_breaks(pattern_intervals, file_intervals, instance_name)
+  break_intervals = find_pattern_breaks(pattern_intervals, file_intervals, instance_name)
+  stale_intervals = find_stale_intervals(pattern_intervals, file_intervals, break_intervals)
+  return break_intervals + stale_intervals
 
 
 def get_project_breaks(project: Project, patterns = CONFIG.DESIGN_PATTERNS):

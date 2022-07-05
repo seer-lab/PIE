@@ -59,6 +59,7 @@ class TimelineInterval extends GetView<TimelineController> {
             breaks: pattern.getPatternBreaks(filename: filename!),
             colour: _color,
             onSelectBody: onSelect,
+            staleIntervals: pattern.getStaleIntervals(filename: filename),
             height: height);
     }
   }

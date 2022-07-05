@@ -4,6 +4,7 @@ import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/interval.dart';
 import 'package:dp_lifecycle/struct/modified_file.dart';
+import 'package:dp_lifecycle/struct/stale_annotation.dart';
 
 class PatternInstance {
   final String name;
@@ -32,14 +33,26 @@ class PatternInstance {
         .toList();
   }
 
-  List<BrokenAnnotation> getPatternBreaks({String filename = ''}) {
+  List<BrokenAnnotation> getPatternBreaks({String? filename}) {
     List<BrokenAnnotation> brokenAnnotations =
         annotations.whereType<BrokenAnnotation>().toList();
 
-    if (filename == '') {
+    if (filename == null) {
       return brokenAnnotations;
     }
     return brokenAnnotations
+        .where((element) => element.files.contains(filename))
+        .toList();
+  }
+
+  List<StaleAnnotation> getStaleIntervals({String? filename}) {
+    List<StaleAnnotation> staleAnnnotations =
+        annotations.whereType<StaleAnnotation>().toList();
+
+    if (filename == null) {
+      return staleAnnnotations;
+    }
+    return staleAnnnotations
         .where((element) => element.files.contains(filename))
         .toList();
   }

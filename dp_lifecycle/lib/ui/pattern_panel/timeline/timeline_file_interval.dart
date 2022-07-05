@@ -1,11 +1,13 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/struct/broken_annotation.dart';
+import 'package:dp_lifecycle/struct/stale_annotation.dart';
 import 'package:flutter/material.dart';
 import 'package:dp_lifecycle/struct/interval.dart' as g;
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class TimelineFileInterval extends StatelessWidget {
   final List<g.Interval> intervals;
+  final List<StaleAnnotation> staleIntervals;
   final List<BrokenAnnotation> breaks;
   late final Map<int, BrokenAnnotation> breakMapping;
   final Color colour;
@@ -18,10 +20,12 @@ class TimelineFileInterval extends StatelessWidget {
     required this.breaks,
     required this.colour,
     required this.height,
+    List<StaleAnnotation>? staleIntervals,
     VoidCallback? onSelectDivider,
     VoidCallback? onSelectBody,
   })  : onSelectBody = onSelectBody ?? (() {}),
         onSelectDivider = onSelectDivider ?? (() {}),
+        staleIntervals = staleIntervals ?? [],
         breakMapping = {}
           ..addEntries(breaks.map((e) => MapEntry(e.commit, e)).toList()),
         super(key: key);
@@ -60,6 +64,18 @@ class TimelineFileInterval extends StatelessWidget {
                 width: 2)));
   }
 
+  Widget _createStaleAnnotation(double leftPosition, double width) {
+    return Positioned(
+        left: leftPosition,
+        bottom: 0,
+        child: Container(
+          margin: const EdgeInsets.only(top: 5),
+          height: height * 1 / 5,
+          color: Colors.red,
+          width: width,
+        ));
+  }
+
   List<Widget> _generateIntervals(BuildContext context) {
     return intervals
             .asMap()
@@ -86,10 +102,25 @@ class TimelineFileInterval extends StatelessWidget {
             .toList();
   }
 
+  List<Widget> _generateStaleAnnotations(BuildContext context) {
+    return staleIntervals
+        .map((e) => GetBuilder<TimelineController>(
+            builder: (c) => _createStaleAnnotation(
+                interpolateScreenPos(c.normalizedPosition(e.start), context) +
+                    25,
+                (interpolateScreenPos(
+                    c.normalizedPosition(e.end) - c.normalizedPosition(e.start),
+                    context)))))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [..._generateIntervals(context)],
+      children: [
+        ..._generateIntervals(context),
+        ..._generateStaleAnnotations(context)
+      ],
     );
   }
 }
