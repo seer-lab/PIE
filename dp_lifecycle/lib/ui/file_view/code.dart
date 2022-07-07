@@ -26,12 +26,12 @@ class Code extends StatelessWidget {
         left: 5,
         child: Container(
           color: (isAddition) ? Colors.green : Colors.red,
-          //height: (difference).toDouble() * (ratio * fontSize),
           child: Text(
             ((isAddition) ? '+ \n' : '- \n') * difference,
             style: TextStyle(fontSize: fontSize),
           ),
-          width: 10,
+          height: ratio * difference * fontSize,
+          width: 9,
         ));
   }
 
@@ -46,34 +46,23 @@ class Code extends StatelessWidget {
               : Colors.red.withOpacity(0.02),
           //height: (difference).toDouble() * (ratio * fontSize),
           child: Text(
-            ((isAddition) ? '+ \n' : '- \n') * difference,
+            ((isAddition) ? '+ \n' : '- \n') * (difference - 1),
             style: TextStyle(fontSize: fontSize, color: Colors.transparent),
           ),
           width: width ?? 0,
         ));
   }
 
-  List<Widget> _getAddedHighlight(List<Diff> additions, BuildContext context) {
-    if (!showAdditions) return [];
+  List<Widget> _getDiffHighlight(
+      List<Diff> diffs, bool isAddition, BuildContext context) {
+    if (isAddition && !showAdditions) return [];
+    if (!isAddition && !showDeletions) return [];
     List<Widget> highlights = [];
-    for (int i = 0; i < additions.length; i++) {
-      highlights.add(_createHighlight(additions[i].index - 1,
-          additions[i].content.split('\n').length, true, context));
-      highlights.add(_createDropShaddow(additions[i].index - 1,
-          additions[i].content.split('\n').length, true, context));
-    }
-    return highlights;
-  }
-
-  List<Widget> _getDeletedHighlight(
-      List<Diff> deletions, BuildContext context) {
-    if (!showDeletions) return [];
-    List<Widget> highlights = [];
-    for (int i = 0; i < deletions.length; i++) {
-      highlights.add(_createHighlight(deletions[i].index - 1,
-          deletions[i].content.split('\n').length, false, context));
-      highlights.add(_createDropShaddow(deletions[i].index - 1,
-          deletions[i].content.split('\n').length, false, context));
+    for (int i = 0; i < diffs.length; i++) {
+      highlights.add(_createHighlight(diffs[i].index - 1,
+          diffs[i].content.split('\n').length, isAddition, context));
+      highlights.add(_createDropShaddow(diffs[i].index - 1,
+          diffs[i].content.split('\n').length, isAddition, context));
     }
     return highlights;
   }
@@ -85,8 +74,8 @@ class Code extends StatelessWidget {
     return Stack(
       children: [
         // ..._getModificationHighlight(file.content, context),
-        ..._getAddedHighlight(file.added, context),
-        ..._getDeletedHighlight(file.deleted, context),
+        ..._getDiffHighlight(file.added, true, context),
+        ..._getDiffHighlight(file.deleted, false, context),
         SizedBox(
             width: uiController.getCodeEditorWidth(context),
             child: HighlightView(

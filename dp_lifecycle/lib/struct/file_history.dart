@@ -16,7 +16,9 @@ class FileHistory {
     if (file == null) {
       return null;
     }
-    return ModifiedFile(file.name, applyDiff(file), file.added, file.deleted,
+    return ModifiedFile(file.name, applyDiff(file),
+        added: file.added,
+        deleted: file.deleted,
         previousCommit: file.previousCommit);
   }
 

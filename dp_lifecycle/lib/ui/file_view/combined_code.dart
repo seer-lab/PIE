@@ -9,11 +9,38 @@ class CombinedCode extends StatelessWidget {
   final ModifiedFile file;
   CombinedCode(this.file, {Key? key}) : super(key: key);
   final UIController uiController = Get.find<UIController>();
+
+  ModifiedFile _combineDiffs() {
+    List<String> output = file.content.split('\n');
+    List<Diff> shiftedAdded = [];
+
+    for (int i = 0; i < file.added.length; i++) {
+      output[file.added[i].index - 1] = '+ ' + output[file.added[i].index - 1];
+    }
+    for (int i = 0; i < file.deleted.length; i++) {
+      output.insertAll(
+          file.deleted[i].index - 1, file.deleted[i].content.split('\n'));
+    }
+
+    for (int i = 0; i < output.length; i++) {
+      if (output[i].isNotEmpty && output[i][0] == '+') {
+        output[i] = output[i].substring(1);
+        shiftedAdded.add(Diff(index: i + 1, content: output[i]));
+      }
+    }
+    return ModifiedFile(file.name, output.join('\n'),
+        added: shiftedAdded, deleted: file.deleted);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: SizedBox(
             width: uiController.getCodeEditorWidth(context),
-            child: Code(file)));
+            child: Code(
+              _combineDiffs(),
+              showAdditions: true,
+              showDeletions: true,
+            )));
   }
 }

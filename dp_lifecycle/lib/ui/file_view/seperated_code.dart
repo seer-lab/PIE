@@ -14,17 +14,17 @@ class SeperatedCode extends StatelessWidget {
 
   ModifiedFile _getPreviousFile() {
     if (file.previousCommit.isEmpty) {
-      return ModifiedFile(
-          file.name, 'No Previous Commit for this File', [], []);
+      return ModifiedFile(file.name, 'No Previous Commit for this File');
     }
     ModifiedFile previousFile =
         timelineController.getFileAtCommit(file.name, file.previousCommit);
-    return ModifiedFile(
-        previousFile.name, previousFile.content, [], file.deleted);
+    return ModifiedFile(previousFile.name, previousFile.content,
+        deleted: file.deleted);
   }
 
   @override
   Widget build(BuildContext context) {
+    //Buffer buffer = Buffer(file, _getPreviousFile());
     return SingleChildScrollView(
         child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,

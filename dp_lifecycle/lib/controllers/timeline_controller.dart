@@ -85,7 +85,7 @@ class TimelineController extends GetxController {
 
   ModifiedFile getFileAtCommit(String name, String commit) {
     if (selectedPattern == null || !commitHashIndex.containsKey(commit)) {
-      return ModifiedFile('file', 'Something went wrong.', [], []);
+      return ModifiedFile('file', 'Something went wrong.');
     }
     List<ModifiedFile> files =
         selectedPattern!.value.getFilesAtCommit(commitHashIndex[commit]! + 1) ??
@@ -96,7 +96,7 @@ class TimelineController extends GetxController {
         return files[i];
       }
     }
-    return ModifiedFile('file', 'Could not find previous version', [], []);
+    return ModifiedFile('file', 'Could not find previous version');
   }
 
   String getPinotInfo() {
