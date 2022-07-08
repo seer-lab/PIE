@@ -6,6 +6,8 @@ services:
     volumes:
       - ~/apps/mongo:/data/db
     command: --bind_ip 0.0.0.0
+    ports:
+      - "27018:27017"
   dp_lifecycle:
     build: ./dp_lifecycle
     ports:

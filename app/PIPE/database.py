@@ -3,9 +3,9 @@ from pymongo import MongoClient
 import PIPE.CONFIG as CONFIG
 from PIPE.project import Project
 
-mongo_uri ='mongodb://localhost:27017'
+mongo_uri ='mongodb://localhost:' + CONFIG.MONGO_PORT
 client = MongoClient(mongo_uri)
-db = client.thesis_data
+db = client[CONFIG.MONGO_DATABASE]
 
 def get_documents(project: Project): 
   collection = db[project._name]

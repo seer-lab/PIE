@@ -1,11 +1,24 @@
 # PIE - Pattern Instance Explorer
 
+Pattern Instance Explorer (PIE), is an exploratory visualization tool that enable developers and researchers to examine a repository’s design patterns and their life cycles.
+
+Check it out at https://seerlab.ca:5000
+
+## Project Layout 
+
+*dp_lifecycle :* Flutter web application for the user interface.
+*app :* Contains `server.py` the entry point for the server.
+*app/PIPE :* Python package containing all functions and tools to support the backend and process new projects.
+
 ## Pre-requisites 
 
+### Required for Analysis
 - Python 3.9.6 & pip
+- Java 8
+
+### Not Required if using Docker:
 - Flutter & Dart
 - Mongodb
-- Java 8
 
 ## Installation
 
@@ -15,49 +28,76 @@ pip install pyrdriller, pymongo, altair, flask
 ```
 
 Visit https://www.cs.ucdavis.edu/~shini/research/pinot/
-and install Pinot. You can test if Pinot is working by cloning a Java repo
-and running: 
+and install Pinot. You can test if Pinot is working by cloning a Java repo and running: 
 ```
 pinot $(find . -regex ".*\.\(java\)")
 ```
 
 Clone this repository: 
 ```
-git clone https://github.com/sqrlab/design-patterns-lifecycle.git
+git clone https://github.com/sqrlab/PIE.git
 ```
 
-## Setup 
-Open dpTracker.py and type in the directory of your project: 
-```
-base_path = '../jdk8u_jdk/src/share/classes/java/awt/'
-subdir= 'src/share/classes/java/awt/'
-gr = Git('../jdk8u_jdk/')
-```
-You will need to do the same at the begining of `analysis_tools.py`
+## Mine & Analyze Projects Locally
 
-Run dpTracker: 
+### Docker Build Only
+If you are building the tool using docker you must run the docker mongo version:
 ```
-python3 dpTracker.py
+cd PIE 
+docker-compose build dp_mongodb
+docker-compose up dp_mongodb
 ```
-At this point you can freely use the Jupyter Notebook to explore the data using the tools provided in `analysis_tools.py` to express the patterns into timelines. 
+You will also need to navigate to `app/PIPE/CONFIG.py`
+and update the `MONGO_PORT` to `"27018"`.
 
-After analysis run the flask server: 
+### Mining Configurations
+In `app/PIPE/CONFIG.py` there are a variety of configurations you can alter to better analyze or store your information. **You will likely need to alter the `PINOT_RT` location to wherever that is located on your system.**
+
+*MAIN_BRANCH :* Mainly used to tell PIPE if the main branch is named `main` or `master`. Can also be used to choose a different branch for analysis.
+
+*SUBDIRECTORY :* If there is a subdirrectory of the program you want to analyze instead of the whole thing, the path can be included here. To ignore use `''`.
+
+*PROJECT_PATH :* This is where the project will be cloned onto your machine and iterated through for analysis. 
+
+### Mine the project
+In `app/driver.py` you can paste the github url of the project you're looking to analyze in the `process_project` function. You can then: 
 
 ```
+cd app
+sudo python3 driver.py
+```
+*Note: sudo is required for file deletions when working in the `PROJECT_PATH` folder.*
+
+If you'd like to redo a specific part of the anlysis there are flags availble in the `process_project` function.
+
+## Build and Run the Tool with Docker 
+
+If you have docker installed you can build the tool using docker-compose: 
+
+```
+cd PIE 
+docker-compose build
+docker-compose up
+```
+
+You can then open your favourite web browser and view the tool from `localhost:1200`. 
+
+## Build and Run the tool without docker.
+
+### Server
+Run the server by running: 
+```
+cd PIE/app
 export FLASK_APP=server  
 export FLASK_ENV=development
 flask run
 ```
-
-Test the server by looking for instances of a particular design pattern: 
+### Front End
+Run the front end by running: 
 ```
-curl http://127.0.0.1:5000/lifecycle\?pattern\=Strategy | jq .
-```
-
-In the dp_lifecycle folder install dependencies and run the program: 
-```
+cd PIE/dp_lifecycle
 flutter pub get 
-flutter run -d [device name]
+flutter run -d web 
 ```
 
 ### Pinot Troubleshooting 

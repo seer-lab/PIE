@@ -1,4 +1,3 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
 import 'package:dp_lifecycle/struct/file_view_style.dart';
 import 'package:dp_lifecycle/struct/modified_file.dart';

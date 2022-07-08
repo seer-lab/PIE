@@ -11,6 +11,8 @@ PROJECT_STATUS_ERROR = 'error'
 PROJECT_STATUS_READY = 'ready'
 PROJECT_PATH = '../temp_project/'
 PINOT_RT = "../../pinot/lib/rt.jar"
+MONGO_PORT = "27018"
+MONGO_DATABASE = "thesis_data"
 DESIGN_PATTERNS = [
   'Flyweight', 
   'Strategy', 

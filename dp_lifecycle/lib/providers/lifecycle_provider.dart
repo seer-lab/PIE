@@ -6,16 +6,16 @@ import 'package:dp_lifecycle/struct/file_history.dart';
 import 'package:dp_lifecycle/struct/modified_file.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
 import 'package:dp_lifecycle/struct/project.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get_connect.dart';
 import 'package:http/http.dart' as http;
 
 class LifecycleProvider extends GetConnect {
+  //String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
+  String uri = "localhost";
   Future<List<PatternInstance>> getIntervals(
       Project project, String pattern) async {
     httpClient.timeout = const Duration(minutes: 10);
     String projectName = project.name;
-    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await get(
         "http://$uri:5000/lifecycle?project=$projectName&pattern=$pattern");
     if (response.status.hasError) {
@@ -33,8 +33,6 @@ class LifecycleProvider extends GetConnect {
   Future<List<Annotation>> getAnnotations(
       Project project, String patternInstance) async {
     String projectName = project.name;
-    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
-
     final response = await get(
         "http://$uri:5000/annotations?project=$projectName&pattern_instance=$patternInstance");
     if (response.status.hasError) {
@@ -48,7 +46,6 @@ class LifecycleProvider extends GetConnect {
   Future<List<Commit>> getCommits(Project project) async {
     httpClient.timeout = const Duration(minutes: 10);
     String query = "?project=" + project.name;
-    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await get("http://$uri:5000/documents" + query);
     if (response.status.hasError) {
       return Future.error(response.statusText!);
@@ -61,7 +58,6 @@ class LifecycleProvider extends GetConnect {
 
   Future<List<Project>> getProjects() async {
     httpClient.timeout = const Duration(minutes: 10);
-    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await get("http://$uri:5000/projects");
     if (response.status.hasError) {
       return Future.error(response.statusText!);
@@ -78,7 +74,6 @@ class LifecycleProvider extends GetConnect {
     httpClient.timeout = const Duration(minutes: 10);
     String projectName = project.name;
     String patternName = pattern.parseString();
-    String uri = (kDebugMode) ? "localhost" : "seerlab.ca";
     final response = await http.get(Uri.parse(
         'http://$uri:5000/related_files?project=$projectName&pattern=$patternName&pattern_instance=$patternInstance'));
     if (response.statusCode != 200) {

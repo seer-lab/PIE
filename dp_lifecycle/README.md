@@ -1,16 +1,18 @@
 # dp_lifecycle
 
-A new Flutter project.
+Where the front end lives.
 
-## Getting Started
+## Project Structure
 
-This project is a starting point for a Flutter application.
+I used the GetX state manager for this project. For more information on 
+how to use it, checkout the package page: 
 
-A few resources to get you started if this is your first Flutter project:
+**Controllers :** Handle all non-localized state/logic 
+**Struct :** All data objects
+**UI :** All UI Widgets. They are *mostly* organized into their seperate panels.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Development
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+When debugging uncheck *All Exceptions* in the Exception breakpoints as there are a number of scroll elements that throw exceptions (unless trying to fix this).
+
+
