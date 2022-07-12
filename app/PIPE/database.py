@@ -4,6 +4,9 @@ import PIPE.CONFIG as CONFIG
 from PIPE.project import Project
 
 mongo_uri ='mongodb://localhost:' + CONFIG.MONGO_PORT
+if 'IS_DOCKER' in os.environ:
+  mongo_uri ='mongodb://dp_mongodb:27017'
+
 client = MongoClient(mongo_uri)
 db = client[CONFIG.MONGO_DATABASE]
 

@@ -1,9 +1,6 @@
 from flask import Flask, request, session
 from flask_cors import CORS, cross_origin
-import PIPE.database as db
 import secrets
-from analysis_tools import * 
-import json
 from PIPE.PIPEProvider import PIPEProvider
 
 app = Flask(__name__)

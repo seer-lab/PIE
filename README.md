@@ -100,7 +100,7 @@ flutter pub get
 flutter run -d web 
 ```
 
-### Pinot Troubleshooting 
+## Pinot Troubleshooting 
 
 Note: Pinot may not work correctly out of the box. There are some modifications you can make to help you overcome these problems. 
 
