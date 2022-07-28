@@ -2,7 +2,7 @@
 
 Pattern Instance Explorer (PIE), is an exploratory visualization tool that enable developers and researchers to examine a repository’s design patterns and their life cycles.
 
-Check it out at https://seerlab.ca:5000
+Check it out at https://seerlab.ca:1200
 
 ## Project Layout 
 
