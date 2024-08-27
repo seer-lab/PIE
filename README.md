@@ -1,5 +1,7 @@
 # PIE - Pattern Instance Explorer
 
+## Introduction
+
 Pattern Instance Explorer (PIE), is an exploratory visualization tool that enable developers and researchers to examine a repository’s design patterns and their life cycles.
 
 ![PIE user interface](https://www.sqrlab.ca/wp-content/uploads/2024/07/PIE_current.png)
@@ -12,11 +14,11 @@ Pattern Instance Explorer (PIE), is an exploratory visualization tool that enabl
 
 ## Pre-requisites 
 
-### Required for Analysis
+Required for Analysis:
 - Python 3.9.6 & pip
 - Java 8
 
-### Not Required if using Docker:
+Not Required if using Docker:
 - Flutter & Dart
 - Mongodb
 
@@ -143,7 +145,7 @@ remove the assertion so you're left with:
   }
 ```
 
-## Deeper Pinot Search
+### Deeper Pinot Search
 
 There are some files which pinot leaves out of it's final "File Location" output which may prove to be useful for analysis. As such the following edits have been made to `control.cpp` to account for these files. 
 
