@@ -1,6 +1,8 @@
 import 'package:dp_lifecycle/controllers/timeline_controller.dart';
 import 'package:dp_lifecycle/controllers/ui_controller.dart';
+import 'package:dp_lifecycle/struct/design_pattern.dart';
 import 'package:dp_lifecycle/struct/pattern_instance.dart';
+import 'package:dp_lifecycle/ui/filters/design_pattern_selector.dart';
 import 'package:dp_lifecycle/ui/pattern_panel/timeline/timeline_intervals.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter/material.dart';
@@ -50,16 +52,23 @@ class PatternTimeline extends GetView<TimelineController> {
         ...getFileTimelines()
       ])),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: const Color.fromARGB(255, 27, 27, 27),
-          boxShadow: (isSelected)
-              ? ([
-                  const BoxShadow(
-                      blurRadius: 8, spreadRadius: 2, color: Colors.white)
-                ])
-              : null
-          // boxShadow: _shadow(),
-          ),
+        borderRadius: BorderRadius.circular(5),
+        color: (isSelected)
+            ? pattern.pattern.toColour().withOpacity(0.2)
+            : Theme.of(context)
+                .secondaryHeaderColor
+                .withOpacity(0.4), //const Color.fromARGB(255, 27, 27, 27),
+        // boxShadow: (isSelected)
+        //     ? ([
+        //         const BoxShadow(
+        //           color: Colors.white,
+        //         ),
+        //         const BoxShadow(
+        //             blurRadius: 8, spreadRadius: -12, color: Colors.black)
+        //       ])
+        //     : null
+        // boxShadow: _shadow(),
+      ),
     );
   }
 }

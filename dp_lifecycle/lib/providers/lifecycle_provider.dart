@@ -58,6 +58,7 @@ class LifecycleProvider extends GetConnect {
 
   Future<List<Project>> getProjects() async {
     httpClient.timeout = const Duration(minutes: 10);
+    print("http://$uri:5000/projects");
     final response = await get("http://$uri:5000/projects");
     if (response.status.hasError) {
       return Future.error(response.statusText!);

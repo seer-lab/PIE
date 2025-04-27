@@ -16,12 +16,14 @@ def get_documents(project: Project):
 
 def get_lifecycles(project: Project, patterns): 
   collection = db[project._name + CONFIG.PATTERN_INTERVAL_SUFFIX]
-
+  print('get lifecycle')
   ans = {}
   for pattern in patterns:
     data = collection.find({'pattern': pattern})
     for item in data: 
       ans[item['_id']] = item['items']
+  print(project)
+  print(ans)
   return ans 
 
 def get_analysis(project: Project, pattern_instance = None):

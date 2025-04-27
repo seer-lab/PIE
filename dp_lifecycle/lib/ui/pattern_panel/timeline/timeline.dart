@@ -13,7 +13,7 @@ class Timeline extends GetView<TimelineController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: Get.find<UIController>().getTimelineWidth(context),
-      height: 100,
+      height: 120,
       child: Stack(
         children: const [
           Positioned(

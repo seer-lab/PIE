@@ -14,7 +14,7 @@ enum DesignPattern {
 
 extension ParseToString on DesignPattern {
   String parseString() {
-    String value = toString().split('.')[1];
+    String value = toString().split('.').last;
     return "${value[0].toUpperCase()}${value.substring(1)}";
   }
 }

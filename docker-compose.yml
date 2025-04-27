@@ -2,7 +2,7 @@ version: '2.2'
 
 services:
   dp_mongodb:
-    image: mongo:latest
+    image: mongo:5.0.13
     volumes:
       - ~/apps/mongo:/data/db
     command: --bind_ip 0.0.0.0

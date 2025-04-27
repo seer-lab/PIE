@@ -10,7 +10,7 @@ CORS(app, support_credentials=True)
 PROJECT = 'project'
 
 parsers = {}
-provider = PIPEProvider()
+provider = PIPEProvider(app)
 
 @app.route('/documents')
 @cross_origin(supports_credentials=True)
@@ -28,6 +28,7 @@ def serve_projects():
 def lifecycle():
   project_name = request.args.get('project')
   patterns = request.args.get('pattern')
+  app.logger.info(patterns)
   if patterns == None: 
     patterns = ['Strategy']
   else: 
@@ -53,3 +54,4 @@ def related_files():
   
 if __name__ == '__main__':
     app.run(debug=True)
+    print('starting application')

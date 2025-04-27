@@ -1,9 +1,11 @@
+from flask import Flask
 import PIPE.database as db
 from PIPE.project import Project
 import json
 
 class PIPEProvider: 
-  def __init__(self) -> None:
+  def __init__(self, app: Flask) -> None:
+    self.logger = app.logger
     self.project_status = db.get_projects()
 
   def remove_set(self, document, field):
@@ -35,6 +37,8 @@ class PIPEProvider:
   def get_lifecycles(self, project_name, design_pattern): 
 
     project = self.get_project(project_name)
+    self.logger.info(project)
+    self.logger.info(design_pattern)
     if project == None: 
       return {}
 
