@@ -11,10 +11,11 @@ class DPChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-        avatar:
-            isSelected ? const CircleAvatar(child: Icon(Icons.check)) : null,
+        avatar: isSelected
+            ? const CircleAvatar(child: Icon(Icons.radio_button_checked))
+            : null,
         label: Text(
-          designPattern.parseString(),
+          designPattern.name,
           style: const TextStyle(
               color: Colors.white,
               shadows: [Shadow(color: Colors.black, offset: Offset(0, -1.0))]),

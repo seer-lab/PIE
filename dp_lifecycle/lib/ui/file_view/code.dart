@@ -3,6 +3,7 @@ import 'package:dp_lifecycle/struct/modified_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/night-owl.dart';
+import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:get/instance_manager.dart';
 
 class Code extends StatelessWidget {
@@ -17,8 +18,10 @@ class Code extends StatelessWidget {
       : super(key: key);
   final UIController uiController = Get.find<UIController>();
   final double fontSize = 18.0;
-  Map<String, TextStyle> theme = Map<String, TextStyle>.from(nightOwlTheme);
-  double ratio = 1.17;
+  Map<String, TextStyle> darkTheme = Map<String, TextStyle>.from(nightOwlTheme);
+  Map<String, TextStyle> lightTheme =
+      Map<String, TextStyle>.from(atomOneLightTheme);
+  double ratio = 1.167;
   Widget _createHighlight(
       int startIndex, int difference, bool isAddition, BuildContext context) {
     return Positioned(
@@ -42,8 +45,8 @@ class Code extends StatelessWidget {
         left: 20,
         child: Container(
           color: (isAddition)
-              ? Colors.green.withOpacity(0.02)
-              : Colors.red.withOpacity(0.02),
+              ? Colors.green.withOpacity(0.05)
+              : Colors.red.withOpacity(0.05),
           //height: (difference).toDouble() * (ratio * fontSize),
           child: Text(
             ((isAddition) ? '+ \n' : '- \n') * (difference - 1),
@@ -69,8 +72,10 @@ class Code extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    theme['root'] = const TextStyle(
+    darkTheme['root'] = const TextStyle(
         color: Color(0xffabb2bf), backgroundColor: Colors.transparent);
+    lightTheme['root'] = const TextStyle(
+        color: Colors.black, backgroundColor: Colors.transparent);
     return Stack(
       children: [
         // ..._getModificationHighlight(file.content, context),
@@ -82,9 +87,13 @@ class Code extends StatelessWidget {
               file.content,
               padding: const EdgeInsets.only(left: 20),
               language: file.language,
-              textStyle:
-                  TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600),
-              theme: theme,
+              textStyle: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'monaspace'),
+              theme: Theme.of(context).brightness == Brightness.light
+                  ? lightTheme
+                  : darkTheme,
             )),
       ],
     );

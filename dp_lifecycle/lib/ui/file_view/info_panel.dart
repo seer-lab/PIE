@@ -53,7 +53,7 @@ class _InfoPanel extends State<InfoPanel> {
                 height: uiController.getCentre(context),
                 width: uiController.getInfoPanelWidth(context),
                 child: const Center(child: CircularProgressIndicator()),
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
               )
             : Container(
                 height: uiController.getCentre(context),

@@ -51,7 +51,7 @@ class TimelineFileInterval extends StatelessWidget {
   Widget _createIntervalDivider(double leftPosition, int commit) {
     Color _colour = breakMapping.containsKey(commit)
         ? Colors.red
-        : HSLColor.fromColor(colour).withLightness(0.2).toColor();
+        : HSLColor.fromColor(colour).withLightness(0.4).toColor();
 
     return Positioned(
         left: leftPosition,

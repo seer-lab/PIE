@@ -10,8 +10,8 @@ import 'package:get/get_connect.dart';
 import 'package:http/http.dart' as http;
 
 class LifecycleProvider extends GetConnect {
-  String uri = "seerlab.ca";
-  // String uri = "localhost";
+  //String uri = "seerlab.ca";
+  String uri = "localhost";
   Future<List<PatternInstance>> getIntervals(
       Project project, String pattern) async {
     httpClient.timeout = const Duration(minutes: 10);
@@ -58,6 +58,7 @@ class LifecycleProvider extends GetConnect {
 
   Future<List<Project>> getProjects() async {
     httpClient.timeout = const Duration(minutes: 10);
+    print("http://$uri:5000/projects");
     final response = await get("http://$uri:5000/projects");
     if (response.status.hasError) {
       return Future.error(response.statusText!);

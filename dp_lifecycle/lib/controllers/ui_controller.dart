@@ -41,7 +41,7 @@ class UIController extends GetxController {
         timelineMargins;
   }
 
-  double get timelineControllerHeight => 60;
+  double get timelineControllerHeight => 71;
   double get appbarSize => _appbarSize.value;
   double get timelineMargins => 25.0;
 }
